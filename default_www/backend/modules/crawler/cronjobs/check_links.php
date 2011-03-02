@@ -1,12 +1,12 @@
 <?php
 
 /**
- * This cronjob will fetch the requested data
+ * This cronjob will check every link
  *
  * @package		backend
- * @subpackage	analytics
+ * @subpackage	crawler
  *
- * @author		Annelies Van Extergem <annelies@netlash.com>
+ * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
  */
 class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
@@ -30,9 +30,6 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 	 */
 	public function execute()
 	{
-		// call parent, this will probably add some general CSS/JS or other required files
-		parent::execute();
-
 		// cleanup database
 		$this->cleanupDatabase();
 
@@ -124,6 +121,19 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 						// initialize
 						$ch = curl_init();
 
+						$values = array();
+						$values['module'] = $module;
+						$values['origin'] = $currentPage;
+
+						// check if a link is external or internal
+						// fork saves an internal link 'invalid'
+						if (!spoonfilter::isURL($url)){
+							$url = SITE_URL . $url;
+							$values['external'] = 'N';
+						}else{
+							$values['external'] = 'Y';
+						}
+
 						// set the options, including the url
 						curl_setopt($ch, CURLOPT_URL, $url);
 
@@ -142,12 +152,8 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 						// free up the curl handle
 						curl_close($ch);
 
-						$values = array();
-						$values['module'] = $module;
-						$values['origin'] = $currentPage;
 						$values['code'] = $chinfo['http_code'];
 						$values['url'] = $chinfo['url'];
-						$values['external'] = 'Y';
 
 						// dead/faulty/non existing link?
 						if (!$chinfo['http_code']) {
@@ -159,7 +165,7 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 
 						// 2xx, 3xx working
 						} else if ($chinfo['http_code'] >= 200 && $chinfo['http_code'] < 400) {
-							//BackendModel::getDB(true)->insert('crawler', $values);
+							BackendModel::getDB(true)->insert('crawler', $values);
 						}
 					}
 				}

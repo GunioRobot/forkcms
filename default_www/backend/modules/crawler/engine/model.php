@@ -5,9 +5,9 @@
  * In this file we store all generic functions that we will be using in the mailmotor module
  *
  * @package		backend
- * @subpackage	mailmotor
+ * @subpackage	crawler
  *
- * @author		Dave Lens <dave@netlash.com>
+ * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
  */
 class BackendCrawlerModel

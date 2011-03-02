@@ -4,9 +4,9 @@
  * This is the configuration-object for the crawler module
  *
  * @package		backend
- * @subpackage	tags
+ * @subpackage	crawler
  *
- * @author		Dave Lens <dave@netlash.com>
+ * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
  */
 final class BackendCrawlerConfig extends BackendBaseConfig

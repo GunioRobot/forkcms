@@ -1,14 +1,13 @@
 <?php
 
 /**
- * MailmotorInstall
- * Installer for the mailmotor module
+ * CrawlerInstall
+ * Installer for the crawler module
  *
- * @package		installer
- * @subpackage	mailmotor
+ * @package		backend
+ * @subpackage	crawler
  *
- * @author		Dave Lens <dave@netlash.com>
- * @author		Tijs Verkoyen <tijs@sumocoders.be>
+ * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
  */
 class MailmotorInstall extends ModuleInstaller

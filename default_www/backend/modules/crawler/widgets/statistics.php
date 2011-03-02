@@ -1,13 +1,12 @@
 <?php
 
 /**
- * This is the classic fork cayenne mailmotor widget
+ * This is the crawler widget
  *
  * @package		backend
- * @subpackage	mailmotor
+ * @subpackage	crawler
  *
- * @author		Dave Lens <dave@netlash.com>
- * @author		Tijs Verkoyen <tijs@sumocoders.be>
+ * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
  */
 class BackendCrawlerWidgetStatistics extends BackendBaseWidget
