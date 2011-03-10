@@ -165,7 +165,7 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 
 						// 2xx, 3xx working
 						} else if ($chinfo['http_code'] >= 200 && $chinfo['http_code'] < 400) {
-							BackendModel::getDB(true)->insert('crawler', $values);
+							//BackendModel::getDB(true)->insert('crawler', $values);
 						}
 					}
 				}
