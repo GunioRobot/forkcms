@@ -48,7 +48,7 @@ class MailmotorInstall extends ModuleInstaller
 	private function installDatabase()
 	{
 		// load install.sql and labels.sql
-		$this->importSQL(dirname(__FILE__) .'/data/install.sql');
+		$this->importSQL(dirname(__FILE__) . '/data/install.sql');
 	}
 
 
@@ -165,6 +165,7 @@ class MailmotorInstall extends ModuleInstaller
 		$this->insertLocale('en', 'backend', 'mailmotor', 'err', 'NoCMAccount', 'Please enter your CampaignMonitor credentials.');
 		$this->insertLocale('en', 'backend', 'mailmotor', 'err', 'NoGroups', 'Select a group.');
 		$this->insertLocale('en', 'backend', 'mailmotor', 'err', 'NoSubject', 'Enter a subject for this mailing.');
+		$this->insertLocale('en', 'backend', 'mailmotor', 'err', 'NoSubscribers', 'None of your groups have subscribers yet! You can import your current subscriber list by uploading a .csv-file.');
 		$this->insertLocale('en', 'backend', 'mailmotor', 'err', 'NoTemplates', 'No templates are available for this language, select another one.');
 		$this->insertLocale('en', 'backend', 'mailmotor', 'err', 'NoPreviewSent', 'The preview-mail to %1$s was not sent.');
 		$this->insertLocale('en', 'backend', 'mailmotor', 'err', 'NoPricePerEmail', 'No price per sent mail has been set yet.');
@@ -403,6 +404,7 @@ class MailmotorInstall extends ModuleInstaller
 		$this->insertLocale('nl', 'backend', 'mailmotor', 'err', 'NoCMAccount', 'Geef je CampaignMonitor gegevens in.');
 		$this->insertLocale('nl', 'backend', 'mailmotor', 'err', 'NoGroups', 'Gelieve een groep te selecteren.');
 		$this->insertLocale('nl', 'backend', 'mailmotor', 'err', 'NoSubject', 'Geef een onderwerp op voor deze mailing.');
+		$this->insertLocale('nl', 'backend', 'mailmotor', 'err', 'NoSubscribers', 'Je hebt nog geen e-mailadressen in je groepen! Je kan er importeren met behulp van een .csv-bestand.');
 		$this->insertLocale('nl', 'backend', 'mailmotor', 'err', 'NoTemplates', 'Voor die taal zijn geen templates beschikbaar, kies een andere taal.');
 		$this->insertLocale('nl', 'backend', 'mailmotor', 'err', 'NoPreviewSent', 'De preview-mail naar %1$s werd niet verzonden.');
 		$this->insertLocale('nl', 'backend', 'mailmotor', 'err', 'NoPricePerEmail', 'Er is nog geen prijs per verzonden e-mail ingesteld.');
@@ -673,13 +675,13 @@ class MailmotorInstall extends ModuleInstaller
 	private function moveClasses()
 	{
 		// set source var
-		$source = PATH_WWW .'/backend/modules/mailmotor/installer/campaignmonitor.php';
+		$source = PATH_WWW . '/backend/modules/mailmotor/installer/campaignmonitor.php';
 
 		// check if the campaignmonitor class exists in the installer folder for this module
 		if(!SpoonFile::exists($source)) return false;
 
 		// move the file to library/external
-		copy($source, PATH_LIBRARY .'/external/campaignmonitor.php');
+		copy($source, PATH_LIBRARY . '/external/campaignmonitor.php');
 	}
 }
 

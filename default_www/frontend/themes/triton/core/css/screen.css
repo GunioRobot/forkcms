@@ -449,7 +449,7 @@ a.linkedImage {
 
 #main {
 	position: relative;
-	padding-top: 30px;
+	padding-top: 20px;
 }
 
 #main:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
@@ -761,13 +761,13 @@ a.linkedImage {
 	.ie6 .pageNavigation, .ie7 .pageNavigation { zoom: 1; }
 
 		.pageNavigation .previousLink {
-			float: left;
+			float: left !important;
 			width: 48%;
 			text-align: left;
 		}
 
 		.pageNavigation .nextLink {
-			float: right;
+			float: right !important;
 			width: 48%;
 			text-align: right;
 		}
