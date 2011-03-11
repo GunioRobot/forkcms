@@ -123,7 +123,7 @@ class BackendCrawlerCronjobGetLinks extends BackendBaseCronjob
 						$values['title'] = $d['title'];
 						$values['url'] = $url;
 						$values['module'] = str_replace('_', ' ', ucfirst($module));
-						$values['origin'] = $currentPage;
+						//$values['origin'] = $currentPage;
 
 						$values['public_url'] = $currentPage;
 						$values['private_url'] = $editBaseUrl . $d['id'];

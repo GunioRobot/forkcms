@@ -61,7 +61,7 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 			$values = array();
 			$values['title'] = $link['title'];
 			$values['module'] = $link['module'];
-			$values['origin'] = $link['origin'];
+			//$values['origin'] = $link['origin'];
 			$values['external'] = $link['external'];
 
 			$values['public_url'] = $link['public_url'];
@@ -75,6 +75,14 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 
 			// set the options, including the url
 			curl_setopt($ch, CURLOPT_URL, $values['url']);
+
+			// set browser specific headers
+        	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6 (.NET CLR 3.5.30729)",
+                "Accept-Language: en-us,en;q=0.5"
+            ));
+
+            curl_setopt($ch, CURLOPT_HEADER, 1);
 
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			// follow redirections
@@ -92,6 +100,7 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 			curl_close($ch);
 
 			$values['code'] = $chinfo['http_code'];
+			$values['url'] = str_replace('http://', '', $values['url']);
 
 			// dead/faulty/non existing link?
 			if (!$chinfo['http_code']) {

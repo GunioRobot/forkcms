@@ -86,12 +86,12 @@ class BackendCrawlerWidgetStatistics extends BackendBaseWidget
 			// get the datagrid
 			$datagrid = new BackendDataGridArray($all);
 
-			$datagrid->setSortingColumns(array('title'));
+			$datagrid->setSortingColumns(array('title', 'module'));
 
-			$datagrid->setColumnURL('title', '#');
-			$datagrid->setColumnsHidden(array('code', 'module'));
+			$datagrid->setColumnURL('title', '[public_url]');
+			$datagrid->addColumn('edit', null, BL::lbl('Edit'), '[private_url]', BL::lbl('Edit'));
 
-			$datagrid->addColumn('edit', null, BL::lbl('Edit'), '#', BL::lbl('Edit'));
+			$datagrid->setColumnsHidden(array('code', 'public_url', 'private_url'));
 
 			// no pagination
 			$datagrid->setPaging(false);
@@ -118,12 +118,12 @@ class BackendCrawlerWidgetStatistics extends BackendBaseWidget
 			// get the datagrid
 			$datagrid = new BackendDataGridArray($all);
 
-			$datagrid->setSortingColumns(array('title'));
+			$datagrid->setSortingColumns(array('title', 'module'));
 
-			$datagrid->setColumnURL('title', '#');
-			$datagrid->setColumnsHidden(array('code', 'module'));
+			$datagrid->setColumnURL('title', '[public_url]');
+			$datagrid->addColumn('edit', null, BL::lbl('Edit'), '[private_url]', BL::lbl('Edit'));
 
-			$datagrid->addColumn('edit', null, BL::lbl('Edit'), '#', BL::lbl('Edit'));
+			$datagrid->setColumnsHidden(array('code', 'public_url', 'private_url'));
 
 			// no pagination
 			$datagrid->setPaging(false);
