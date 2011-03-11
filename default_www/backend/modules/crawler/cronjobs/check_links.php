@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This cronjob will check every link
+ * This cronjob will check every link in the database and stores it http code back in the database
  *
  * @package		backend
  * @subpackage	crawler
@@ -11,6 +11,8 @@
  */
 class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 {
+	private $insertWorkingLinks = false;
+
 	/**
 	 * Cleanup database
 	 *
@@ -19,7 +21,7 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 	private function cleanupDatabase()
 	{
 		// cleanup pages
-		BackendModel::getDB(true)->truncate('crawler');
+		BackendModel::getDB(true)->truncate('crawler_results');
 	}
 
 
@@ -37,6 +39,7 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 		$this->getData();
 	}
 
+
 	/**
 	 * Get data from analytics
 	 *
@@ -44,130 +47,65 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 	 */
 	private function getData()
 	{
-		$modules = array('blog', 'content', 'pages');
+		// build our query
+		$query = 'SELECT * FROM crawler_links AS c';
 
-		foreach($modules as $module){
+		// fetch the record
+		$records = BackendModel::getDB(true)->getRecords($query);
 
-			// build our query
-			$queryBlog = "
-					SELECT p.text, p.title, p.id FROM blog_posts AS p
-					WHERE text LIKE '%href=%'
-					AND status = 'active'
-					AND hidden = 'N'
-					";
+		foreach ($records as $link) {
 
-			$queryContentBlocks = "
-					SELECT c.text, c.title, c.id FROM content_blocks AS c
-					WHERE text LIKE '%href=%'
-					AND status = 'active'
-					AND hidden = 'N'
-					";
+			// initialize
+			$ch = curl_init();
 
-			$queryPages = "
-					SELECT p.html as text, p.id, p.revision_id as title FROM pages_blocks AS p
-					WHERE html LIKE '%href=%'
-					AND status = 'active'
-					"; //todo join pages to get page title
+			$values = array();
+			$values['title'] = $link['title'];
+			$values['module'] = $link['module'];
+			$values['origin'] = $link['origin'];
+			$values['external'] = $link['external'];
 
-			$query = '';
-			$editBaseUrl = '';
-			$publicBaseUrl = '';
+			$values['public_url'] = $link['public_url'];
+			$values['private_url'] = $link['private_url'];
 
-			switch ($module) {
-			    case 'blog':
-			        $query = $queryBlog;
-			        $editBaseUrl = 'http://forkgit.local/private/blog/edit?token=true&id=';
-			        $publicBaseUrl = '/blog/detail/';
-			        break;
-			    case 'content':
-			        $query = $queryContentBlocks;
-			        $editBaseUrl = 'http://forkgit.local/private/content_blocks/edit?token=true&id=';
-			        $publicBaseUrl = '/';
-			        break;
-			    case 'pages':
-			        $query = $queryPages;
-			        $editBaseUrl = 'http://forkgit.local/private/pages/edit?id=';
-			        $publicBaseUrl = '/';
-			        break;
+			if($link['external'] == 'N'){
+				$values['url'] = SITE_URL . $link['url'];
+			}else{
+				$values['url'] = $link['url'];
 			}
 
-			// fetch the record
-			$records = BackendModel::getDB(true)->getRecords($query);
+			// set the options, including the url
+			curl_setopt($ch, CURLOPT_URL, $values['url']);
 
-			foreach ($records as $d) {
-				// get all links
-				if (preg_match_all("!href=\"(.*?)\"!", $d['text'], $matches)) {
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			// follow redirections
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			// do not need the body. this saves bandwidth and time
+			curl_setopt($ch, CURLOPT_NOBODY, 1);
 
-					// the current page
-					//edit url
-					//echo 'Entry: <a href=' . $editBaseUrl . $d['id'] . '>' . $d['title'] . '</a><br/>';
-					//frontend url
-					$currentPage = $publicBaseUrl . SpoonFilter::urlise($d['title']);
+			// execute and fetch the resulting HTML output
+			curl_exec($ch);
 
-					// url's per page
-					$url_list = array();
+			// get the info on the curl handle
+			$chinfo = curl_getinfo($ch);
 
-					foreach ($matches[1] as $url) {
-						// store the url
-						$url_list[] = $url;
-					}
+			// free up the curl handle
+			curl_close($ch);
 
-					// remove duplicates
-					$url_list = array_values(array_unique($url_list));
+			$values['code'] = $chinfo['http_code'];
 
-					// fetch pages
-					foreach($url_list as $url){
+			// dead/faulty/non existing link?
+			if (!$chinfo['http_code']) {
+				BackendModel::getDB(true)->insert('crawler_results', $values);
 
-						// initialize
-						$ch = curl_init();
+			// 4xx, 5xx error
+			} else if ($chinfo['http_code'] >= 400 && $chinfo['http_code'] < 600) {
+				BackendModel::getDB(true)->insert('crawler_results', $values);
 
-						$values = array();
-						$values['module'] = $module;
-						$values['origin'] = $currentPage;
-
-						// check if a link is external or internal
-						// fork saves an internal link 'invalid'
-						if (!spoonfilter::isURL($url)){
-							$url = SITE_URL . $url;
-							$values['external'] = 'N';
-						}else{
-							$values['external'] = 'Y';
-						}
-
-						// set the options, including the url
-						curl_setopt($ch, CURLOPT_URL, $url);
-
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-						// follow redirections
-						curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-						// do not need the body. this saves bandwidth and time
-						curl_setopt($ch, CURLOPT_NOBODY, 1);
-
-						// execute and fetch the resulting HTML output
-						curl_exec($ch);
-
-						// get the info on the curl handle
-						$chinfo = curl_getinfo($ch);
-
-						// free up the curl handle
-						curl_close($ch);
-
-						$values['code'] = $chinfo['http_code'];
-						$values['url'] = $chinfo['url'];
-
-						// dead/faulty/non existing link?
-						if (!$chinfo['http_code']) {
-							BackendModel::getDB(true)->insert('crawler', $values);
-
-						// 4xx, 5xx error
-						} else if ($chinfo['http_code'] >= 400 && $chinfo['http_code'] < 600) {
-							BackendModel::getDB(true)->insert('crawler', $values);
-
-						// 2xx, 3xx working
-						} else if ($chinfo['http_code'] >= 200 && $chinfo['http_code'] < 400) {
-							//BackendModel::getDB(true)->insert('crawler', $values);
-						}
-					}
+			if($this->insertWorkingLinks)
+			{
+				// 2xx, 3xx working
+				} else if ($chinfo['http_code'] >= 200 && $chinfo['http_code'] < 400) {
+					BackendModel::getDB(true)->insert('crawler_results', $values);
 				}
 			}
 		}

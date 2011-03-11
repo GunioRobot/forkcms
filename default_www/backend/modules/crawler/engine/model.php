@@ -20,7 +20,7 @@ class BackendCrawlerModel
 	public static function getAll()
 	{
 		// fetch the records
-		$records = (array) BackendModel::getDB()->getRecords('SELECT c.origin, c.code, c.url from crawler AS c');
+		$records = (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code, c.url, c.public_url, c.private_url from crawler_results AS c');
 
 		return $records;
 	}
@@ -33,7 +33,7 @@ class BackendCrawlerModel
 	public static function getInternal()
 	{
 		// fetch the records
-		$records = (array) BackendModel::getDB()->getRecords('SELECT c.origin, c.code, c.url from crawler AS c WHERE c.external = "N"');
+		$records = (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code, c.url from crawler_results AS c WHERE c.external = "N"');
 
 		return $records;
 	}
@@ -46,7 +46,7 @@ class BackendCrawlerModel
 	public static function getExternal()
 	{
 		// fetch the records
-		$records = (array) BackendModel::getDB()->getRecords('SELECT c.origin, c.code, c.url from crawler AS c WHERE c.external = "Y"');
+		$records = (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code, c.url from crawler_results AS c WHERE c.external = "Y"');
 
 		return $records;
 	}
