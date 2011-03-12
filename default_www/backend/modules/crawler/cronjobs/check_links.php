@@ -84,6 +84,8 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 
             curl_setopt($ch, CURLOPT_HEADER, 1);
 
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			// follow redirections
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
