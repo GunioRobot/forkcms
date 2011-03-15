@@ -47,7 +47,8 @@ class BackendCrawlerCronjobGetLinks extends BackendBaseCronjob
 		// modules to check
 		$modules = array('blog', 'content_blocks', 'pages');
 
-		foreach($modules as $module){
+		foreach($modules as $module)
+		{
 
 			// build the query for each module
 			$queryBlog = "
@@ -76,7 +77,8 @@ class BackendCrawlerCronjobGetLinks extends BackendBaseCronjob
 			$publicBaseUrl = '';
 
 			// loop the modules
-			switch ($module) {
+			switch ($module)
+			{
 			    case 'blog':
 			        $query = $queryBlog;
 			        $editBaseUrl = '/private/en/blog/edit?token=true&id=';
@@ -98,17 +100,19 @@ class BackendCrawlerCronjobGetLinks extends BackendBaseCronjob
 			$records = BackendModel::getDB(true)->getRecords($query);
 
 			// seach the module for links
-			foreach ($records as $d) {
+			foreach ($records as $d)
+			{
 				// get all links
-				if (preg_match_all("!href=\"(.*?)\"!", $d['text'], $matches)) {
-
+				if (preg_match_all("!href=\"(.*?)\"!", $d['text'], $matches))
+				{
 					//frontend url
 					$currentPage = $publicBaseUrl . SpoonFilter::urlise($d['title']);
 
 					// url's per page
 					$url_list = array();
 
-					foreach ($matches[1] as $url) {
+					foreach ($matches[1] as $url)
+					{
 						// store the url
 						$url_list[] = $url;
 					}
@@ -117,8 +121,8 @@ class BackendCrawlerCronjobGetLinks extends BackendBaseCronjob
 					$url_list = array_values(array_unique($url_list));
 
 					// fetch pages
-					foreach($url_list as $url){
-
+					foreach($url_list as $url)
+					{
 						$values = array();
 						$values['title'] = $d['title'];
 						$values['url'] = $url;
@@ -130,10 +134,12 @@ class BackendCrawlerCronjobGetLinks extends BackendBaseCronjob
 
 						// check if a link is external or internal
 						// fork saves an internal link 'invalid'
-						if (!spoonfilter::isURL($url)){
+						if (!spoonfilter::isURL($url))
+						{
 							$url = SITE_URL . $url;
 							$values['external'] = 'N';
-						}else{
+						}else
+						{
 							$values['external'] = 'Y';
 						}
 

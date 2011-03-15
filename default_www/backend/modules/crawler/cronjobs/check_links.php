@@ -53,7 +53,8 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 		// fetch the record
 		$records = BackendModel::getDB(true)->getRecords($query);
 
-		foreach ($records as $link) {
+		foreach ($records as $link)
+		{
 
 			// initialize
 			$ch = curl_init();
@@ -67,9 +68,11 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 			$values['public_url'] = $link['public_url'];
 			$values['private_url'] = $link['private_url'];
 
-			if($link['external'] == 'N'){
+			if($link['external'] == 'N')
+			{
 				$values['url'] = SITE_URL . $link['url'];
-			}else{
+			}else
+			{
 				$values['url'] = $link['url'];
 			}
 
@@ -105,17 +108,22 @@ class BackendCrawlerCronjobCheckLinks extends BackendBaseCronjob
 			$values['url'] = str_replace('http://', '', $values['url']);
 
 			// dead/faulty/non existing link?
-			if (!$chinfo['http_code']) {
+			if (!$chinfo['http_code'])
+			{
 				BackendModel::getDB(true)->insert('crawler_results', $values);
 
 			// 4xx, 5xx error
-			} else if ($chinfo['http_code'] >= 400 && $chinfo['http_code'] < 600) {
+			}
+			else if ($chinfo['http_code'] >= 400 && $chinfo['http_code'] < 600)
+			{
 				BackendModel::getDB(true)->insert('crawler_results', $values);
+			}
 
 			if($this->insertWorkingLinks)
 			{
 				// 2xx, 3xx working
-				} else if ($chinfo['http_code'] >= 200 && $chinfo['http_code'] < 400) {
+				if ($chinfo['http_code'] >= 200 && $chinfo['http_code'] < 400)
+				{
 					BackendModel::getDB(true)->insert('crawler_results', $values);
 				}
 			}
