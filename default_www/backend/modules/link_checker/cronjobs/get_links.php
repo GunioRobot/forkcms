@@ -34,15 +34,15 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 		$this->cleanupDatabase();
 
 		// get data
-		$this->getData();
+		$this->getLinks();
 	}
 
 	/**
-	 * Get data from analytics
+	 * Get links from modules
 	 *
 	 * @return	void
 	 */
-	private function getData()
+	private function getLinks()
 	{
 		// modules to check
 		$modules = array('blog', 'content_blocks', 'pages');
@@ -69,16 +69,26 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 					INNER JOIN pages AS pa on p.revision_id = pa.revision_id
 					WHERE p.html LIKE '%href=%'
 					AND p.status = 'active'
+					AND hidden = 'N'
 					";
 
 			$query = '';
 			$editBaseUrl = '';
 			$publicBaseUrl = '';
 
+			echo '---' . "\r\n";
+			echo $module . "\r\n";
+			echo '---' . "\r\n";
+
 			// loop the modules
 			switch ($module)
 			{
 			    case 'blog':
+			        $query = $queryBlog;
+			        $editBaseUrl = '/private/en/blog/edit?token=true&id=';
+			        $publicBaseUrl = '/blog/detail/';
+			        break;
+			    case 'blog-sum':
 			        $query = $queryBlog;
 			        $editBaseUrl = '/private/en/blog/edit?token=true&id=';
 			        $publicBaseUrl = '/blog/detail/';
@@ -99,49 +109,56 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 			$records = BackendModel::getDB(true)->getRecords($query);
 
 			// seach every entry for links
-			foreach ($records as $record)
-			{
-				// get all links
-				if (preg_match_all("!href=\"(.*?)\"!", $record['text'], $matches))
+			if(isset($records)){
+
+				foreach ($records as $record)
 				{
-					//frontend url
-					$currentPage = $publicBaseUrl . SpoonFilter::urlise($record['title']);
-
-					// url's per page
-					$url_list = array();
-
-					foreach ($matches[1] as $url)
+					// get all links
+					if (preg_match_all("!href=\"(.*?)\"!", $record['text'], $matches))
 					{
-						// store the url
-						$url_list[] = $url;
-					}
+						//frontend url
+						$currentPage = $publicBaseUrl . SpoonFilter::urlise($record['title']);
 
-					// remove duplicates
-					$url_list = array_values(array_unique($url_list));
+						// url's per page
+						$url_list = array();
 
-					// store every link inside this entry in the database
-					foreach($url_list as $url)
-					{
-						$values = array();
-						$values['title'] = $record['title'];
-						$values['url'] = $url;
-						$values['module'] = str_replace('_', ' ', ucfirst($module));
-						$values['language'] = $record['language'];
-						$values['public_url'] = $currentPage;
-						$values['private_url'] = $editBaseUrl . $record['id'];
-
-						// check if a link is external or internal
-						// fork saves an internal link 'invalid'
-						if (!spoonfilter::isURL($url))
+						foreach ($matches[1] as $url)
 						{
-							$url = SITE_URL . $url;
-							$values['external'] = 'N';
-						}else
-						{
-							$values['external'] = 'Y';
+							// store the url
+							$url_list[] = $url;
 						}
 
-						BackendModel::getDB(true)->insert('crawler_links', $values);
+						// remove duplicates
+						$url_list = array_values(array_unique($url_list));
+
+						// store every link inside this entry in the database
+						foreach($url_list as $url)
+						{
+							$values = array();
+							$values['title'] = $record['title'];
+
+							$values['module'] = str_replace('_', ' ', ucfirst($module));
+							$values['language'] = $record['language'];
+							$values['public_url'] = $currentPage;
+							$values['private_url'] = $editBaseUrl . $record['id'];
+
+							// check if a link is external or internal
+							// fork saves an internal link 'invalid'
+							if (!spoonfilter::isURL($url))
+							{
+								$url = SITE_URL . $url;
+								$values['external'] = 'N';
+							}else
+							{
+								$values['external'] = 'Y';
+							}
+
+							$values['url'] = $url;
+
+							BackendModel::getDB(true)->insert('crawler_links', $values);
+
+							echo $url . "\r\n";
+						}
 					}
 				}
 			}

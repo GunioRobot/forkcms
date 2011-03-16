@@ -20,7 +20,9 @@ class BackendLinkCheckerModel
 	public static function getAll()
 	{
 		// fetch the records
-		$records = (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code, c.url, c.public_url, c.private_url from crawler_results AS c');
+		$records = (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code, c.url, c.public_url, c.private_url
+															FROM crawler_results AS c
+															WHERE c.language = ?', BL::getWorkingLanguage());
 
 		return $records;
 	}
@@ -33,7 +35,10 @@ class BackendLinkCheckerModel
 	public static function getInternal()
 	{
 		// fetch the records
-		$records = (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code, c.url, c.public_url, c.private_url from crawler_results AS c WHERE c.external = "N"');
+		$records = (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code, c.url, c.public_url, c.private_url
+															FROM crawler_results AS c
+															WHERE c.external = "N"
+															AND c.language = ?', BL::getWorkingLanguage());
 
 		return $records;
 	}
@@ -46,7 +51,10 @@ class BackendLinkCheckerModel
 	public static function getExternal()
 	{
 		// fetch the records
-		$records = (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code, c.url, c.public_url, c.private_url from crawler_results AS c WHERE c.external = "Y"');
+		$records = (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code, c.url, c.public_url, c.private_url
+															FROM crawler_results AS c
+															WHERE c.external = "Y"
+															AND c.language = ?', BL::getWorkingLanguage());
 
 		return $records;
 	}
