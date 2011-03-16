@@ -63,4 +63,9 @@
 			</div>
 		</div>
 	</div>
+	<div class="footer">
+		<div class="buttonHolderRight">
+			<a href="{$var|geturl:'index':'link_checker'}" class="button"><span>{$msgAllLinks|ucfirst}</span></a>
+		</div>
+	</div>
 </div>

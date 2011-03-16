@@ -16,7 +16,7 @@ final class BackendLinkCheckerConfig extends BackendBaseConfig
 	 *
 	 * @var	string
 	 */
-	protected $defaultAction = '';
+	protected $defaultAction = 'index';
 
 
 	/**
