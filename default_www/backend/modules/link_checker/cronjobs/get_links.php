@@ -49,24 +49,23 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 
 		foreach($modules as $module)
 		{
-
 			// build the query for each module
 			$queryBlog = "
-					SELECT p.text, p.title, p.id FROM blog_posts AS p
+					SELECT p.text, p.title, p.id, p.language FROM blog_posts AS p
 					WHERE text LIKE '%href=%'
 					AND status = 'active'
 					AND hidden = 'N'
 					";
 
 			$queryContentBlocks = "
-					SELECT c.text, c.title, c.id FROM content_blocks AS c
+					SELECT c.text, c.title, c.id, c.language FROM content_blocks AS c
 					WHERE text LIKE '%href=%'
 					AND status = 'active'
 					AND hidden = 'N'
 					";
 
 			$queryPages = "
-					SELECT p.html as text, pa.id, pa.title FROM pages_blocks AS p
+					SELECT p.html as text, pa.id, pa.title, pa.language FROM pages_blocks AS p
 					INNER JOIN pages AS pa on p.revision_id = pa.revision_id
 					WHERE p.html LIKE '%href=%'
 					AND p.status = 'active'
@@ -96,17 +95,17 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 			        break;
 			}
 
-			// fetch the records
+			// fetch all entries from a module
 			$records = BackendModel::getDB(true)->getRecords($query);
 
-			// seach the module for links
-			foreach ($records as $d)
+			// seach every entry for links
+			foreach ($records as $record)
 			{
 				// get all links
-				if (preg_match_all("!href=\"(.*?)\"!", $d['text'], $matches))
+				if (preg_match_all("!href=\"(.*?)\"!", $record['text'], $matches))
 				{
 					//frontend url
-					$currentPage = $publicBaseUrl . SpoonFilter::urlise($d['title']);
+					$currentPage = $publicBaseUrl . SpoonFilter::urlise($record['title']);
 
 					// url's per page
 					$url_list = array();
@@ -120,17 +119,16 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 					// remove duplicates
 					$url_list = array_values(array_unique($url_list));
 
-					// fetch pages
+					// store every link inside this entry in the database
 					foreach($url_list as $url)
 					{
 						$values = array();
-						$values['title'] = $d['title'];
+						$values['title'] = $record['title'];
 						$values['url'] = $url;
 						$values['module'] = str_replace('_', ' ', ucfirst($module));
-						//$values['origin'] = $currentPage;
-
+						$values['language'] = $record['language'];
 						$values['public_url'] = $currentPage;
-						$values['private_url'] = $editBaseUrl . $d['id'];
+						$values['private_url'] = $editBaseUrl . $record['id'];
 
 						// check if a link is external or internal
 						// fork saves an internal link 'invalid'

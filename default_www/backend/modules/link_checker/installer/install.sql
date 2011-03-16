@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `crawler_links` (
   `private_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `external` enum('Y','N') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `language` varchar(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
@@ -28,5 +29,6 @@ CREATE TABLE IF NOT EXISTS `crawler_results` (
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `external` enum('Y','N') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `language` varchar(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
