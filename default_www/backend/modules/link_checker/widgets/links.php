@@ -13,14 +13,6 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 {
 
 	/**
-	 * the default group ID
-	 *
-	 * @var	int
-	 */
-	private $groupId;
-
-
-	/**
 	 * Execute the widget
 	 *
 	 * @return	void
@@ -54,12 +46,18 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			// get the datagrid
 			$datagrid = new BackendDataGridArray($all);
 
+			// set tab active
+			$datagrid->setActiveTab('tabCrawlerAll');
+
+			// set paging
+			$datagrid->setPaging(true);
+			$datagrid->setPagingLimit(10);
+
+			// set sorting column
 			$datagrid->setSortingColumns(array('module'));
 
-			$datagrid->setColumnsHidden(array('title', 'code', 'public_url', 'private_url'));
-
-			// no pagination
-			$datagrid->setPaging(false);
+			// set columns hidden
+			$datagrid->setColumnsHidden(array('description', 'title', 'code', 'public_url', 'private_url'));
 
 			// parse the datagrid
 			$this->tpl->assign('dgCrawlerAll', $datagrid->getContent());
@@ -83,12 +81,18 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			// get the datagrid
 			$datagrid = new BackendDataGridArray($all);
 
+			// set tab active
+			$datagrid->setActiveTab('tabCrawlerInternal');
+
+			// set paging
+			$datagrid->setPaging(true);
+			$datagrid->setPagingLimit(10);
+
+			// set sorting column
 			$datagrid->setSortingColumns(array('module'));
 
-			$datagrid->setColumnsHidden(array('title', 'code', 'public_url', 'private_url'));
-
-			// no pagination
-			$datagrid->setPaging(false);
+			// set columns hidden
+			$datagrid->setColumnsHidden(array('description', 'title', 'code', 'public_url', 'private_url'));
 
 			// parse the datagrid
 			$this->tpl->assign('dgCrawlerInternal', $datagrid->getContent());
@@ -112,13 +116,18 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			// get the datagrid
 			$datagrid = new BackendDataGridArray($all);
 
+			// set tab active
+			$datagrid->setActiveTab('tabCrawlerExternal');
+
+			// set paging
+			$datagrid->setPaging(true);
+			$datagrid->setPagingLimit(10);
+
+			// set sorting column
 			$datagrid->setSortingColumns(array('module'));
 
-
-			$datagrid->setColumnsHidden(array('title', 'code', 'public_url', 'private_url'));
-
-			// no pagination
-			$datagrid->setPaging(false);
+			// set columns hidden
+			$datagrid->setColumnsHidden(array('description', 'title', 'code', 'public_url', 'private_url'));
 
 			// parse the datagrid
 			$this->tpl->assign('dgCrawlerExternal', $datagrid->getContent());

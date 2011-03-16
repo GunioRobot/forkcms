@@ -85,22 +85,17 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 			{
 			    case 'blog':
 			        $query = $queryBlog;
-			        $editBaseUrl = '/private/en/blog/edit?token=true&id=';
-			        $publicBaseUrl = '/blog/detail/';
-			        break;
-			    case 'blog-sum':
-			        $query = $queryBlog;
-			        $editBaseUrl = '/private/en/blog/edit?token=true&id=';
+			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/blog/edit?token=true&id=';
 			        $publicBaseUrl = '/blog/detail/';
 			        break;
 			    case 'content_blocks':
 			        $query = $queryContentBlocks;
-			        $editBaseUrl = '/private/en/content_blocks/edit?token=true&id=';
+			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/content_blocks/edit?token=true&id=';
 			        $publicBaseUrl = '/';
 			        break;
 			    case 'pages':
 			        $query = $queryPages;
-			        $editBaseUrl = '/private/en/pages/edit?id=';
+			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/pages/edit?id=';
 			        $publicBaseUrl = '/';
 			        break;
 			}
@@ -139,7 +134,7 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 
 							$values['module'] = str_replace('_', ' ', ucfirst($module));
 							$values['language'] = $record['language'];
-							$values['public_url'] = $currentPage;
+							$values['public_url'] = '/' . $record['language'] . $currentPage;
 							$values['private_url'] = $editBaseUrl . $record['id'];
 
 							// check if a link is external or internal
