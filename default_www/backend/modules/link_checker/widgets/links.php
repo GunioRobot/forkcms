@@ -25,6 +25,9 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// parse
 		$this->parse();
 
+		// add refresh javascript
+		$this->header->addJavascript('dashboard.js', 'link_checker');
+
 		// display
 		$this->display();
 	}

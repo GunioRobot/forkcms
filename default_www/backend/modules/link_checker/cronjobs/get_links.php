@@ -45,7 +45,7 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 	private function getLinks()
 	{
 		// modules to check
-		$modules = array('blog', 'content_blocks', 'pages');
+		$modules = array('blog', 'content_blocks', 'pages', 'faq');
 
 		foreach($modules as $module)
 		{
@@ -72,13 +72,19 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 					AND hidden = 'N'
 					";
 
+			$queryFaq = "
+					SELECT f.answer as text, f.id, f.question as title, f.language FROM faq_questions AS f
+					WHERE f.answer LIKE '%href=%'
+					AND f.hidden = 'N'
+					";
+
 			$query = '';
 			$editBaseUrl = '';
 			$publicBaseUrl = '';
 
-			echo '---' . "\r\n";
-			echo $module . "\r\n";
-			echo '---' . "\r\n";
+			//echo '---' . "\r\n";
+			//echo $module . "\r\n";
+			//echo '---' . "\r\n";
 
 			// loop the modules
 			switch ($module)
@@ -88,7 +94,7 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/blog/edit?token=true&id=';
 			        $publicBaseUrl = '/blog/detail/';
 			        break;
-			    case 'content_blocks':
+			    case 'content_blocks': //incomplete !!!
 			        $query = $queryContentBlocks;
 			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/content_blocks/edit?token=true&id=';
 			        $publicBaseUrl = '/';
@@ -97,6 +103,11 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 			        $query = $queryPages;
 			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/pages/edit?id=';
 			        $publicBaseUrl = '/';
+			        break;
+			    case 'faq':
+			        $query = $queryFaq;
+			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/faq/edit?id=';
+			        $publicBaseUrl = '/faq/';
 			        break;
 			}
 
@@ -152,7 +163,7 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 
 							BackendModel::getDB(true)->insert('crawler_links', $values);
 
-							echo $url . "\r\n";
+							//echo $url . "\r\n";
 						}
 					}
 				}

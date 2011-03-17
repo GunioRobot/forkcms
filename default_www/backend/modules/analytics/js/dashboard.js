@@ -16,7 +16,7 @@ jsBackend.analyticsDashboard =
 				success: function(data, textStatus)
 				{
 					// redirect
-					if(data.data.status == 'unauthorized') window.location = $('#settingsUrl').html();
+					//if(data.data.status == 'unauthorized') window.location = $('#settingsUrl').html();
 
 					if(data.code == 200)
 					{
