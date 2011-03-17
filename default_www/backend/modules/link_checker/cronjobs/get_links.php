@@ -37,6 +37,7 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 		$this->getLinks();
 	}
 
+
 	/**
 	 * Get links from modules
 	 *
@@ -45,149 +46,100 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 	private function getLinks()
 	{
 		// modules to check
-<<<<<<< HEAD
 		$modules = array('blog', 'content_blocks', 'pages', 'faq');
 
+		// loop all modules
 		foreach($modules as $module)
 		{
-			// build the query for each module
-=======
-		$modules = array('blog', 'content_blocks', 'pages');
-
-		// @todo	comment the foreach, describe what happens inside the looping
-		foreach($modules as $module)
-		{
-			// build the query for each module
-			// @todo	a better idea would be to group your queries in the switch below, since you're putting them in $query anyway
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
-			$queryBlog = "
-					SELECT p.text, p.title, p.id, p.language FROM blog_posts AS p
-					WHERE text LIKE '%href=%'
-					AND status = 'active'
-					AND hidden = 'N'
-					";
-
-			$queryContentBlocks = "
-					SELECT c.text, c.title, c.id, c.language FROM content_blocks AS c
-					WHERE text LIKE '%href=%'
-					AND status = 'active'
-					AND hidden = 'N'
-					";
-
-			$queryPages = "
-					SELECT p.html as text, pa.id, pa.title, pa.language FROM pages_blocks AS p
-					INNER JOIN pages AS pa on p.revision_id = pa.revision_id
-					WHERE p.html LIKE '%href=%'
-					AND p.status = 'active'
-					AND hidden = 'N'
-					";
-
-<<<<<<< HEAD
-			$queryFaq = "
-					SELECT f.answer as text, f.id, f.question as title, f.language FROM faq_questions AS f
-					WHERE f.answer LIKE '%href=%'
-					AND f.hidden = 'N'
-					";
-
-=======
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
+			// variables we create for each module
 			$query = '';
 			$editBaseUrl = '';
 			$publicBaseUrl = '';
 
-<<<<<<< HEAD
-			//echo '---' . "\r\n";
-			//echo $module . "\r\n";
-			//echo '---' . "\r\n";
-
-			// loop the modules
-=======
 			// @todo	remember to remove debug code later on, cronjobs shouldn't generate output unless they're exceptions (those are auto-mailed).
-			echo '---' . "\r\n";
-			echo $module . "\r\n";
-			echo '---' . "\r\n";
+			echo '---' . PHP_EOL;
+			echo $module . PHP_EOL;
+			echo '---' . PHP_EOL;
 
-			// loop the modules
 			// @todo	opening space: http://developers.fork-cms.be/index.php?title=Coding_standards#Foreach
 			// @todo	switch view: http://developers.fork-cms.be/index.php?title=Coding_standards#Switch
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
+
+			// each module has a different configuration
 			switch ($module)
 			{
 			    case 'blog':
-			        $query = $queryBlog;
+			        $query = "SELECT p.text, p.title, p.id, p.language FROM blog_posts AS p
+							WHERE text LIKE '%href=%'
+							AND status = 'active'
+							AND hidden = 'N'";
 			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/blog/edit?token=true&id=';
 			        $publicBaseUrl = '/blog/detail/';
 			        break;
-<<<<<<< HEAD
-			    case 'content_blocks': //incomplete !!!
-=======
 			    case 'content_blocks':
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
-			        $query = $queryContentBlocks;
+			        $query = "SELECT c.text, c.title, c.id, c.language FROM content_blocks AS c
+							WHERE text LIKE '%href=%'
+							AND status = 'active'
+							AND hidden = 'N'";
 			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/content_blocks/edit?token=true&id=';
 			        $publicBaseUrl = '/';
 			        break;
 			    case 'pages':
-			        $query = $queryPages;
+			        $query = "SELECT p.html as text, pa.id, pa.title, pa.language FROM pages_blocks AS p
+							INNER JOIN pages AS pa on p.revision_id = pa.revision_id
+							WHERE p.html LIKE '%href=%'
+							AND p.status = 'active'
+							AND hidden = 'N'";
 			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/pages/edit?id=';
 			        $publicBaseUrl = '/';
 			        break;
-<<<<<<< HEAD
 			    case 'faq':
-			        $query = $queryFaq;
+			        $query = "SELECT f.answer as text, f.id, f.question as title, f.language FROM faq_questions AS f
+							WHERE f.answer LIKE '%href=%'
+							AND f.hidden = 'N'";
 			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/faq/edit?id=';
 			        $publicBaseUrl = '/faq/';
 			        break;
-=======
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 			}
 
 			// fetch all entries from a module
-			$records = BackendModel::getDB(true)->getRecords($query);
+			$entries = BackendModel::getDB(true)->getRecords($query);
 
-			// seach every entry for links
-			if(isset($records)){
+			// seach every entry for links, if the module is not empty
+			if(isset($entries)){
 
-				foreach ($records as $record)
+				// we check everye entry in this module for links
+				foreach ($entries as $entry)
 				{
-					// get all links
-					if (preg_match_all("!href=\"(.*?)\"!", $record['text'], $matches))
+					// get all links in this entry
+					if (preg_match_all("!href=\"(.*?)\"!", $entry['text'], $matches))
 					{
-						//frontend url
-						$currentPage = $publicBaseUrl . SpoonFilter::urlise($record['title']);
-
-						// url's per page
-<<<<<<< HEAD
-						$url_list = array();
-
-=======
-						// @todo	naming convention -> $urlList
-						$url_list = array();
+						// all urls we find in this entry
+						$urlList = array();
 
 						// @todo	comment what happens inside the loop, and what you're looping (like an example of the format in case of $matches)
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 						foreach ($matches[1] as $url)
 						{
-							// store the url
-							$url_list[] = $url;
+							// add the url to the list
+							$urlList[] = $url;
 						}
 
 						// remove duplicates
-						$url_list = array_values(array_unique($url_list));
+						$urlList = array_values(array_unique($urlList));
 
 						// store every link inside this entry in the database
-						foreach($url_list as $url)
+						foreach($urlList as $url)
 						{
+							// frontend url
+							$currentPage = $publicBaseUrl . SpoonFilter::urlise($entry['title']);
+
+							// build the array to insert
 							$values = array();
-							$values['title'] = $record['title'];
-
+							$values['title'] = $entry['title'];
 							$values['module'] = str_replace('_', ' ', ucfirst($module));
-							$values['language'] = $record['language'];
-							$values['public_url'] = '/' . $record['language'] . $currentPage;
-							$values['private_url'] = $editBaseUrl . $record['id'];
+							$values['language'] = $entry['language'];
+							$values['public_url'] = '/' . $entry['language'] . $currentPage;
+							$values['private_url'] = $editBaseUrl . $entry['id'];
 
-<<<<<<< HEAD
-=======
 							/*
 								@todo	remember to respect case-sensitivity naming convention
 								@todo	i wouldn't assume that when your URL is not valid, you have an external URL.
@@ -197,31 +149,29 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 										$values['url'] = ($values['external'] === 'Y') ? SITE_URL . $url : $url;
 							*/
 
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 							// check if a link is external or internal
 							// fork saves an internal link 'invalid'
 							if (!spoonfilter::isURL($url))
 							{
 								$url = SITE_URL . $url;
 								$values['external'] = 'N';
-							}else
+							}
+							else
 							{
 								$values['external'] = 'Y';
 							}
 
+							// add the (edited) url
 							$values['url'] = $url;
 
+							// insert in database
 							BackendModel::getDB(true)->insert('crawler_links', $values);
 
-<<<<<<< HEAD
-							//echo $url . "\r\n";
-=======
 							/*
 								@todo	remember to remove debug code later on, cronjobs shouldn't generate output unless they're exceptions (those are auto-mailed).
 								Unrelated pro tip: use PHP_EOL instead of "\r\n" whenever possible
 							*/
-							echo $url . "\r\n";
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
+							echo $url . PHP_EOL;
 						}
 					}
 				}

@@ -11,6 +11,11 @@
  */
 class BackendLinkCheckerCronjobCheckLinks extends BackendBaseCronjob
 {
+	/**
+	 * Insert also working links in the database
+	 *
+	 * @var bool
+	 */
 	private $insertWorkingLinks = true;
 
 	/**
@@ -50,18 +55,15 @@ class BackendLinkCheckerCronjobCheckLinks extends BackendBaseCronjob
 		// build our query
 		$query = 'SELECT * FROM crawler_links AS c';
 
-		// fetch the record
-		$records = BackendModel::getDB(true)->getRecords($query);
+		// fetch the records
+		$links = BackendModel::getDB(true)->getRecords($query);
 
-		if(isset($records)){
+		// loop every link if there are any
+		if(isset($links)){
 
-			foreach ($records as $link)
+			foreach ($links as $link)
 			{
-<<<<<<< HEAD
-
-=======
 				// @todo	remember to remove debug code later on, cronjobs shouldn't generate output unless they're exceptions (those are auto-mailed).
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 				echo '---' . "\r\n";
 				echo $link['module'] . "\r\n";
 				echo '---' . "\r\n";
@@ -69,30 +71,20 @@ class BackendLinkCheckerCronjobCheckLinks extends BackendBaseCronjob
 				// initialize
 				$ch = curl_init();
 
+				// built the array to insert
 				$values = array();
 				$values['title'] = $link['title'];
 				$values['module'] = $link['module'];
 				$values['external'] = $link['external'];
 				$values['language'] = $link['language'];
-
 				$values['public_url'] = $link['public_url'];
 				$values['private_url'] = $link['private_url'];
-
 				$values['url'] = $link['url'];
 
 				// set the options, including the url
 				curl_setopt($ch, CURLOPT_URL, $values['url']);
-
-				// set browser specific headers
-	        	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-	                "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6 (.NET CLR 3.5.30729)",
-	                "Accept-Language: en-us,en;q=0.5"
-	            ));
-
 	            curl_setopt($ch, CURLOPT_HEADER, 1);
-
 	            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				// follow redirections
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -111,29 +103,24 @@ class BackendLinkCheckerCronjobCheckLinks extends BackendBaseCronjob
 				$values['code'] = $chinfo['http_code'];
 				$values['url'] = str_replace('http://', '', $values['url']);
 
-<<<<<<< HEAD
-=======
 				// @todo	remember to remove debug code later on, cronjobs shouldn't generate output unless they're exceptions (those are auto-mailed).
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 				echo $values['url'] .' => '. $values['code'] . "\r\n";
 
-				// dead/faulty/non existing link?
 				if (!$chinfo['http_code'])
 				{
+					// dead/faulty/non existing link?
 					BackendModel::getDB(true)->insert('crawler_results', $values);
-
-				// 4xx, 5xx error
 				}
 				else if ($chinfo['http_code'] >= 400 && $chinfo['http_code'] < 600)
 				{
+					// 4xx, 5xx error
 					BackendModel::getDB(true)->insert('crawler_results', $values);
 				}
-
 				if($this->insertWorkingLinks)
 				{
-					// 2xx, 3xx working
 					if ($chinfo['http_code'] >= 200 && $chinfo['http_code'] < 400)
 					{
+						// 2xx, 3xx working
 						BackendModel::getDB(true)->insert('crawler_results', $values);
 					}
 				}

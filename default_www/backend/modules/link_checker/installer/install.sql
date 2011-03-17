@@ -1,13 +1,3 @@
-CREATE TABLE IF NOT EXISTS `crawler_codes` (
-  `code` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-INSERT INTO `crawler_codes` (`code`, `description`) VALUES
-('0', 'Dead'),
-('200', 'Ok'),
-('404', 'Not Found');
-
 CREATE TABLE IF NOT EXISTS `crawler_links` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `module` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,

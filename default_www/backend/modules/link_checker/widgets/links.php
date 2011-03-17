@@ -1,13 +1,10 @@
 <?php
 
-<<<<<<< HEAD
-=======
 /*
 	@todo	I'd put all methods starting with "load" into execute(), and everything involving $this->tpl->assign() into the parse() method,
 			because $this->tpl->assign() essentially parses content into the template.
 */
 
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 /**
  * This is the linkchecker widget
  *
@@ -19,7 +16,6 @@
  */
 class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 {
-
 	/**
 	 * Execute the widget
 	 *
@@ -33,12 +29,11 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// parse
 		$this->parse();
 
-<<<<<<< HEAD
+
 		// add refresh javascript
 		$this->header->addJavascript('dashboard.js', 'link_checker');
 
-=======
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
+
 		// display
 		$this->display();
 	}
@@ -51,11 +46,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 	 */
 	private function loadAll()
 	{
-<<<<<<< HEAD
-		// fetch the latest mailing
-=======
-		// fetch the latest mailing		@todo	Copy pasting code doesn't mean the comments automagically change too ;)
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
+		// fetch all links
 		$all = BackendLinkCheckerModel::getAll();
 
 		// there are some results
@@ -75,7 +66,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('description', 'title', 'code', 'public_url', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
 
 			// parse the datagrid
 			$this->tpl->assign('dgCrawlerAll', $datagrid->getContent());
@@ -90,11 +81,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 	 */
 	private function loadInternal()
 	{
-<<<<<<< HEAD
-		// fetch the latest mailing
-=======
-		// fetch the latest mailing		@todo	Copy pasting code doesn't mean the comments automagically change too ;)
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
+		// fetch internal links
 		$all = BackendLinkCheckerModel::getInternal();
 
 		// there are some results
@@ -114,7 +101,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('description', 'title', 'code', 'public_url', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
 
 			// parse the datagrid
 			$this->tpl->assign('dgCrawlerInternal', $datagrid->getContent());
@@ -129,11 +116,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 	 */
 	private function loadExternal()
 	{
-<<<<<<< HEAD
-		// fetch the latest mailing
-=======
-		// fetch the latest mailing		@todo	Copy pasting code doesn't mean the comments automagically change too ;)
->>>>>>> f9831f389bbd4c8cead389f203324848446efd60
+		// fetch external links
 		$all = BackendLinkCheckerModel::getExternal();
 
 		// there are some results
@@ -153,7 +136,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('description', 'title', 'code', 'public_url', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
 
 			// parse the datagrid
 			$this->tpl->assign('dgCrawlerExternal', $datagrid->getContent());
