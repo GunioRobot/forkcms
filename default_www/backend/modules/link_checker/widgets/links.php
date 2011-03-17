@@ -1,5 +1,13 @@
 <?php
 
+<<<<<<< HEAD
+=======
+/*
+	@todo	I'd put all methods starting with "load" into execute(), and everything involving $this->tpl->assign() into the parse() method,
+			because $this->tpl->assign() essentially parses content into the template.
+*/
+
+>>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 /**
  * This is the linkchecker widget
  *
@@ -25,9 +33,12 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// parse
 		$this->parse();
 
+<<<<<<< HEAD
 		// add refresh javascript
 		$this->header->addJavascript('dashboard.js', 'link_checker');
 
+=======
+>>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 		// display
 		$this->display();
 	}
@@ -40,7 +51,11 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 	 */
 	private function loadAll()
 	{
+<<<<<<< HEAD
 		// fetch the latest mailing
+=======
+		// fetch the latest mailing		@todo	Copy pasting code doesn't mean the comments automagically change too ;)
+>>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 		$all = BackendLinkCheckerModel::getAll();
 
 		// there are some results
@@ -75,7 +90,11 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 	 */
 	private function loadInternal()
 	{
+<<<<<<< HEAD
 		// fetch the latest mailing
+=======
+		// fetch the latest mailing		@todo	Copy pasting code doesn't mean the comments automagically change too ;)
+>>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 		$all = BackendLinkCheckerModel::getInternal();
 
 		// there are some results
@@ -110,7 +129,11 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 	 */
 	private function loadExternal()
 	{
+<<<<<<< HEAD
 		// fetch the latest mailing
+=======
+		// fetch the latest mailing		@todo	Copy pasting code doesn't mean the comments automagically change too ;)
+>>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 		$all = BackendLinkCheckerModel::getExternal();
 
 		// there are some results

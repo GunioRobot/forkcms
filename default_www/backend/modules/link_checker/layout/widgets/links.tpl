@@ -66,7 +66,10 @@
 	<div class="footer">
 		<div class="buttonHolderRight">
 			<a href="{$var|geturl:'index':'link_checker'}" class="button"><span>{$msgAllLinks|ucfirst}</span></a>
+<<<<<<< HEAD
 			<a href="#refresh" id="refreshLinks" class="submitButton button inputButton mainButton iconLink icon iconRefresh"><span></span></a>
+=======
+>>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 		</div>
 	</div>
 </div>

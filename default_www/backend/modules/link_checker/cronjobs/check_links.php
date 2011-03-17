@@ -57,7 +57,11 @@ class BackendLinkCheckerCronjobCheckLinks extends BackendBaseCronjob
 
 			foreach ($records as $link)
 			{
+<<<<<<< HEAD
 
+=======
+				// @todo	remember to remove debug code later on, cronjobs shouldn't generate output unless they're exceptions (those are auto-mailed).
+>>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 				echo '---' . "\r\n";
 				echo $link['module'] . "\r\n";
 				echo '---' . "\r\n";
@@ -107,6 +111,10 @@ class BackendLinkCheckerCronjobCheckLinks extends BackendBaseCronjob
 				$values['code'] = $chinfo['http_code'];
 				$values['url'] = str_replace('http://', '', $values['url']);
 
+<<<<<<< HEAD
+=======
+				// @todo	remember to remove debug code later on, cronjobs shouldn't generate output unless they're exceptions (those are auto-mailed).
+>>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 				echo $values['url'] .' => '. $values['code'] . "\r\n";
 
 				// dead/faulty/non existing link?

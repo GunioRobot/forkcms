@@ -1,5 +1,11 @@
 <?php
 
+<<<<<<< HEAD
+=======
+// @todo	2 spaces inbetween methods here
+// @todo	No need to store $records in a separate array here, since you do nothing with them anyway. You can return them straight away.
+
+>>>>>>> f9831f389bbd4c8cead389f203324848446efd60
 /**
  * BackendLinkCheckerModel
  * In this file we store all generic functions that we will be using in the linkchecker module
