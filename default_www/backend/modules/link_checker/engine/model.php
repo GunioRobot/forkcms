@@ -74,25 +74,28 @@ class BackendLinkCheckerModel
 						WHERE text LIKE '%href=%'
 						AND status = 'active'
 						AND hidden = 'N'";
-		        break;
+		    break;
+
 		    case 'content_blocks':
 		        $query = "SELECT c.text, c.title, c.id, c.language FROM content_blocks AS c
 						WHERE text LIKE '%href=%'
 						AND status = 'active'
 						AND hidden = 'N'";
-		        break;
+		    break;
+
 		    case 'pages':
 		        $query = "SELECT p.html as text, pa.id, pa.title, pa.language FROM pages_blocks AS p
 						INNER JOIN pages AS pa on p.revision_id = pa.revision_id
 						WHERE p.html LIKE '%href=%'
 						AND p.status = 'active'
 						AND hidden = 'N'";
-		        break;
+		    break;
+
 		    case 'faq':
 		        $query = "SELECT f.answer as text, f.id, f.question as title, f.language FROM faq_questions AS f
 						WHERE f.answer LIKE '%href=%'
 						AND f.hidden = 'N'";
-		        break;
+		    break;
 		}
 
 		// fetch and return the records
