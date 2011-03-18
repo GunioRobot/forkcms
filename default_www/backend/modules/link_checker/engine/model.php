@@ -21,7 +21,7 @@ class BackendLinkCheckerModel
 	{
 		// fetch and return the records
 		return (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code AS description, c.url, c.public_url, c.private_url
-															FROM crawler_results AS c
+															FROM link_checker_results AS c
 															WHERE c.language = ?', BL::getWorkingLanguage());
 	}
 
@@ -35,7 +35,7 @@ class BackendLinkCheckerModel
 	{
 		// fetch and return the records
 		return (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code AS description, c.url, c.public_url, c.private_url
-															FROM crawler_results AS c
+															FROM link_checker_results AS c
 															WHERE c.external = "N"
 															AND c.language = ?', BL::getWorkingLanguage());
 	}
@@ -50,7 +50,7 @@ class BackendLinkCheckerModel
 	{
 		// fetch and return the records
 		return (array) BackendModel::getDB()->getRecords('SELECT c.title, c.module, c.code AS description, c.url, c.public_url, c.private_url
-															FROM crawler_results AS c
+															FROM link_checker_results AS c
 															WHERE c.external = "Y"
 															AND c.language = ?', BL::getWorkingLanguage());
 	}
@@ -101,24 +101,24 @@ class BackendLinkCheckerModel
 
 
 	/**
-	 * Empty links
+	 * Empty database
 	 *
 	 * @return	array
 	 */
-	public static function cleanupLinks()
+	public static function cleanup()
 	{
-		BackendModel::getDB()->truncate('crawler_links');
+		BackendModel::getDB()->truncate('link_checker_results');
 	}
 
 
 	/**
-	 * Empty results
+	 * Insert links
 	 *
 	 * @return	array
 	 */
-	public static function cleanupResults()
+	public static function insertLinks($values)
 	{
-		BackendModel::getDB()->truncate('crawler_results');
+		BackendModel::getDB()->insert('link_checker_results', $values);
 	}
 }
 
