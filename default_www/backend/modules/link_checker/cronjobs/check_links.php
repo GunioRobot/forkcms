@@ -20,18 +20,6 @@ class BackendLinkCheckerCronjobCheckLinks extends BackendBaseCronjob
 
 
 	/**
-	 * Cleanup database
-	 *
-	 * @return	void
-	 */
-	private function cleanupDatabase()
-	{
-		// cleanup pages
-		BackendModel::getDB(true)->truncate('crawler_results');
-	}
-
-
-	/**
 	 * Execute the action
 	 *
 	 * @return	void
@@ -46,6 +34,18 @@ class BackendLinkCheckerCronjobCheckLinks extends BackendBaseCronjob
 
 		// get data
 		$this->checkLinks();
+	}
+
+
+	/**
+	 * Cleanup database
+	 *
+	 * @return	void
+	 */
+	private function cleanupDatabase()
+	{
+		// cleanup pages
+		BackendLinkCheckerModel::cleanupResults();
 	}
 
 

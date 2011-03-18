@@ -12,18 +12,6 @@
 class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 {
 	/**
-	 * Cleanup database
-	 *
-	 * @return	void
-	 */
-	private function cleanupDatabase()
-	{
-		// cleanup pages
-		BackendModel::getDB(true)->truncate('crawler_links');
-	}
-
-
-	/**
 	 * Execute the action
 	 *
 	 * @return	void
@@ -33,8 +21,23 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 		// cleanup database
 		$this->cleanupDatabase();
 
+		// require the helper class
+		require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
+
 		// get data
 		$this->getLinks();
+	}
+
+
+	/**
+	 * Cleanup database
+	 *
+	 * @return	void
+	 */
+	private function cleanupDatabase()
+	{
+		// cleanup pages
+		BackendLinkCheckerModel::cleanupLinks();
 	}
 
 
@@ -51,61 +54,22 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 		// loop all modules
 		foreach($modules as $module)
 		{
-			// variables we create for each module
-			$query = '';
-			$editBaseUrl = '';
-			$publicBaseUrl = '';
+			// each module has a specific edit/public url
+			$editBaseUrl = BackendLinkCheckerHelper::getModuleEditUrl($module);
+			$publicBaseUrl = BackendLinkCheckerHelper::getModulePublicUrl($module);
+
+			// fetch all entries from a module
+			$entries = BackendLinkCheckerModel::getModuleEntries($module);
 
 			// @todo	remember to remove debug code later on, cronjobs shouldn't generate output unless they're exceptions (those are auto-mailed).
-			echo '---' . PHP_EOL;
 			echo $module . PHP_EOL;
-			echo '---' . PHP_EOL;
 
 			// @todo	opening space: http://developers.fork-cms.be/index.php?title=Coding_standards#Foreach
 			// @todo	switch view: http://developers.fork-cms.be/index.php?title=Coding_standards#Switch
 
-			// each module has a different configuration
-			switch ($module)
-			{
-			    case 'blog':
-			        $query = "SELECT p.text, p.title, p.id, p.language FROM blog_posts AS p
-							WHERE text LIKE '%href=%'
-							AND status = 'active'
-							AND hidden = 'N'";
-			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/blog/edit?token=true&id=';
-			        $publicBaseUrl = '/blog/detail/';
-			        break;
-			    case 'content_blocks':
-			        $query = "SELECT c.text, c.title, c.id, c.language FROM content_blocks AS c
-							WHERE text LIKE '%href=%'
-							AND status = 'active'
-							AND hidden = 'N'";
-			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/content_blocks/edit?token=true&id=';
-			        $publicBaseUrl = '/';
-			        break;
-			    case 'pages':
-			        $query = "SELECT p.html as text, pa.id, pa.title, pa.language FROM pages_blocks AS p
-							INNER JOIN pages AS pa on p.revision_id = pa.revision_id
-							WHERE p.html LIKE '%href=%'
-							AND p.status = 'active'
-							AND hidden = 'N'";
-			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/pages/edit?id=';
-			        $publicBaseUrl = '/';
-			        break;
-			    case 'faq':
-			        $query = "SELECT f.answer as text, f.id, f.question as title, f.language FROM faq_questions AS f
-							WHERE f.answer LIKE '%href=%'
-							AND f.hidden = 'N'";
-			        $editBaseUrl = '/private/' . BL::getInterfaceLanguage() . '/faq/edit?id=';
-			        $publicBaseUrl = '/faq/';
-			        break;
-			}
-
-			// fetch all entries from a module
-			$entries = BackendModel::getDB(true)->getRecords($query);
-
 			// seach every entry for links, if the module is not empty
-			if(isset($entries)){
+			if(isset($entries))
+			{
 
 				// we check everye entry in this module for links
 				foreach ($entries as $entry)
@@ -167,10 +131,7 @@ class BackendLinkCheckerCronjobGetLinks extends BackendBaseCronjob
 							// insert in database
 							BackendModel::getDB(true)->insert('crawler_links', $values);
 
-							/*
-								@todo	remember to remove debug code later on, cronjobs shouldn't generate output unless they're exceptions (those are auto-mailed).
-								Unrelated pro tip: use PHP_EOL instead of "\r\n" whenever possible
-							*/
+							// @todo	remember to remove debug code later on, cronjobs shouldn't generate output unless they're exceptions (those are auto-mailed).
 							echo $url . PHP_EOL;
 						}
 					}
