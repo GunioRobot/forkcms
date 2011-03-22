@@ -28,14 +28,6 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 
 
 	/**
-	 * All dead links found
-	 *
-	 * @var bool
-	 */
-	private $allDeadLinks = array();
-
-
-	/**
 	 * Execute the action
 	 *
 	 * @return	void
@@ -56,9 +48,6 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 
 		// check data
 		$this->checkLinks();
-
-		// insert data
-		$this->insertLinks();
 
 		// return status and data
 		$this->output(self::OK, array('status' => 'success', 'message' => 'Data has been retrieved.'));
@@ -135,8 +124,8 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 
 							// check if a link is external or internal
 							// fork saves an internal link 'invalid'
-							$values['external'] = (spoonfilter::isURL($url)) ? 'N' : 'Y';
-							$values['url'] = ($values['external'] === 'Y') ? SITE_URL . $url : $url;
+							$values['external'] = (spoonfilter::isURL($url)) ? 'Y' : 'N';
+							$values['url'] = ($values['external'] === 'Y') ? $url : SITE_URL . $url;
 
 							// add to allLinks array
 							$this->allLinks[] = $values;
@@ -158,38 +147,12 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// loop every link if there are any
 		if(isset($this->allLinks))
 		{
-			foreach ($this->allLinks as $link)
-			{
-				// built the array to insert
-				$values = array ();
-				$values = $link;
+			// will we use curl multi?
+			$doMultiCall = true;
 
-				// check the link and retrieve the http error code
-				$values['code'] = BackendLinkCheckerHelper::checkLink($link['url']);
-
-				// remove the 'http://' before insert
-				$values['url'] = str_replace('http://', '', $values['url']);
-
-				// only insert dead or non working links
-				if(!$values['code'] || $values['code'] >= 400 && $values['code'] < 600 || $this->insertWorkingLinks)
-				{
-					// add to allDeadLinks array
-					$this->allDeadLinks[] = $values;
-				}
-			}
+			// check all urls, get there error code and insert into database
+			BackendLinkCheckerHelper::checkLink($this->allLinks, $doMultiCall);
 		}
-	}
-
-
-	/**
-	 * Insert links
-	 *
-	 * @return	void
-	 */
-	private function insertLinks()
-	{
-		// insert in database
-		BackendLinkCheckerModel::insertLinks($this->allDeadLinks);
 	}
 }
 

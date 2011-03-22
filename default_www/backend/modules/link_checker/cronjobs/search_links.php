@@ -118,8 +118,8 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 
 							// check if a link is external or internal
 							// fork saves an internal link 'invalid'
-							$values['external'] = (spoonfilter::isURL($url)) ? 'N' : 'Y';
-							$values['url'] = ($values['external'] === 'Y') ? SITE_URL . $url : $url;
+							$values['external'] = (spoonfilter::isURL($url)) ? 'Y' : 'N';
+							$values['url'] = ($values['external'] === 'Y') ? $url : SITE_URL . $url;
 
 							// add to allLinks array
 							$this->allLinks[] = $values;

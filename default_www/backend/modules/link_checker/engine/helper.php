@@ -15,7 +15,7 @@ require_once 'external/multicurl.php';
 class BackendLinkCheckerHelper
 {
 	// internal constant to enable/disable debugging
-	const DEBUG = true;
+	const DEBUG = false;
 
 	/**
 	 * All checked and dead links
