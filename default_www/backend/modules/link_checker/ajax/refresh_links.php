@@ -1,0 +1,196 @@
+<?php
+
+/**
+ * This edit-action will refresh the traffic sources using Ajax
+ *
+ * @package		backend
+ * @subpackage	analytics
+ *
+ * @author		Annelies Van Extergem <annelies@netlash.com>
+ * @since		2.0
+ */
+class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
+{
+	/**
+	 * Insert also working links in the database
+	 *
+	 * @var bool
+	 */
+	private $insertWorkingLinks = false;
+
+
+	/**
+	 * All links found
+	 *
+	 * @var bool
+	 */
+	private $allLinks = array();
+
+
+	/**
+	 * All dead links found
+	 *
+	 * @var bool
+	 */
+	private $allDeadLinks = array();
+
+
+	/**
+	 * Execute the action
+	 *
+	 * @return	void
+	 */
+	public function execute()
+	{
+		// call parent, this will probably add some general CSS/JS or other required files
+		parent::execute();
+
+		// cleanup database
+		$this->cleanupDatabase();
+
+		// require the helper class
+		require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
+
+		// get data
+		$this->getLinks();
+
+		// check data
+		$this->checkLinks();
+
+		// insert data
+		$this->insertLinks();
+
+		// return status and data
+		$this->output(self::OK, array('status' => 'success', 'message' => 'Data has been retrieved.'));
+	}
+
+
+	/**
+	 * Cleanup database
+	 *
+	 * @return	void
+	 */
+	private function cleanupDatabase()
+	{
+		// cleanup pages
+		BackendLinkCheckerModel::cleanup();
+	}
+
+
+	/**
+	 * Get links from modules
+	 *
+	 * @return	void
+	 */
+	private function getLinks()
+	{
+		// modules to check
+		$modules = array('blog', 'content_blocks', 'pages', 'faq');
+
+		// loop all modules
+		foreach($modules as $module)
+		{
+			// each module has a specific edit/public url
+			$editBaseUrl = BackendLinkCheckerHelper::getModuleEditUrl($module);
+			$publicBaseUrl = BackendLinkCheckerHelper::getModulePublicUrl($module);
+
+			// fetch all entries from a module
+			$entries = BackendLinkCheckerModel::getModuleEntries($module);
+
+			// seach every entry for links, if the module is not empty
+			if(isset($entries))
+			{
+				// we check everye entry in this module for links
+				foreach ($entries as $entry)
+				{
+					// get all links in this entry
+					if (preg_match_all("!href=\"(.*?)\"!", $entry['text'], $matches))
+					{
+						// all urls we find in this entry
+						$urlList = array();
+
+						// @todo	comment what happens inside the loop, and what you're looping (like an example of the format in case of $matches)
+						foreach ($matches[1] as $url)
+						{
+							// add the url to the list
+							$urlList[] = $url;
+						}
+
+						// remove duplicates
+						$urlList = array_values(array_unique($urlList));
+
+						// store every link inside this entry in the database
+						foreach($urlList as $url)
+						{
+							// frontend url
+							$currentPage = $publicBaseUrl . SpoonFilter::urlise($entry['title']);
+
+							// build the array to insert
+							$values = array();
+							$values['title'] = $entry['title'];
+							$values['module'] = str_replace('_', ' ', ucfirst($module));
+							$values['language'] = $entry['language'];
+							$values['public_url'] = '/' . $entry['language'] . '/' . $currentPage;
+							$values['private_url'] = $editBaseUrl . $entry['id'];
+
+							// check if a link is external or internal
+							// fork saves an internal link 'invalid'
+							$values['external'] = (spoonfilter::isURL($url)) ? 'N' : 'Y';
+							$values['url'] = ($values['external'] === 'Y') ? SITE_URL . $url : $url;
+
+							// add to allLinks array
+							$this->allLinks[] = $values;
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Check links
+	 *
+	 * @return	void
+	 */
+	private function checkLinks()
+	{
+		// loop every link if there are any
+		if(isset($this->allLinks))
+		{
+			foreach ($this->allLinks as $link)
+			{
+				// built the array to insert
+				$values = array ();
+				$values = $link;
+
+				// check the link and retrieve the http error code
+				$values['code'] = BackendLinkCheckerHelper::checkLink($link['url']);
+
+				// remove the 'http://' before insert
+				$values['url'] = str_replace('http://', '', $values['url']);
+
+				// only insert dead or non working links
+				if(!$values['code'] || $values['code'] >= 400 && $values['code'] < 600 || $this->insertWorkingLinks)
+				{
+					// add to allDeadLinks array
+					$this->allDeadLinks[] = $values;
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Insert links
+	 *
+	 * @return	void
+	 */
+	private function insertLinks()
+	{
+		// insert in database
+		BackendLinkCheckerModel::insertLinks($this->allDeadLinks);
+	}
+}
+
+?>
