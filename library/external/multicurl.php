@@ -78,7 +78,7 @@ class MultiCurl
     /**
 	 * Start a fetch from the $url address, calling the $callback function passing the optional
 	 * $userData value. The callback should accept 3 arguments, the url, curl handle and user
-	 * data, eg on_request_done($url, $ch, $userData);
+	 * data, eg onMultiCurlRequestDone($url, $ch, $userData);
 	 *
 	 * @return	void
 	 * @param	string $url							The url to call.
@@ -88,29 +88,38 @@ class MultiCurl
 	 */
     public function startRequest($url, $callback, $userData = array(), $postFields=null)
     {
-
+		// check if there is an open connection
 		if($this->maxConnections > 0)
 	        $this->waitForOutstandingRequestsToDropBelow($this->maxConnections);
 
-        $ch = curl_init();
-        curl_setopt_array($ch, $this->options);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        // initialize
+	    $ch = curl_init();
 
+	    // set the options
+	    curl_setopt_array($ch, $this->options);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+
+	    // set the url
+	    curl_setopt($ch, CURLOPT_URL, $url);
+
+		// set post fields if needed
         if(isset($postFields))
         {
             curl_setopt($ch, CURLOPT_POST, TRUE);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
         }
 
+        // add handle
         curl_multi_add_handle($this->multiHandle, $ch);
 
+        // add the request to the outstanding requests array, with its process number as index
         $this->outstandingRequests[intval($ch)] = array(
             'url' => $url,
             'callback' => $callback,
             'user_data' => $userData,
         );
 
+        // check for completed requests
         $this->checkForCompletedRequests();
     }
 
@@ -123,7 +132,8 @@ class MultiCurl
 	 */
     public function finishAllRequests()
     {
-        $this->waitForOutstandingRequestsToDropBelow(1);
+        // waint until there is less then 1 open connection (= all requests done)
+    	$this->waitForOutstandingRequestsToDropBelow(1);
     }
 
 
@@ -135,39 +145,46 @@ class MultiCurl
     private function checkForCompletedRequests()
     {
 
-        // Call select to see if anything is waiting for us
+        // call select to see if anything is waiting for us
         if (curl_multi_select($this->multiHandle, 0.0) === -1)
             return;
 
-        // Since something's waiting, give curl a chance to process it
+        // since something's waiting, give curl a chance to process it
         do
         {
             $mrc = curl_multi_exec($this->multiHandle, $active);
         }
         while ($mrc == CURLM_CALL_MULTI_PERFORM);
 
-        // Now grab the information about the completed requests
+        // now grab the information about the completed requests
         while ($info = curl_multi_info_read($this->multiHandle))
         {
-
+			// get the handle instance
             $ch = $info['handle'];
 
-            if (!isset($this->outstandingRequests[$ch]))
+            // check if we can find this handle in the oustanding requests
+            if (!isset($this->outstandingRequests[intval($ch)]))
             {
-                throw new MultiCurlException('handle wasn\'t found in requests: ' . $ch . ' in ' . print_r($this->outstandingRequests, true));
+                // throw exception
+            	throw new MultiCurlException('Handle wasn\'t found in outstanding requests.');
             }
 
+            // get the request
             $request = $this->outstandingRequests[intval($ch)];
-
             $url = $request['url'];
-            $content = curl_multi_getcontent($ch);
             $callback = $request['callback'];
             $userData = $request['user_data'];
 
+            // fetch the content
+            $content = curl_multi_getcontent($ch);
+
+            // call the callback funtion
             call_user_func($callback, $content, $url, $ch, $userData);
 
+            // the handle is finished, remove it from the array
             unset($this->outstandingRequests[intval($ch)]);
 
+            // remove the handle
             curl_multi_remove_handle($this->multiHandle, $ch);
         }
     }
@@ -181,13 +198,18 @@ class MultiCurl
 	 */
     private function waitForOutstandingRequestsToDropBelow($max)
     {
-        while (1)
+    	// loop
+    	while (1)
         {
-            $this->checkForCompletedRequests();
+            // check for completed requests
+        	$this->checkForCompletedRequests();
+
+        	// only break if the number of oustanding requests had dropped under the maximum number of connections
             if (count($this->outstandingRequests)<$max)
             	break;
 
-            usleep(10000);
+            // pause the code
+            usleep(1000);
         }
     }
 }
