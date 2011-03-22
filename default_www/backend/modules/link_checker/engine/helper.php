@@ -14,6 +14,16 @@ require_once 'external/multicurl.php';
  */
 class BackendLinkCheckerHelper
 {
+	// internal constant to enable/disable debugging
+	const DEBUG = true;
+
+	/**
+	 * All checked and dead links
+	 *
+	 * @var bool
+	 */
+	private static $allDeadLinks = array();
+
 
 	/**
 	 * Check a link using CURL
@@ -56,25 +66,28 @@ class BackendLinkCheckerHelper
 				curl_close($ch);
 
 				// echo and insert (debug only)
-				echo  $url['url'] . ' => ' . $chinfo['http_code'] . PHP_EOL;
+				if(self::DEBUG) echo $url['url'] . ' => ' . $chinfo['http_code'] . PHP_EOL;
 
 				// insert only non working link
-				if($chinfo['http_code'] != 200)
+				if($chinfo['http_code'] == 404 || $chinfo['http_code'] == 0)
 				{
 					// build array
 					$value = array();
 				    $value = $url;
 				    $value['code'] = $chinfo['http_code'];
 
-				    // insert into db
-					BackendLinkCheckerModel::insertLinks($value);
+				    // add to all dead links array
+				    self::$allDeadLinks[] = $value;
 				}
 			}
+
+			// insert into db
+			BackendLinkCheckerModel::insertLinks(self::$allDeadLinks);
 
 			// end timer (debug only)
 			$timeEnd = microtime(true);
 			$time = $timeEnd - $timeStart;
-			echo 'I did it in ' . round($time, 2) . ' seconds.';
+			if(self::DEBUG) echo 'I did it in ' . round($time, 2) . ' seconds.';
 
 		}
 
@@ -82,13 +95,12 @@ class BackendLinkCheckerHelper
 		else
 		{
 			// max connections
-			$maxRequests = 5;
+			$maxRequests = 10;
 
 			// set the options
 			$curlOptions = array(
 			    CURLOPT_TIMEOUT => 10,
 			    CURLOPT_USERAGENT => 'Spoon ' . SPOON_VERSION,
-			    CURLOPT_RETURNTRANSFER =>  1,
 			    CURLOPT_FOLLOWLOCATION => 1,
 			    CURLOPT_MAXREDIRS => 5,
 			    CURLOPT_HEADER => 1,
@@ -111,10 +123,13 @@ class BackendLinkCheckerHelper
 			// finish all open requests
 			$multiCurl->finishAllRequests();
 
+			// insert into db
+			BackendLinkCheckerModel::insertLinks(self::$allDeadLinks);
+
 			// end timer (debug only)
 			$timeEnd = microtime(true);
 			$time = $timeEnd - $timeStart;
-			echo 'I did it in ' . round($time, 2) . ' seconds.';
+			if(self::DEBUG) echo 'I did it in ' . round($time, 2) . ' seconds.';
 		}
 	}
 
@@ -122,21 +137,22 @@ class BackendLinkCheckerHelper
 	// This function gets called back for each request that completes
 	public static function onMultiCurlRequestDone($content, $url, $ch, $userData)
 	{
-	    $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	    // get the httpcode
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 	    // echo the url and httpcode (debug only)
-	    echo $url . ' => ' . $httpcode . PHP_EOL;
+	    if(self::DEBUG) echo $url . ' => ' . $httpcode . PHP_EOL;
 
 		// insert only if non working link
-	    if($httpcode != 200)
+	    if($httpcode == 404 || $httpcode == 0)
 		{
 			// build array
 			$value = array();
 		    $value = $userData;
 		    $value['code'] = $httpcode;
 
-		    // insert into db
-			BackendLinkCheckerModel::insertLinks($value);
+		    // add to all dead links array
+		    self::$allDeadLinks[] = $value;
 		}
 	}
 

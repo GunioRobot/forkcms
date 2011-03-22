@@ -5,11 +5,10 @@
  *
  * This source file can be used to do multi handle Curl calls.
  *
- * Based on the code of Pete Warden (http://petewarden.typepad.com).
+ * Based on the ParallelCurl code of Pete Warden (http://petewarden.typepad.com).
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
  */
-
 class MultiCurl
 {
 	/**
@@ -17,7 +16,7 @@ class MultiCurl
 	 *
 	 * @var	int
 	 */
-    private $maxRequests;
+    private $maxConnections;
 
 
     /**
@@ -33,7 +32,7 @@ class MultiCurl
 	 *
 	 * @var	array
 	 */
-    private $outstandingRequests;
+    private $outstandingRequests = array();
 
 
     /**
@@ -51,12 +50,15 @@ class MultiCurl
 	 * @param	int[optional] $maxRequests			The maximum connections.
 	 * @param	array[optional] $options			The cURL options.
 	 */
-    public function __construct($maxRequests = 5, $options = array())
+    public function __construct($maxConnections = 10, $options = array())
     {
-        $this->maxRequests = $maxRequests;
+        // set max connections
+    	$this->maxConnections = $maxConnections;
+
+    	// set curl options
         $this->options = $options;
 
-        $this->outstandingRequests = array();
+        // create the multiple cURL handle
         $this->multiHandle = curl_multi_init();
     }
 
@@ -68,30 +70,8 @@ class MultiCurl
 	 */
     public function __destruct()
     {
+    	// finish outstanding requests
     	$this->finishAllRequests();
-    }
-
-
-    /**
-	 * Sets how many requests can be outstanding at once before we block and wait for one to
-	 * finish before starting the next one.
-	 *
-	 * @return	void
-	 */
-    public function setMaxRequests($maxRequests)
-    {
-        $this->maxRequests = $maxRequests;
-    }
-
-
-    /**
-	 * Sets the options to pass to curl, using the format of curl_setopt_array().
-	 *
-	 * @return	void
-	 */
-    public function setOptions($options)
-    {
-        $this->options = $options;
     }
 
 
@@ -109,15 +89,16 @@ class MultiCurl
     public function startRequest($url, $callback, $userData = array(), $postFields=null)
     {
 
-		if( $this->maxRequests > 0 )
-	        $this->waitForOutstandingRequestsToDropBelow($this->maxRequests);
+		if($this->maxConnections > 0)
+	        $this->waitForOutstandingRequestsToDropBelow($this->maxConnections);
 
         $ch = curl_init();
         curl_setopt_array($ch, $this->options);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
-        if (isset($postFields)) {
+        if(isset($postFields))
+        {
             curl_setopt($ch, CURLOPT_POST, TRUE);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
         }
@@ -159,9 +140,11 @@ class MultiCurl
             return;
 
         // Since something's waiting, give curl a chance to process it
-        do {
+        do
+        {
             $mrc = curl_multi_exec($this->multiHandle, $active);
-        } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+        }
+        while ($mrc == CURLM_CALL_MULTI_PERFORM);
 
         // Now grab the information about the completed requests
         while ($info = curl_multi_info_read($this->multiHandle))
@@ -171,8 +154,7 @@ class MultiCurl
 
             if (!isset($this->outstandingRequests[$ch]))
             {
-                die("Error - handle wasn't found in requests: '$ch' in ".
-                    print_r($this->outstandingRequests, true));
+                throw new MultiCurlException('handle wasn\'t found in requests: ' . $ch . ' in ' . print_r($this->outstandingRequests, true));
             }
 
             $request = $this->outstandingRequests[intval($ch)];
@@ -195,7 +177,7 @@ class MultiCurl
 	 * Blocks until there's less than the specified number of requests outstanding.
 	 *
 	 * @return	void
-	 * @param	int $max				The maximum connections.
+	 * @param	int $max				The maximum current connections.
 	 */
     private function waitForOutstandingRequestsToDropBelow($max)
     {
@@ -208,6 +190,27 @@ class MultiCurl
             usleep(10000);
         }
     }
+}
+
+
+/**
+ * MultiCurlException class
+ *
+ * @author		Jeroen Maes <jeroenmaes@netlash.com>
+ */
+class MultiCurlException extends Exception
+{
+	/**
+	 * Class constructor.
+	 *
+	 * @return	void
+	 * @param	string $message				The errormessage.
+	 */
+	public function __construct($message = null)
+	{
+		// call parent
+		parent::__construct((string) $message);
+	}
 }
 
 ?>
