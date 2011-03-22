@@ -1,12 +1,12 @@
 <?php
 
 /**
- * This edit-action will refresh the traffic sources using Ajax
+ * This edit-action will refresh the link checker widget using Ajax
  *
  * @package		backend
- * @subpackage	analytics
+ * @subpackage	linkchecker
  *
- * @author		Annelies Van Extergem <annelies@netlash.com>
+ * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
  */
 class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
