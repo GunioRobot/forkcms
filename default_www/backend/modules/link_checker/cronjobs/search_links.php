@@ -142,7 +142,7 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 		if(isset($this->allLinks))
 		{
 			// will we use curl multi?
-			$doMultiCall = true;
+			$doMultiCall = false;
 
 			// check all urls, get there error code and insert into database
 			BackendLinkCheckerHelper::checkLink($this->allLinks, $doMultiCall);
