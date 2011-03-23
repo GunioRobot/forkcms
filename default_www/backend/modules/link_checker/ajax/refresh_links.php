@@ -12,14 +12,6 @@
 class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 {
 	/**
-	 * Insert also working links in the database
-	 *
-	 * @var bool
-	 */
-	private $insertWorkingLinks = false;
-
-
-	/**
 	 * All links found
 	 *
 	 * @var bool
@@ -152,11 +144,8 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// loop every link if there are any
 		if(isset($this->allLinks))
 		{
-			// will we use curl multi?
-			$doMultiCall = true;
-
 			// check all urls, get there error code and insert into database
-			BackendLinkCheckerHelper::checkLink($this->allLinks, $doMultiCall);
+			BackendLinkCheckerHelper::checkLink($this->allLinks, true);
 		}
 	}
 
@@ -177,9 +166,6 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			// get the datagrid
 			$datagrid = new BackendDataGridArray($results);
 
-			// set tab active
-			// $datagrid->setActiveTab('tabCrawlerAll');
-
 			// set paging
 			$datagrid->setPaging(true);
 			$datagrid->setPagingLimit(10);
@@ -192,7 +178,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		}
 
 		// parse the datagrid
-		return (!empty($results) ? $datagrid->getContent() : '<table border="0" cellspacing="0" cellpadding="0" class="datagrid"><tr><td>' . BL::msg('NoLinks') . '</td></tr></table>');
+		return (!empty($results) ? '<div class="datagridHolder">' . $datagrid->getContent() . '</div>' : '<p>' . BL::msg('NoLinks') . '</p>');
 	}
 
 
@@ -212,9 +198,6 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			// get the datagrid
 			$datagrid = new BackendDataGridArray($results);
 
-			// set tab active
-			// $datagrid->setActiveTab('tabCrawlerInternal');
-
 			// set paging
 			$datagrid->setPaging(true);
 			$datagrid->setPagingLimit(10);
@@ -227,7 +210,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		}
 
 		// parse the datagrid
-		return (!empty($results) ? $datagrid->getContent() : '<table border="0" cellspacing="0" cellpadding="0" class="datagrid"><tr><td>' . BL::msg('NoLinks') . '</td></tr></table>');
+		return (!empty($results) ? '<div class="datagridHolder">' . $datagrid->getContent() . '</div>' : '<p>' . BL::msg('NoLinks') . '</p>');
 	}
 
 
@@ -247,9 +230,6 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			// get the datagrid
 			$datagrid = new BackendDataGridArray($results);
 
-			// set tab active
-			// $datagrid->setActiveTab('tabCrawlerExternal');
-
 			// set paging
 			$datagrid->setPaging(true);
 			$datagrid->setPagingLimit(10);
@@ -262,7 +242,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		}
 
 		// parse the datagrid
-		return (!empty($results) ? $datagrid->getContent() : '<table border="0" cellspacing="0" cellpadding="0" class="datagrid"><tr><td>' . BL::msg('NoLinks') . '</td></tr></table>');
+		return (!empty($results) ? '<div class="datagridHolder">' . $datagrid->getContent() . '</div>' : '<p>' . BL::msg('NoLinks') . '</p>');
 	}
 }
 

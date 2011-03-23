@@ -12,14 +12,6 @@
 class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 {
 	/**
-	 * Insert also working links in the database
-	 *
-	 * @var bool
-	 */
-	private $insertWorkingLinks = false;
-
-
-	/**
 	 * All links found
 	 *
 	 * @var bool
@@ -141,11 +133,8 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 		// loop every link if there are any
 		if(isset($this->allLinks))
 		{
-			// will we use curl multi?
-			$doMultiCall = true;
-
 			// check all urls, get there error code and insert into database
-			BackendLinkCheckerHelper::checkLink($this->allLinks, $doMultiCall);
+			BackendLinkCheckerHelper::checkLink($this->allLinks, true);
 		}
 	}
 }
