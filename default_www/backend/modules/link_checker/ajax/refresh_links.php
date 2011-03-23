@@ -144,8 +144,11 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// loop every link if there are any
 		if(isset($this->allLinks))
 		{
+			// get module setting
+			$doMultiCall = (bool) BackendModel::getModuleSetting($this->getModule(), 'multi_call');
+
 			// check all urls, get there error code and insert into database
-			BackendLinkCheckerHelper::checkLink($this->allLinks, true);
+			BackendLinkCheckerHelper::checkLink($this->allLinks, $doMultiCall);
 		}
 	}
 

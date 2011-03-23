@@ -301,6 +301,10 @@ $navigation = array(
 					array(
 						'url' => 'location/settings',
 						'label' => 'Location'
+					),
+					array(
+						'url' => 'link_checker/settings',
+						'label' => 'LinkChecker'
 					)
 				)
 			)

@@ -24,11 +24,18 @@ class LinkCheckerInstall extends ModuleInstaller
 		// add 'link_checker' as a module
 		$this->addModule('link_checker', 'The link checker module.');
 
+		// general settings
+		$this->setSetting('location', 'multi_call', '0');
+
 		// module rights
 		$this->setModuleRights(1, 'link_checker');
 
 		// action rights
 		$this->setActionRights(1, 'link_checker', 'index');
+		$this->setActionRights(1, 'link_checker', 'settings');
+
+		// insert locale (nl)
+
 
 		// insert locale (en)
 		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'Url', 'destination');
@@ -49,6 +56,9 @@ class LinkCheckerInstall extends ModuleInstaller
 
 		$this->insertLocale('en', 'backend', 'core', 'msg', 'NoLinks', 'No broken links.');
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'LinkChecker', 'link checker');
+
+		$this->insertLocale('en', 'backend', 'core', 'lbl', 'MultiCall', 'use multicall');
+
 	}
 }
 
