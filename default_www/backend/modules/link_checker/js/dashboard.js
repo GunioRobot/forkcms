@@ -21,9 +21,9 @@ jsBackend.link_checkerDashboard =
 					if(data.code == 200)
 					{
 						// show new data
-						//$('#datagridAll').html(data.data.all);
-						//$('#datagridInternal').html(data.data.internal);
-						//$('#datagridExternal').html(data.data.external);
+						$('#datagridAll').html(data.data.allHtml);
+						$('#datagridInternal').html(data.data.internalHtml);
+						$('#datagridExternal').html(data.data.externalHtml);
 
 						// show message
 						jsBackend.messages.add('success', data.data.message);

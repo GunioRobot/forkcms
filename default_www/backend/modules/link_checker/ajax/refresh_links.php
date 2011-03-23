@@ -49,8 +49,13 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// check data
 		$this->checkLinks();
 
+		// get html
+		$allHtml = $this->parseAll();
+		$internalHtml = $this->parseInternal();
+		$externalHtml = $this->parseExternal();
+
 		// return status and data
-		$this->output(self::OK, array('status' => 'success', 'message' => 'Data has been retrieved.'));
+		$this->output(self::OK, array('status' => 'success', 'allHtml' => $allHtml, 'internalHtml' => $internalHtml, 'externalHtml' => $externalHtml, 'message' => 'Data has been retrieved.'));
 	}
 
 
@@ -153,6 +158,111 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			// check all urls, get there error code and insert into database
 			BackendLinkCheckerHelper::checkLink($this->allLinks, $doMultiCall);
 		}
+	}
+
+
+	/**
+	 * Parse into template
+	 *
+	 * @return	void
+	 */
+	private function parseAll()
+	{
+		// get results
+		$results = BackendLinkCheckerModel::getAll();
+
+		// there are some results
+		if(!empty($results))
+		{
+			// get the datagrid
+			$datagrid = new BackendDataGridArray($results);
+
+			// set tab active
+			// $datagrid->setActiveTab('tabCrawlerAll');
+
+			// set paging
+			$datagrid->setPaging(true);
+			$datagrid->setPagingLimit(10);
+
+			// set sorting column
+			$datagrid->setSortingColumns(array('module'));
+
+			// set columns hidden
+			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
+		}
+
+		// parse the datagrid
+		return (!empty($results) ? $datagrid->getContent() : '<table border="0" cellspacing="0" cellpadding="0" class="datagrid"><tr><td>' . BL::msg('NoLinks') . '</td></tr></table>');
+	}
+
+
+	/**
+	 * Parse into template
+	 *
+	 * @return	void
+	 */
+	private function parseInternal()
+	{
+		// get results
+		$results = BackendLinkCheckerModel::getInternal();
+
+		// there are some results
+		if(!empty($results))
+		{
+			// get the datagrid
+			$datagrid = new BackendDataGridArray($results);
+
+			// set tab active
+			// $datagrid->setActiveTab('tabCrawlerInternal');
+
+			// set paging
+			$datagrid->setPaging(true);
+			$datagrid->setPagingLimit(10);
+
+			// set sorting column
+			$datagrid->setSortingColumns(array('module'));
+
+			// set columns hidden
+			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
+		}
+
+		// parse the datagrid
+		return (!empty($results) ? $datagrid->getContent() : '<table border="0" cellspacing="0" cellpadding="0" class="datagrid"><tr><td>' . BL::msg('NoLinks') . '</td></tr></table>');
+	}
+
+
+	/**
+	 * Parse into template
+	 *
+	 * @return	void
+	 */
+	private function parseExternal()
+	{
+		// get results
+		$results = BackendLinkCheckerModel::getExternal();
+
+		// there are some results
+		if(!empty($results))
+		{
+			// get the datagrid
+			$datagrid = new BackendDataGridArray($results);
+
+			// set tab active
+			// $datagrid->setActiveTab('tabCrawlerExternal');
+
+			// set paging
+			$datagrid->setPaging(true);
+			$datagrid->setPagingLimit(10);
+
+			// set sorting column
+			$datagrid->setSortingColumns(array('module'));
+
+			// set columns hidden
+			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
+		}
+
+		// parse the datagrid
+		return (!empty($results) ? $datagrid->getContent() : '<table border="0" cellspacing="0" cellpadding="0" class="datagrid"><tr><td>' . BL::msg('NoLinks') . '</td></tr></table>');
 	}
 }
 
