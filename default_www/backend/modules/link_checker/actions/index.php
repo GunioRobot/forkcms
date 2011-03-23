@@ -71,6 +71,9 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		// hide columns
 		$this->dgAll->setColumnsHidden('public_url', 'private_url');
 
+		// set column functions
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
+
 		/*
 		 * Datagrid for internal links only.
 		 */
@@ -96,6 +99,9 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		// hide columns
 		$this->dgInternal->setColumnsHidden('public_url', 'private_url');
 
+		// set column functions
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
+
 		/*
 		 * Datagrid for external links only.
 		 */
@@ -120,6 +126,9 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 
 		// hide columns
 		$this->dgExternal->setColumnsHidden('public_url', 'private_url');
+
+		// set column functions
+		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
 	}
 
 
@@ -141,6 +150,19 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		// external datagrid and num results
 		$this->tpl->assign('dgExternal', ($this->dgExternal->getNumResults() != 0) ? $this->dgExternal->getContent() : false);
 		$this->tpl->assign('numExternal', $this->dgExternal->getNumResults());
+	}
+
+
+	/**
+	 * Column function to convert the http error code into a human readable message.
+	 *
+	 * @return	string
+	 * @param $errorCode		The error code.
+	 */
+	public static function getDescription($errorCode)
+	{
+		// return the label for the error code
+		return BL::msg('ErrorCode' . $errorCode);
 	}
 }
 
