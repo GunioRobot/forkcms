@@ -25,7 +25,8 @@ class LinkCheckerInstall extends ModuleInstaller
 		$this->addModule('link_checker', 'The link checker module.');
 
 		// general settings
-		$this->setSetting('location', 'multi_call', '0');
+		$this->setSetting('location', 'multi_call', false);
+		$this->setSetting('location', 'multi_call', 10);
 
 		// module rights
 		$this->setModuleRights(1, 'link_checker');
@@ -58,6 +59,7 @@ class LinkCheckerInstall extends ModuleInstaller
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'LinkChecker', 'link checker');
 
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'MultiCall', 'use multicall');
+		$this->insertLocale('en', 'backend', 'core', 'lbl', 'NumConnections', 'connections');
 
 	}
 }

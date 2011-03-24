@@ -31,8 +31,11 @@ class BackendLinkCheckerHelper
 	 * @return	string
 	 * @param	string $url						The link to check.
 	 */
-	public static function checkLink($urls, $doMultiCall)
+	public static function checkLink($urls)
 	{
+		// get module setting
+		$doMultiCall = (bool) BackendModel::getModuleSetting($this->getModule(), 'multi_call');
+
 		// single call
 		if(!$doMultiCall)
 		{
@@ -95,7 +98,7 @@ class BackendLinkCheckerHelper
 		else
 		{
 			// max connections
-			$maxRequests = 10;
+			$maxRequests = (int) BackendModel::getModuleSetting($this->getModule(), 'num_connections');
 
 			// set the options
 			$curlOptions = array(
