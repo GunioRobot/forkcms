@@ -166,7 +166,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
 		}
 
 		// parse the datagrid
@@ -198,7 +198,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
 		}
 
 		// parse the datagrid
@@ -230,7 +230,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
 		}
 
 		// parse the datagrid

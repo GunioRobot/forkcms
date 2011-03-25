@@ -63,14 +63,15 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgAll->setSortParameter('desc');
 
 		// add column
-		$this->dgAll->addColumn('edit', null, BL::lbl('Edit'), null, BL::lbl('Edit'));
+		$this->dgAll->addColumn('edit', null, BL::lbl('Edit'), '[item_id]', BL::lbl('Edit'));
 
 		// hide columns
 		$this->dgAll->setColumnsHidden('item_id');
 
 		// set column functions
 		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
+		//$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module', true);
 
 		/*
 		 * Datagrid for internal links only.
@@ -89,14 +90,15 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgInternal->setSortParameter('desc');
 
 		// add column
-		$this->dgInternal->addColumn('edit', null, BL::lbl('Edit'), null, BL::lbl('Edit'));
+		$this->dgInternal->addColumn('edit', null, BL::lbl('Edit'), '[item_id]', BL::lbl('Edit'));
 
 		// hide columns
 		$this->dgInternal->setColumnsHidden('item_id');
 
 		// set column functions
 		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
+		//$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module', true);
 
 		/*
 		 * Datagrid for external links only.
@@ -115,14 +117,15 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgExternal->setSortParameter('desc');
 
 		// add column
-		$this->dgExternal->addColumn('edit', null, BL::lbl('Edit'), null, BL::lbl('Edit'));
+		$this->dgExternal->addColumn('edit', null, BL::lbl('Edit'), '[item_id]', BL::lbl('Edit'));
 
 		// hide columns
 		$this->dgExternal->setColumnsHidden('item_id');
 
 		// set column functions
 		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
+		//$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
+		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module', true);
 	}
 
 
@@ -157,6 +160,19 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 	{
 		// return the label for the error code
 		return BL::msg('ErrorCode' . $errorCode);
+	}
+
+
+	/**
+	 * Column function to convert the module into a label.
+	 *
+	 * @return	string
+	 * @param $errorCode		The error code.
+	 */
+	public static function getModuleLabel($module)
+	{
+		// return the label for the module
+		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
 	}
 
 
