@@ -40,7 +40,6 @@ class LinkCheckerInstall extends ModuleInstaller
 
 		// insert locale (en)
 		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'Url', 'destination');
-		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'Crawler', 'broken links');
 		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'All', 'all');
 		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'Internal', 'internal');
 		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'External', 'external');

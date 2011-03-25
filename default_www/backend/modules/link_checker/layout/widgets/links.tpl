@@ -1,64 +1,64 @@
-<div class="box" id="widgetCrawlerClassic">
+<div class="box" id="widgetLinkCheckerClassic">
 	<div class="heading">
 		<h3>
-			{$lblCrawler|ucfirst}
+			{$lblLinkChecker|ucfirst}
 		</h3>
 	</div>
 
 	<div class="options">
 		<div id="tabs" class="tabs">
 			<ul>
-				<li><a href="#tabCrawlerAll">{$lblAll|ucfirst}</a></li>
-				<li><a href="#tabCrawlerInternal">{$lblInternal|ucfirst}</a></li>
-				<li><a href="#tabCrawlerExternal">{$lblExternal|ucfirst}</a></li>
+				<li><a href="#tabAll">{$lblAll|ucfirst} ({$numAll})</a></li>
+				<li><a href="#tabInternal">{$lblInternal|ucfirst} ({$numInternal})</a></li>
+				<li><a href="#tabExternal">{$lblExternal|ucfirst} ({$numExternal})</a></li>
 			</ul>
 
-			<div id="tabCrawlerAll">
+			<div id="tabAll">
 				{* All the links *}
 				<div id="datagridAll">
-					{option:dgCrawlerAll}
+					{option:dgAll}
 					<div class="datagridHolder">
-						{$dgCrawlerAll}
+						{$dgAll}
 					</div>
-					{/option:dgCrawlerAll}
-					{option:!dgCrawlerAll}
+					{/option:dgAll}
+					{option:!dgAll}
 					<p>
 						{$msgNoLinks|ucfirst}
 					</p>
-					{/option:!dgCrawlerAll}
+					{/option:!dgAll}
 				</div>
 			</div>
 
-			<div id="tabCrawlerInternal">
+			<div id="tabInternal">
 				{* All the internal links *}
 				<div id="datagridInternal">
-					{option:dgCrawlerInternal}
+					{option:dgInternal}
 					<div class="datagridHolder" >
-						{$dgCrawlerInternal}
+						{$dgInternal}
 					</div>
-					{/option:dgCrawlerInternal}
-					{option:!dgCrawlerInternal}
+					{/option:dgInternal}
+					{option:!dgInternal}
 					<p>
 						{$msgNoLinks|ucfirst}
 					</p>
-					{/option:!dgCrawlerInternal}
+					{/option:!dgInternal}
 				</div>
 			</div>
 
-			<div id="tabCrawlerExternal">
+			<div id="tabExternal">
 				{* All the external links *}
 				<div id="datagridExternal">
-					{option:dgCrawlerExternal}
+					{option:dgExternal}
 					<div class="datagridHolder">
-						{$dgCrawlerExternal}
+						{$dgExternal}
 					</div>
-					{/option:dgCrawlerExternal}
+					{/option:dgExternal}
 
-					{option:!dgCrawlerExternal}
+					{option:!dgExternal}
 					<p>
 						{$msgNoLinks|ucfirst}
 					</p>
-					{/option:!dgCrawlerExternal}
+					{/option:!dgExternal}
 				</div>
 			</div>
 		</div>

@@ -74,7 +74,9 @@ class BackendLinkCheckerSettings extends BackendBaseActionEdit
 			{
 				// set our settings
 				BackendModel::setModuleSetting($this->URL->getModule(), 'multi_call', (bool) $this->frm->getField('multi_call')->getValue());
-				BackendModel::setModuleSetting($this->URL->getModule(), 'num_connections', (int) $this->frm->getField('num_connections')->getValue());
+
+				$numConnections = $this->frm->getField('num_connections')->getValue() == "" ? BackendModel::getModuleSetting($this->URL->getModule(), 'num_connections', 10) : $this->frm->getField('num_connections')->getValue();
+				BackendModel::setModuleSetting($this->URL->getModule(), 'num_connections', (int) $numConnections);
 
 				// redirect to the settings page
 				$this->redirect(BackendModel::createURLForAction('settings') . '&report=saved');

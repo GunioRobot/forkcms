@@ -76,10 +76,6 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// loop all modules
 		foreach($modules as $module)
 		{
-			// each module has a specific edit/public url
-			$editBaseUrl = BackendLinkCheckerHelper::getModuleEditUrl($module);
-			$publicBaseUrl = BackendLinkCheckerHelper::getModulePublicUrl($module);
-
 			// fetch all entries from a module
 			$entries = BackendLinkCheckerModel::getModuleEntries($module);
 
@@ -108,16 +104,12 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 						// store every link inside this entry in the database
 						foreach($urlList as $url)
 						{
-							// frontend url
-							$currentPage = $publicBaseUrl . SpoonFilter::urlise($entry['title']);
-
 							// build the array to insert
 							$values = array();
-							$values['title'] = $entry['title'];
-							$values['module'] = str_replace('_', ' ', ucfirst($module));
+							$values['item_title'] = $entry['title'];
+							$values['module'] = $module;
 							$values['language'] = $entry['language'];
-							$values['public_url'] = '/' . $entry['language'] . '/' . $currentPage;
-							$values['private_url'] = $editBaseUrl . $entry['id'];
+							$values['item_id'] = $entry['id'];
 
 							// check if a link is external or internal
 							// fork saves an internal link 'invalid'
@@ -174,7 +166,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'private_url'));
 		}
 
 		// parse the datagrid
@@ -206,7 +198,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'private_url'));
 		}
 
 		// parse the datagrid
@@ -238,7 +230,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'private_url'));
 		}
 
 		// parse the datagrid

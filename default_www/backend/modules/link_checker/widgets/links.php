@@ -29,10 +29,8 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// parse
 		$this->parse();
 
-
 		// add refresh javascript
 		$this->header->addJavascript('dashboard.js', 'link_checker');
-
 
 		// display
 		$this->display();
@@ -56,7 +54,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid = new BackendDataGridArray($all);
 
 			// set tab active
-			$datagrid->setActiveTab('tabCrawlerAll');
+			$datagrid->setActiveTab('tabAll');
 
 			// set paging
 			$datagrid->setPaging(true);
@@ -66,10 +64,18 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
 
 			// parse the datagrid
-			$this->tpl->assign('dgCrawlerAll', $datagrid->getContent());
+			$this->tpl->assign('dgAll', $datagrid->getContent());
+
+			// num results
+			$this->tpl->assign('numAll', $datagrid->getNumResults());
+		}
+		else
+		{
+			// no results
+			$this->tpl->assign('numAll', $datagrid->getNumResults());
 		}
 	}
 
@@ -91,7 +97,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid = new BackendDataGridArray($all);
 
 			// set tab active
-			$datagrid->setActiveTab('tabCrawlerInternal');
+			$datagrid->setActiveTab('tabInternal');
 
 			// set paging
 			$datagrid->setPaging(true);
@@ -101,10 +107,18 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
 
 			// parse the datagrid
-			$this->tpl->assign('dgCrawlerInternal', $datagrid->getContent());
+			$this->tpl->assign('dgInternal', $datagrid->getContent());
+
+			// num results
+			$this->tpl->assign('numInternal', $datagrid->getNumResults());
+		}
+		else
+		{
+			// no results
+			$this->tpl->assign('numInternal', 0);
 		}
 	}
 
@@ -126,7 +140,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid = new BackendDataGridArray($all);
 
 			// set tab active
-			$datagrid->setActiveTab('tabCrawlerExternal');
+			$datagrid->setActiveTab('tabExternal');
 
 			// set paging
 			$datagrid->setPaging(true);
@@ -136,10 +150,18 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'public_url', 'private_url'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
 
 			// parse the datagrid
-			$this->tpl->assign('dgCrawlerExternal', $datagrid->getContent());
+			$this->tpl->assign('dgExternal', $datagrid->getContent());
+
+			// num results
+			$this->tpl->assign('numExternal', $datagrid->getNumResults());
+		}
+		else
+		{
+			// no results
+			$this->tpl->assign('numExternal', 0);
 		}
 	}
 

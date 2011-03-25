@@ -62,17 +62,15 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgAll->setSortingColumns(array('title', 'module', 'description'), 'title');
 		$this->dgAll->setSortParameter('desc');
 
-		// set colum URLs
-		$this->dgAll->setColumnURL('title', '[public_url]');
-
 		// add column
-		$this->dgAll->addColumn('edit', null, BL::lbl('Edit'), '[private_url]', BL::lbl('Edit'));
+		$this->dgAll->addColumn('edit', null, BL::lbl('Edit'), null, BL::lbl('Edit'));
 
 		// hide columns
-		$this->dgAll->setColumnsHidden('public_url', 'private_url');
+		$this->dgAll->setColumnsHidden('item_id');
 
 		// set column functions
 		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
 
 		/*
 		 * Datagrid for internal links only.
@@ -90,17 +88,15 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgInternal->setSortingColumns(array('title', 'module', 'description'), 'title');
 		$this->dgInternal->setSortParameter('desc');
 
-		// set colum URLs
-		$this->dgInternal->setColumnURL('title', '[public_url]');
-
 		// add column
-		$this->dgInternal->addColumn('edit', null, BL::lbl('Edit'), '[private_url]', BL::lbl('Edit'));
+		$this->dgInternal->addColumn('edit', null, BL::lbl('Edit'), null, BL::lbl('Edit'));
 
 		// hide columns
-		$this->dgInternal->setColumnsHidden('public_url', 'private_url');
+		$this->dgInternal->setColumnsHidden('item_id');
 
 		// set column functions
 		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
 
 		/*
 		 * Datagrid for external links only.
@@ -118,17 +114,15 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgExternal->setSortingColumns(array('title', 'module', 'description'), 'title');
 		$this->dgExternal->setSortParameter('desc');
 
-		// set colum URLs
-		$this->dgExternal->setColumnURL('title', '[public_url]');
-
 		// add column
-		$this->dgExternal->addColumn('edit', null, BL::lbl('Edit'), '[private_url]', BL::lbl('Edit'));
+		$this->dgExternal->addColumn('edit', null, BL::lbl('Edit'), null, BL::lbl('Edit'));
 
 		// hide columns
-		$this->dgExternal->setColumnsHidden('public_url', 'private_url');
+		$this->dgExternal->setColumnsHidden('item_id');
 
 		// set column functions
 		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
+		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
 	}
 
 
@@ -163,6 +157,19 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 	{
 		// return the label for the error code
 		return BL::msg('ErrorCode' . $errorCode);
+	}
+
+
+	/**
+	 * Column function to convert the item id into an edit url.
+	 *
+	 * @return	string
+	 * @param $errorCode		The error code.
+	 */
+	public static function getEditUrl($module, $item_id)
+	{
+		// each module has a specific edit/public url
+		return BackendLinkCheckerHelper::getModuleEditUrl($module) . $item_id;
 	}
 }
 

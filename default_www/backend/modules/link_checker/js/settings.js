@@ -8,6 +8,12 @@ jsBackend.link_checkerSettings =
 		
 		$('#numConnections').attr("disabled", "");
 		
+		if(!$('#multiCall').attr("checked"))
+		{
+			// disable input field
+			$('#numConnections').attr("disabled", "disabled");
+		}
+		
 		$('#multiCall').change(function ()
 		{			
 			if(!$(this).attr("checked"))

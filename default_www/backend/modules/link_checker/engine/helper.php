@@ -34,7 +34,7 @@ class BackendLinkCheckerHelper
 	public static function checkLink($urls)
 	{
 		// get module setting
-		$doMultiCall = (bool) BackendModel::getModuleSetting($this->getModule(), 'multi_call');
+		$doMultiCall = (bool) BackendModel::getModuleSetting('link_checker', 'multi_call');
 
 		// single call
 		if(!$doMultiCall)
@@ -77,7 +77,7 @@ class BackendLinkCheckerHelper
 					// build array
 					$value = array();
 				    $value = $url;
-				    $value['code'] = $chinfo['http_code'];
+				    $value['error_code'] = $chinfo['http_code'];
 
 				    // add to all dead links array
 				    self::$allDeadLinks[] = $value;
@@ -152,7 +152,7 @@ class BackendLinkCheckerHelper
 			// build array
 			$value = array();
 		    $value = $userData;
-		    $value['code'] = $httpcode;
+		    $value['error_code'] = $httpcode;
 
 		    // add to all dead links array
 		    self::$allDeadLinks[] = $value;
@@ -192,41 +192,6 @@ class BackendLinkCheckerHelper
 
 		// return the editUrl
 		return $editUrl;
-	}
-
-
-	/**
-	 * Get module public url
-	 *
-	 * @return	array
-	 */
-	public static function getModulePublicUrl($module)
-	{
-		// contains the publicUrl
-		$publicUrl = '';
-
-		// every module has an unique url
-		switch ($module)
-		{
-		    case 'blog':
-		        $publicBaseUrl = '/blog/detail/';
-		    break;
-
-		    case 'content_blocks':
-		        $publicBaseUrl = '/';
-		    break;
-
-		    case 'pages':
-		        $publicBaseUrl = '/';
-		    break;
-
-		    case 'faq':
-		        $publicBaseUrl = '/faq/';
-		    break;
-		}
-
-		// return the publicUrl
-		return $publicUrl;
 	}
 }
 
