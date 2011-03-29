@@ -1,7 +1,6 @@
 <?php
 
 /**
- * MailmotorInstall
  * Installer for the mailmotor module
  *
  * @package		installer
@@ -129,7 +128,7 @@ class MailmotorInstall extends ModuleInstaller
 		$widgetSubscribeFormID = $this->insertExtra('mailmotor', 'widget', 'SubscribeForm', 'subscribe', null, 'N', 3003);
 
 		// get the default templates
-		$templateID = (int) $this->getDB()->getVar('SELECT id FROM pages_templates WHERE label = ?', 'Triton - Default');
+		$templateID = (int) $this->getDB()->getVar('SELECT id FROM pages_templates WHERE label = ?', array('Triton - Default'));
 
 		// loop languages
 		foreach($this->getLanguages() as $language)
