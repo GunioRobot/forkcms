@@ -1,6 +1,6 @@
 if(!jsBackend) { jsBackend = new Object; }
 
-jsBackend.link_checkerDashboard =
+jsBackend.link_checkerModule =
 {
 	init: function()
 	{
@@ -15,15 +15,15 @@ jsBackend.link_checkerDashboard =
 				cache: false,
 				type: 'POST',
 				timeout: 50000000,
-				url: '/backend/ajax.php?module=link_checker&action=refresh_links_widget&language=' + jsBackend.current.language,
+				url: '/backend/ajax.php?module=link_checker&action=refresh_links_module&language=' + jsBackend.current.language,
 				success: function(data, textStatus)
 				{
 					if(data.code == 200)
 					{
 						// show new data
-						$('#datagridAll').html(data.data.allHtml);
-						$('#datagridInternal').html(data.data.internalHtml);
-						$('#datagridExternal').html(data.data.externalHtml);
+						$('#tabAll').html(data.data.allHtml);
+						$('#tabInternal').html(data.data.internalHtml);
+						$('#tabExternal').html(data.data.externalHtml);
 
 						// show message
 						jsBackend.messages.add('success', data.data.message);
@@ -58,4 +58,4 @@ jsBackend.link_checkerDashboard =
 }
 
 
-$(document).ready(jsBackend.link_checkerDashboard.init);
+$(document).ready(jsBackend.link_checkerModule.init);

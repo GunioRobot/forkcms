@@ -3,6 +3,11 @@
 
 <div class="pageTitle">
 	<h2>{$lblLinkChecker|ucfirst}</h2>
+	<div class="buttonHolderRight">
+		<a href="#refresh" id="refreshLinks" class="submitButton button inputButton mainButton icon iconRefresh " title="{$lblRefresh|ucfirst}">
+			<span>{$lblRefresh|ucfirst}</span>
+		</a>
+	</div>
 </div>
 
 <div id="tabs" class="tabs">

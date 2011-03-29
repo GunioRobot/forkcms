@@ -9,7 +9,7 @@
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
  */
-class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
+class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
 {
 	/**
 	 * All links found
@@ -163,10 +163,17 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('module'));
+			$datagrid->setSortingColumns(array('title', 'module', 'description'), 'title');
+			$datagrid->setSortParameter('desc');
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
+			$datagrid->setColumnsHidden('item_id');
+
+			// set column functions
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getDescription'), array('[description]'), 'description', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 		}
 
 		// parse the datagrid
@@ -195,10 +202,17 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('module'));
+			$datagrid->setSortingColumns(array('title', 'module', 'description'), 'title');
+			$datagrid->setSortParameter('desc');
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
+			$datagrid->setColumnsHidden('item_id');
+
+			// set column functions
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getDescription'), array('[description]'), 'description', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 		}
 
 		// parse the datagrid
@@ -227,14 +241,72 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('module'));
+			$datagrid->setSortingColumns(array('title', 'module', 'description'), 'title');
+			$datagrid->setSortParameter('desc');
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
+			$datagrid->setColumnsHidden('item_id');
+
+			// set column functions
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getDescription'), array('[description]'), 'description', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 		}
 
 		// parse the datagrid
 		return (!empty($results) ? '<div class="datagridHolder">' . $datagrid->getContent() . '</div>' : '<p>' . BL::msg('NoLinks') . '</p>');
+	}
+
+
+	/**
+	 * Column function to convert the http error code into a human readable message.
+	 *
+	 * @return	string
+	 * @param $errorCode		The error code.
+	 */
+	public static function getDescription($errorCode)
+	{
+		// return the label for the error code
+		return BL::msg('ErrorCode' . $errorCode);
+	}
+
+
+	/**
+	 * Column function to convert the module into a label.
+	 *
+	 * @return	string
+	 * @param $errorCode		The error code.
+	 */
+	public static function getModuleLabel($module)
+	{
+		// return the label for the module
+		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
+	}
+
+
+	/**
+	 * Column function to convert the item id into an edit url.
+	 *
+	 * @return	string
+	 * @param $errorCode		The error code.
+	 */
+	public static function getEditUrl($module, $item_id, $title)
+	{
+		// each module has a specific edit/public url
+		return '<a href="' . BackendLinkCheckerHelper::getModuleEditUrl($module) . $item_id . '">' . $title . '<a/>';
+	}
+
+
+	/**
+	 * Column function to get the time ago since the link was checked.
+	 *
+	 * @return	string
+	 * @param $date		The date the link was checked.
+	 */
+	public static function getTimeAgo($date)
+	{
+		return SpoonDate::getTimeAgo(strtotime($date), BL::getWorkingLanguage());
 	}
 }
 

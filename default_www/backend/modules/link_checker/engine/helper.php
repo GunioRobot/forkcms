@@ -78,6 +78,7 @@ class BackendLinkCheckerHelper
 					$value = array();
 				    $value = $url;
 				    $value['error_code'] = $chinfo['http_code'];
+				    $value['date_checked'] = SpoonDate::getDate('Y-m-d H:i:s');
 
 				    // add to all dead links array
 				    self::$allDeadLinks[] = $value;
@@ -153,6 +154,7 @@ class BackendLinkCheckerHelper
 			$value = array();
 		    $value = $userData;
 		    $value['error_code'] = $httpcode;
+		    $value['date_checked'] = SpoonDate::getDate('Y-m-d H:i:s');
 
 		    // add to all dead links array
 		    self::$allDeadLinks[] = $value;

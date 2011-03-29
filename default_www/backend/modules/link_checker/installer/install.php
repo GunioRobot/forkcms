@@ -51,11 +51,13 @@ class LinkCheckerInstall extends ModuleInstaller
 		$this->insertLocale('en', 'backend', 'link_checker', 'lbl', 'External', 'external');
 		$this->insertLocale('en', 'backend', 'link_checker', 'lbl', 'Code', 'code');
 		$this->insertLocale('en', 'backend', 'link_checker', 'lbl', 'Url', 'destination');
+		$this->insertLocale('en', 'backend', 'link_checker', 'lbl', 'DateChecked', 'last checked');
 		$this->insertLocale('en', 'backend', 'link_checker', 'msg', 'ErrorCode404', 'Page not found.');
 		$this->insertLocale('en', 'backend', 'link_checker', 'msg', 'ErrorCode0', 'Website is dead.');
 
 		$this->insertLocale('en', 'backend', 'core', 'msg', 'NoLinks', 'No broken links.');
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'LinkChecker', 'link checker');
+		$this->insertLocale('en', 'backend', 'core', 'lbl', 'Refresh', 'refresh');
 
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'MultiCall', 'use multicall');
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'NumConnections', 'connections');

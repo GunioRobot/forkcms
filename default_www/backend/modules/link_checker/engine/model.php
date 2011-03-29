@@ -20,7 +20,7 @@ class BackendLinkCheckerModel
 	public static function getAll()
 	{
 		// fetch and return the records
-		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id
+		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id, c.date_checked
 															FROM link_checker_results AS c
 															WHERE c.language = ?', BL::getWorkingLanguage());
 	}
@@ -34,7 +34,7 @@ class BackendLinkCheckerModel
 	public static function getInternal()
 	{
 		// fetch and return the records
-		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id
+		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id, c.date_checked
 															FROM link_checker_results AS c
 															WHERE c.external = "N"
 															AND c.language = ?', BL::getWorkingLanguage());
@@ -49,7 +49,7 @@ class BackendLinkCheckerModel
 	public static function getExternal()
 	{
 		// fetch and return the records
-		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id
+		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id, c.date_checked
 															FROM link_checker_results AS c
 															WHERE c.external = "Y"
 															AND c.language = ?', BL::getWorkingLanguage());

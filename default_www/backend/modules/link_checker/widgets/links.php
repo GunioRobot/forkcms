@@ -64,7 +64,10 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
+
+			// set column functions
+			$datagrid->setColumnFunction(array('BackendLinkCheckerWidgetLinks', 'getModuleLabel'), array('[module]'), 'module', true);
 
 			// parse the datagrid
 			$this->tpl->assign('dgAll', $datagrid->getContent());
@@ -107,7 +110,10 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
+
+			// set column functions
+			$datagrid->setColumnFunction(array('BackendLinkCheckerWidgetLinks', 'getModuleLabel'), array('[module]'), 'module', true);
 
 			// parse the datagrid
 			$this->tpl->assign('dgInternal', $datagrid->getContent());
@@ -150,7 +156,10 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 			$datagrid->setSortingColumns(array('module'));
 
 			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'item_id'));
+			$datagrid->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
+
+			// set column functions
+			$datagrid->setColumnFunction(array('BackendLinkCheckerWidgetLinks', 'getModuleLabel'), array('[module]'), 'module', true);
 
 			// parse the datagrid
 			$this->tpl->assign('dgExternal', $datagrid->getContent());
@@ -176,6 +185,19 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		$this->loadAll();
 		$this->loadInternal();
 		$this->loadExternal();
+	}
+
+
+	/**
+	 * Column function to convert the module into a label.
+	 *
+	 * @return	string
+	 * @param $errorCode		The error code.
+	 */
+	public static function getModuleLabel($module)
+	{
+		// return the label for the module
+		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
 	}
 }
 

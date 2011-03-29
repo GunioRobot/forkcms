@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS `link_checker_results` (
   `error_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `external` enum('Y','N') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `language` varchar(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `date_checked` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;

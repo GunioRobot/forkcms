@@ -28,6 +28,9 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		// call parent, this will probably add some general CSS/JS or other required files
 		parent::execute();
 
+		// add refresh javascript
+		$this->header->addJavascript('module.js', 'link_checker');
+
 		// load datagrids
 		$this->loadDataGrids();
 
@@ -62,16 +65,14 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgAll->setSortingColumns(array('title', 'module', 'description'), 'title');
 		$this->dgAll->setSortParameter('desc');
 
-		// add column
-		$this->dgAll->addColumn('edit', null, BL::lbl('Edit'), '[item_id]', BL::lbl('Edit'));
-
 		// hide columns
 		$this->dgAll->setColumnsHidden('item_id');
 
 		// set column functions
 		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		//$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
 		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module', true);
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
 		/*
 		 * Datagrid for internal links only.
@@ -89,16 +90,14 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgInternal->setSortingColumns(array('title', 'module', 'description'), 'title');
 		$this->dgInternal->setSortParameter('desc');
 
-		// add column
-		$this->dgInternal->addColumn('edit', null, BL::lbl('Edit'), '[item_id]', BL::lbl('Edit'));
-
 		// hide columns
 		$this->dgInternal->setColumnsHidden('item_id');
 
 		// set column functions
 		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		//$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
 		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module', true);
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
 		/*
 		 * Datagrid for external links only.
@@ -116,16 +115,14 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgExternal->setSortingColumns(array('title', 'module', 'description'), 'title');
 		$this->dgExternal->setSortParameter('desc');
 
-		// add column
-		$this->dgExternal->addColumn('edit', null, BL::lbl('Edit'), '[item_id]', BL::lbl('Edit'));
-
 		// hide columns
 		$this->dgExternal->setColumnsHidden('item_id');
 
 		// set column functions
 		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		//$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]'), 'edit', true);
+		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
 		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module', true);
+		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 	}
 
 
@@ -182,10 +179,22 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 	 * @return	string
 	 * @param $errorCode		The error code.
 	 */
-	public static function getEditUrl($module, $item_id)
+	public static function getEditUrl($module, $item_id, $title)
 	{
 		// each module has a specific edit/public url
-		return BackendLinkCheckerHelper::getModuleEditUrl($module) . $item_id;
+		return '<a href="' . BackendLinkCheckerHelper::getModuleEditUrl($module) . $item_id . '">' . $title . '<a/>';
+	}
+
+
+	/**
+	 * Column function to get the time ago since the link was checked.
+	 *
+	 * @return	string
+	 * @param $date		The date the link was checked.
+	 */
+	public static function getTimeAgo($date)
+	{
+		return SpoonDate::getTimeAgo(strtotime($date), BL::getWorkingLanguage());
 	}
 }
 
