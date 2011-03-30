@@ -62,6 +62,8 @@ class LinkCheckerInstall extends ModuleInstaller
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'MultiCall', 'use multicall');
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'NumConnections', 'connections');
 
+		$this->insertLocale('en', 'backend', 'core', 'msg', 'EditorDeadLinks', 'There are dead/broken links.');
+
 	}
 }
 

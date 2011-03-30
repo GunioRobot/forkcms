@@ -88,6 +88,7 @@ tinyMCE.init(
 
 		// set content
 		editor.onLoadContent.add(jsBackend.tinyMCE.checkContent);
+		editor.onLoadContent.add(jsBackend.tinyMCE.checkDeadLinks);
 
 		// add event
 		editor.onKeyUp.add(function(editor, event)
@@ -149,7 +150,7 @@ tinyMCE.init(
 				if($('#' + editor.id + '_external').is(':visible')) $('#' + editor.id + '_external').hide();
 
 				// check the content
-				jsBackend.tinyMCE.checkContent(editor);
+				jsBackend.tinyMCE.checkContent(editor);				
 			});
 		}
 	}

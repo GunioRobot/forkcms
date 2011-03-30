@@ -57,6 +57,20 @@ class BackendLinkCheckerModel
 
 
 	/**
+	 * Get all dead urls
+	 *
+	 * @return	array
+	 */
+	public static function getDeadUrls()
+	{
+		// fetch and return the records
+		return (array) BackendModel::getDB()->getColumn('SELECT c.url
+															FROM link_checker_results AS c
+															WHERE c.language = ?', BL::getWorkingLanguage());
+	}
+
+
+	/**
 	 * Get all module entries
 	 *
 	 * @return	array

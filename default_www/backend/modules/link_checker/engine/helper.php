@@ -195,6 +195,48 @@ class BackendLinkCheckerHelper
 		// return the editUrl
 		return $editUrl;
 	}
+
+
+	/**
+	 * Check givin text if it contains a dead link
+	 *
+	 * @return	bool
+	 */
+	public static function containsDeadLink($text)
+	{
+		// decode char encoding
+		$text = SpoonFilter::htmlspecialcharsDecode($text);
+
+		// check if text contains urls
+		if(preg_match_all("!href=\"(.*?)\"!", $text, $matches))
+		{
+			// all urls we find in this text
+			$urlList = array();
+
+			// retrieve the dead urls we know
+			$deadUrlList = BackendLinkCheckerModel::getDeadUrls();
+
+			// loop the matches
+			foreach ($matches[1] as $url)
+			{
+				// if a url from the text is found in the array with dead urls, we know enough...
+				if(in_array($url, $deadUrlList))
+				{
+					// text has dead urls
+					return true;
+				}
+			}
+
+			// text has no dead urls
+			return false;
+
+		}
+		// text has no urls
+		else
+		{
+			return false;
+		}
+	}
 }
 
 ?>

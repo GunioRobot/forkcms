@@ -42,7 +42,7 @@ jsBackend =
 		jsBackend.tooltip.init();
 		jsBackend.tableSequenceByDragAndDrop.init();
 		jsBackend.tinyMCE.init();
-
+		
 		// IE fixes
 		jsBackend.selectors.init();
 		jsBackend.focusfix.init();
@@ -1322,6 +1322,44 @@ jsBackend.tinyMCE =
 			object.content = object.content.replace(matches[i], newLink);
 		}
 	},
+	
+	
+	// custom check for dead links
+	checkDeadLinks: function(editor)
+	{
+		/**
+		 * Check content for dead links
+		 *
+		 * @author	Jeroen Maes <jeroenmaes@netlash.com>
+		 */
+		
+		var content = editor.getContent();
+		
+		// make the call, send the content, get a bool
+		$.ajax(
+		{
+			url: '/backend/ajax.php?module=link_checker&action=contains_dead_links&language=' + jsBackend.current.language,
+			data: {'text' : content},
+			success: function(data, textStatus)
+			{
+				if(data.code == 200)
+				{
+					// the link checker module is installed
+					
+					// if the content has a dead link, show the warning
+					if(data.data.containsDeadLinks)
+					{
+						var warning = '{$msgEditorDeadLinks|addslashes}';						
+						$('#' + editor.id + '_parent').after('<span id="'+ editor.id + '_linkchecker_warnings' +'" class="infoMessage editorWarning">'+ warning + '</span>');						
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown)
+			{
+				// the link checker module is not installed								
+			}
+		});		
+	},
 
 
 	// custom content checks
@@ -1331,7 +1369,7 @@ jsBackend.tinyMCE =
 		{
 			var content = editor.getContent();
 			var warnings = [];
-
+			
 			// no alt?
 			if(content.match(/<img(.*)alt=""(.*)/im)) { warnings.push('{$msgEditorImagesWithoutAlt|addslashes}'); }
 
@@ -1347,9 +1385,8 @@ jsBackend.tinyMCE =
 
 			// no warnings
 			else $('#' + editor.id + '_warnings').remove();
-		}
+		}		
 	},
-
 
 	// end
 	eoo: true
