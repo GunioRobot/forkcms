@@ -47,3 +47,9 @@ acronym {border-bottom:1px dotted #CCC; cursor:help}
 abbr {border-bottom:1px dashed #CCC; cursor:help}
 img:-moz-broken {-moz-force-broken-image-icon:1; width:24px; height:24px}
 font[face=mceinline] {font-family:inherit !important}
+
+/*
+	Link Checker dead links
+*/
+
+a.deadLink, a:link .deadLink { color: red; border-bottom: 1px solid red;}

@@ -1324,40 +1324,64 @@ jsBackend.tinyMCE =
 	},
 	
 	
+	
+	// TODO checkDeadLink()
+	// -------------------
+	// 1) possible bug on a page with muliple editors
+	// 2) retrieve deadlinks from database ipv de momenteel statische array
+	// 3) markup dode link aanpassen: rode achtergrond, witte tekst
+	
 	// custom check for dead links
 	checkDeadLinks: function(editor)
 	{
-		/**
-		 * Check content for dead links
-		 *
-		 * @author	Jeroen Maes <jeroenmaes@netlash.com>
-		 */
-		
-		var content = editor.getContent();
-		
-		// make the call, send the content, get a bool
+		// send the content as string, retrieve a boolean
 		$.ajax(
 		{
 			url: '/backend/ajax.php?module=link_checker&action=contains_dead_links&language=' + jsBackend.current.language,
-			data: {'text' : content},
+			data: {'text' : editor.getContent()},
 			success: function(data, textStatus)
 			{
+				// the link checker module is installed, just do it
 				if(data.code == 200)
-				{
-					// the link checker module is installed
-					
+				{				
 					// if the content has a dead link, show the warning
 					if(data.data.containsDeadLinks)
 					{
+						// set the warning to display
 						var warning = '{$msgEditorDeadLinks|addslashes}';						
-						$('#' + editor.id + '_parent').after('<span id="'+ editor.id + '_linkchecker_warnings' +'" class="infoMessage editorWarning">'+ warning + '</span>');						
+						
+						if($('#' + editor.id + '_linkchecker_warning').length > 0) $('#' + editor.id + '_linkchecker_warning').html(warning);
+						else $('#' + editor.id + '_parent').after('<span id="'+ editor.id + '_linkchecker_warning' +'" class="infoMessage editorWarning">'+ warning + '</span>');
+						
+						// retrieve all dead links via ajax
+						var allDeadLinks = new Array("http://www.destandaardt.be/", "http://www.twitt7er.com/", "http://www.twiekers.net/");
+						
+						// get all the links in the editor
+						var editorLinks = tinyMCE.activeEditor.dom.select('a');
+						
+						// loop all links in the editor
+						for(var i in editorLinks)
+						{
+						    // parse item to string
+							var link = String(editorLinks[i]);
+							
+							// loop if it is found in the array
+							if(allDeadLinks.indexOf(link) != -1)
+							{
+								// we found the link, this is a dead link
+								// add class for the dead link
+								tinyMCE.activeEditor.dom.addClass(tinyMCE.activeEditor.dom.select('a')[i], 'deadLink');
+							}
+						}
+						
 					}
+					
+					// no dead links
+					else $('#' + editor.id + '_linkchecker_warning').remove();
 				}
 			},
-			error: function(XMLHttpRequest, textStatus, errorThrown)
-			{
-				// the link checker module is not installed								
-			}
+			// the link checker module is not installed, shut up
+			error: function(XMLHttpRequest, textStatus, errorThrown){}
 		});		
 	},
 
@@ -1365,6 +1389,9 @@ jsBackend.tinyMCE =
 	// custom content checks
 	checkContent: function(editor)
 	{
+		// check for dead links
+		jsBackend.tinyMCE.checkDeadLinks(editor);
+		
 		if(editor.isDirty())
 		{
 			var content = editor.getContent();
