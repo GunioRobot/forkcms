@@ -33,7 +33,7 @@ class BackendLinkCheckerAjaxGetDeadLinks extends BackendBaseAJAXAction
 		$this->allDeadLinks = BackendLinkCheckerModel::getDeadUrls();
 
 		// return status and data
-		$this->output(self::OK, array('status' => 'success', 'allDeadLinks' => $this->allDeadLinks, 'message' => 'Data has been retrieved.'));
+		$this->output(self::OK, array('status' => 'success', 'deadLinks' => $this->allDeadLinks, 'message' => 'Data has been retrieved.'));
 	}
 }
 

@@ -1323,13 +1323,10 @@ jsBackend.tinyMCE =
 		}
 	},
 	
-	
-	
-	// TODO checkDeadLink()
-	// -------------------
-	// 1) possible bug on a page with muliple editors
-	// 2) retrieve deadlinks from database ipv de momenteel statische array
-	// 3) markup dode link aanpassen: rode achtergrond, witte tekst
+	// @todo: linkchecker
+	// ------------------
+	//
+	// 1) fix for internal links?
 	
 	// custom check for dead links
 	checkDeadLinks: function(editor)
@@ -1350,30 +1347,54 @@ jsBackend.tinyMCE =
 						// set the warning to display
 						var warning = '{$msgEditorDeadLinks|addslashes}';						
 						
+						// check if there is already a warning (needed on refresh) and replace/add the warning
 						if($('#' + editor.id + '_linkchecker_warning').length > 0) $('#' + editor.id + '_linkchecker_warning').html(warning);
 						else $('#' + editor.id + '_parent').after('<span id="'+ editor.id + '_linkchecker_warning' +'" class="infoMessage editorWarning">'+ warning + '</span>');
 						
-						// retrieve all dead links via ajax
-						var allDeadLinks = new Array("http://www.destandaardt.be/", "http://www.twitt7er.com/", "http://www.twiekers.net/");
-						
-						// get all the links in the editor
-						var editorLinks = tinyMCE.activeEditor.dom.select('a');
-						
-						// loop all links in the editor
-						for(var i in editorLinks)
+						// retrieve all the dead links from database
+						$.ajax(
 						{
-						    // parse item to string
-							var link = String(editorLinks[i]);
-							
-							// loop if it is found in the array
-							if(allDeadLinks.indexOf(link) != -1)
+							url: '/backend/ajax.php?module=link_checker&action=get_dead_links&language=' + jsBackend.current.language,
+							success: function(data, textStatus)
 							{
-								// we found the link, this is a dead link
-								// add class for the dead link
-								tinyMCE.activeEditor.dom.addClass(tinyMCE.activeEditor.dom.select('a')[i], 'deadLink');
-							}
-						}
-						
+								// OK GO!
+								if(data.code == 200)
+								{									
+									// all the dead links we have in our database
+									var allDeadLinks = data.data.deadLinks;
+									
+									// get all the links in the editor
+									var editorLinks = editor.dom.select('a');
+									
+									// loop all links in the editor
+									for(var i in editorLinks)
+									{									    			
+										// parse item to string
+										var link = String(editorLinks[i]);
+									
+										// if we have a '/' at the and of the string, lose it!
+										// because tinymce thinks it is cool to add one just for no reason...
+										var lastCharPosition = link.length - 1;
+										var lastChar = link.charAt(lastCharPosition);
+										
+										if(lastChar == '/')
+										{
+											link = link.substring(0, lastCharPosition);
+										}									
+										
+										// check if the current url in the text editor, is found in the dead links array
+										if(allDeadLinks.indexOf(link) != -1)
+										{
+											// we found the link, this is a dead link (no shit sherlock)
+											// add class for the dead link to highlight them
+											editor.dom.addClass(editor.dom.select('a')[i], 'deadLink');
+										}
+									}
+								}
+							},
+							// the link checker module is not installed, shut up
+							error: function(XMLHttpRequest, textStatus, errorThrown){}
+						});		
 					}
 					
 					// no dead links
