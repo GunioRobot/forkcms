@@ -31,6 +31,9 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		// add refresh javascript
 		$this->header->addJavascript('module.js', 'link_checker');
 
+		// delete non used dead links
+		BackendLinkCheckerModel::cleanup();
+
 		// load datagrids
 		$this->loadDataGrids();
 

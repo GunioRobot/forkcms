@@ -30,7 +30,7 @@ class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
 		parent::execute();
 
 		// cleanup database
-		$this->cleanupDatabase();
+		$this->emptyDatabase();
 
 		// require the helper class
 		require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
@@ -56,10 +56,10 @@ class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
 	 *
 	 * @return	void
 	 */
-	private function cleanupDatabase()
+	private function emptyDatabase()
 	{
 		// cleanup pages
-		BackendLinkCheckerModel::cleanup();
+		BackendLinkCheckerModel::clear();
 	}
 
 

@@ -122,7 +122,7 @@ class BackendLinkCheckerModel
 	 *
 	 * @return	array
 	 */
-	public static function cleanup()
+	public static function clear()
 	{
 		BackendModel::getDB()->truncate('link_checker_results');
 	}
@@ -136,6 +136,77 @@ class BackendLinkCheckerModel
 	public static function insertLinks($values)
 	{
 		BackendModel::getDB()->insert('link_checker_results', $values);
+	}
+
+
+	/**
+	 * Clenup database - check if the found dead link is still used in the content, else get rid of it!
+	 *
+	 * @return	array
+	 */
+	public static function cleanup()
+	{
+		// get all links on the website
+		$allLinks = array();
+		$modules = array('blog', 'content_blocks', 'pages', 'faq');
+
+		foreach($modules as $module)
+		{
+			// fetch all entries from a module
+			$entries = BackendLinkCheckerModel::getModuleEntries($module);
+
+			// seach every entry for links, if the module is not empty
+			if(isset($entries))
+			{
+				// we check everye entry in this module for links
+				foreach ($entries as $entry)
+				{
+					// get all links in this entry
+					if (preg_match_all("!href=\"(.*?)\"!", $entry['text'], $matches))
+					{
+						// all urls we find in this entry
+						$urlList = array();
+
+						// @todo	comment what happens inside the loop, and what you're looping (like an example of the format in case of $matches)
+						foreach ($matches[1] as $url)
+						{
+							// add the url to the list
+							$urlList[] = $url;
+						}
+
+						// remove duplicates
+						$urlList = array_values(array_unique($urlList));
+
+						// store every link inside this entry in the database
+						foreach($urlList as $url)
+						{
+							// check if a link is external or internal
+							// fork saves an internal link 'invalid'
+							$external = (spoonfilter::isURL($url)) ? 'Y' : 'N';
+							$saveUrl = ($external === 'Y') ? $url : SITE_URL . $url;
+
+							// add to allLinks array
+							$allLinks[] = $saveUrl;
+						}
+					}
+				}
+			}
+		}
+
+		// get all dead links
+		$deadLinks = BackendLinkCheckerModel::getDeadUrls();
+
+		// check if all dead links are still on the website
+		foreach ($deadLinks as $url)
+		{
+			// this dead link is not found in the collection of all the site links
+			if(!in_array($url, $allLinks))
+			{
+				// remove it
+				BackendModel::getDB()->delete('link_checker_results', 'url = ?', $url);
+			}
+		}
+
 	}
 }
 

@@ -26,6 +26,9 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// set column
 		$this->setColumn('left');
 
+		// delete non used dead links
+		BackendLinkCheckerModel::cleanup();
+
 		// parse
 		$this->parse();
 
