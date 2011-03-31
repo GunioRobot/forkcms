@@ -18,6 +18,7 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 	 */
 	private $dgAll, $dgInternal, $dgExternal;
 
+
 	/**
 	 * Execute the action
 	 *
@@ -32,7 +33,7 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->header->addJavascript('module.js', 'link_checker');
 
 		// delete non used dead links
-		BackendLinkCheckerModel::cleanup();
+		BackendLinkCheckerHelper::cleanup();
 
 		// load datagrids
 		$this->loadDataGrids();
@@ -65,16 +66,24 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgAll->setPagingLimit(10);
 
 		// sorting
-		$this->dgAll->setSortingColumns(array('title', 'module', 'description'), 'title');
+		$this->dgAll->setSortingColumns(array('title'), 'title');
 		$this->dgAll->setSortParameter('desc');
+
+		// add edit column
+		$this->dgAll->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]', BL::lbl('Edit'));
+
+		// add module name column
+		$this->dgAll->addColumn('module_name', ucfirst(BL::lbl('Module')), BL::lbl('Module'), '', BL::lbl('Module'), '', 2);
 
 		// hide columns
 		$this->dgAll->setColumnsHidden('item_id');
 
+		// set column URLs
+		$this->dgAll->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
+
 		// set column functions
 		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
-		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module', true);
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module_name', true);
 		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
 		/*
@@ -90,16 +99,24 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgInternal->setPagingLimit(10);
 
 		// sorting
-		$this->dgInternal->setSortingColumns(array('title', 'module', 'description'), 'title');
+		$this->dgInternal->setSortingColumns(array('title'), 'title');
 		$this->dgInternal->setSortParameter('desc');
+
+		// add edit column
+		$this->dgInternal->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]', BL::lbl('Edit'));
+
+		// add module name column
+		$this->dgInternal->addColumn('module_name', ucfirst(BL::lbl('Module')), BL::lbl('Module'), '', BL::lbl('Module'), '', 2);
 
 		// hide columns
 		$this->dgInternal->setColumnsHidden('item_id');
 
+		// set column URLs
+		$this->dgInternal->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
+
 		// set column functions
 		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
-		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module', true);
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module_name', true);
 		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
 		/*
@@ -115,16 +132,25 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgExternal->setPagingLimit(10);
 
 		// sorting
-		$this->dgExternal->setSortingColumns(array('title', 'module', 'description'), 'title');
+		$this->dgExternal->setSortingColumns(array('title'), 'title');
+
 		$this->dgExternal->setSortParameter('desc');
 
 		// hide columns
-		$this->dgExternal->setColumnsHidden('item_id');
+		$this->dgExternal->setColumnsHidden('item_id', 'module');
+
+		// add edit column
+		$this->dgExternal->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]', BL::lbl('Edit'));
+
+		// add module name column
+		$this->dgExternal->addColumn('module_name', ucfirst(BL::lbl('Module')), BL::lbl('Module'), '', BL::lbl('Module'), '', 2);
+
+		// set column URLs
+		$this->dgExternal->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 		// set column functions
 		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
-		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module', true);
+		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module_name', true);
 		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 	}
 
@@ -173,19 +199,6 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 	{
 		// return the label for the module
 		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
-	}
-
-
-	/**
-	 * Column function to convert the item id into an edit url.
-	 *
-	 * @return	string
-	 * @param $errorCode		The error code.
-	 */
-	public static function getEditUrl($module, $item_id, $title)
-	{
-		// each module has a specific edit/public url
-		return '<a href="' . BackendLinkCheckerHelper::getModuleEditUrl($module) . $item_id . '">' . $title . '<a/>';
 	}
 
 

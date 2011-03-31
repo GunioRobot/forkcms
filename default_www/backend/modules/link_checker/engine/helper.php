@@ -17,6 +17,15 @@ class BackendLinkCheckerHelper
 	// internal constant to enable/disable debugging
 	const DEBUG = false;
 
+
+	/**
+	 * All modules that will be checked
+	 *
+	 * @var array
+	 */
+	public static $modules = array('blog', 'content_blocks', 'pages', 'faq');
+
+
 	/**
 	 * All checked and dead links
 	 *
@@ -163,37 +172,58 @@ class BackendLinkCheckerHelper
 
 
 	/**
-	 * Get module edit url
+	 * Get all links on a website
 	 *
-	 * @return	array
+	 * @return array
 	 */
-	public static function getModuleEditUrl($module)
+	public static function getAllLinks()
 	{
-		// contains the editUrl
-		$editUrl = '';
+		$allLinks = array();
+		$modules = BackendLinkCheckerHelper::$modules;
 
-		// every module has an unique url
-		switch ($module)
+		foreach($modules as $module)
 		{
-		    case 'blog':
-    			$editUrl = '/private/' . BL::getInterfaceLanguage() . '/blog/edit?token=true&id=';
-		    break;
+			// fetch all entries from a module
+			$entries = BackendLinkCheckerModel::getModuleEntries($module);
 
-		    case 'content_blocks':
-		        $editUrl = '/private/' . BL::getInterfaceLanguage() . '/content_blocks/edit?token=true&id=';
-		    break;
+			// seach every entry for links, if the module is not empty
+			if(isset($entries))
+			{
+				// we check everye entry in this module for links
+				foreach ($entries as $entry)
+				{
+					// get all links in this entry
+					if (preg_match_all("!href=\"(.*?)\"!", $entry['text'], $matches))
+					{
+						// all urls we find in this entry
+						$urlList = array();
 
-		    case 'pages':
-		        $editUrl = '/private/' . BL::getInterfaceLanguage() . '/pages/edit?id=';
-		    break;
+						// @todo	comment what happens inside the loop, and what you're looping (like an example of the format in case of $matches)
+						foreach ($matches[1] as $url)
+						{
+							// add the url to the list
+							$urlList[] = $url;
+						}
 
-		    case 'faq':
-		        $editUrl = '/private/' . BL::getInterfaceLanguage() . '/faq/edit?id=';
-		    break;
+						// remove duplicates
+						$urlList = array_values(array_unique($urlList));
+
+						// store every link inside this entry in the database
+						foreach($urlList as $url)
+						{
+							// check if a link is external or internal
+							// fork saves an internal link 'invalid'
+							$external = (spoonfilter::isURL($url)) ? 'Y' : 'N';
+							$saveUrl = ($external === 'Y') ? $url : SITE_URL . $url;
+
+							// add to allLinks array
+							$allLinks[] = $saveUrl;
+						}
+					}
+				}
+			}
 		}
-
-		// return the editUrl
-		return $editUrl;
+		return $allLinks;
 	}
 
 
@@ -235,6 +265,32 @@ class BackendLinkCheckerHelper
 		else
 		{
 			return false;
+		}
+	}
+
+
+	/**
+	 * Cleanup the dead links, check if the found dead links are still used on the site
+	 *
+	 * @return	array
+	 */
+	public static function cleanup()
+	{
+		// get all links on the website
+		$allLinks = BackendLinkCheckerHelper::getAllLinks();
+
+		// get all dead links
+		$deadLinks = BackendLinkCheckerModel::getDeadUrls();
+
+		// check if all dead links are still on the website
+		foreach ($deadLinks as $url)
+		{
+			// this dead link is not found in the collection of all the site links
+			if(!in_array($url, $allLinks))
+			{
+				// remove it
+				BackendLinkCheckerModel::deleteLink($url);
+			}
 		}
 	}
 }

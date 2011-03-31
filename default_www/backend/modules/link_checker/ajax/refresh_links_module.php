@@ -163,16 +163,24 @@ class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('title', 'module', 'description'), 'title');
+			$datagrid->setSortingColumns(array('title'), 'title');
 			$datagrid->setSortParameter('desc');
 
-			// set columns hidden
+			// add edit column
+			$datagrid->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]', BL::lbl('Edit'));
+
+			// add module name column
+			$datagrid->addColumn('module_name', ucfirst(BL::lbl('Module')), BL::lbl('Module'), '', BL::lbl('Module'), '', 2);
+
+			// hide columns
 			$datagrid->setColumnsHidden('item_id');
+
+			// set column URLs
+			$datagrid->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 			// set column functions
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getDescription'), array('[description]'), 'description', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module_name', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 		}
 
@@ -202,16 +210,24 @@ class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('title', 'module', 'description'), 'title');
+			$datagrid->setSortingColumns(array('title'), 'title');
 			$datagrid->setSortParameter('desc');
 
-			// set columns hidden
+			// add edit column
+			$datagrid->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]', BL::lbl('Edit'));
+
+			// add module name column
+			$datagrid->addColumn('module_name', ucfirst(BL::lbl('Module')), BL::lbl('Module'), '', BL::lbl('Module'), '', 2);
+
+			// hide columns
 			$datagrid->setColumnsHidden('item_id');
+
+			// set column URLs
+			$datagrid->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 			// set column functions
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getDescription'), array('[description]'), 'description', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module_name', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 		}
 
@@ -241,16 +257,24 @@ class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('title', 'module', 'description'), 'title');
+			$datagrid->setSortingColumns(array('title'), 'title');
 			$datagrid->setSortParameter('desc');
 
-			// set columns hidden
+			// add edit column
+			$datagrid->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]', BL::lbl('Edit'));
+
+			// add module name column
+			$datagrid->addColumn('module_name', ucfirst(BL::lbl('Module')), BL::lbl('Module'), '', BL::lbl('Module'), '', 2);
+
+			// hide columns
 			$datagrid->setColumnsHidden('item_id');
+
+			// set column URLs
+			$datagrid->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 			// set column functions
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getDescription'), array('[description]'), 'description', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getEditUrl'), array('[module]', '[item_id]', '[title]'), 'title', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module_name', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 		}
 
@@ -283,20 +307,6 @@ class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
 		// return the label for the module
 		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
 	}
-
-
-	/**
-	 * Column function to convert the item id into an edit url.
-	 *
-	 * @return	string
-	 * @param $errorCode		The error code.
-	 */
-	public static function getEditUrl($module, $item_id, $title)
-	{
-		// each module has a specific edit/public url
-		return '<a href="' . BackendLinkCheckerHelper::getModuleEditUrl($module) . $item_id . '">' . $title . '<a/>';
-	}
-
 
 	/**
 	 * Column function to get the time ago since the link was checked.
