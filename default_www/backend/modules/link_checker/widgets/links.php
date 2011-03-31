@@ -53,35 +53,19 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// there are some results
 		if(!empty($all))
 		{
-			// get the datagrid
-			$datagrid = new BackendDataGridArray($all);
-
-			// set tab active
-			$datagrid->setActiveTab('tabAll');
-
-			// set paging
-			$datagrid->setPaging(true);
-			$datagrid->setPagingLimit(10);
-
-			// set sorting column
-			$datagrid->setSortingColumns(array('module'));
-
-			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
-
-			// set column functions
-			$datagrid->setColumnFunction(array('BackendLinkCheckerWidgetLinks', 'getModuleLabel'), array('[module]'), 'module', true);
-
-			// parse the datagrid
-			$this->tpl->assign('dgAll', $datagrid->getContent());
+			// message all
+			$this->tpl->assign('msgAll', 'Found broken links.');
 
 			// num results
-			$this->tpl->assign('numAll', $datagrid->getNumResults());
+			$this->tpl->assign('numAll', count($all));
 		}
 		else
 		{
 			// no results
-			$this->tpl->assign('numAll', $datagrid->getNumResults());
+			$this->tpl->assign('numAll', 0);
+
+			// message all
+			$this->tpl->assign('msgAll', 'No broken links.');
 		}
 	}
 
@@ -99,35 +83,19 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// there are some results
 		if(!empty($all))
 		{
-			// get the datagrid
-			$datagrid = new BackendDataGridArray($all);
-
-			// set tab active
-			$datagrid->setActiveTab('tabInternal');
-
-			// set paging
-			$datagrid->setPaging(true);
-			$datagrid->setPagingLimit(10);
-
-			// set sorting column
-			$datagrid->setSortingColumns(array('module'));
-
-			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
-
-			// set column functions
-			$datagrid->setColumnFunction(array('BackendLinkCheckerWidgetLinks', 'getModuleLabel'), array('[module]'), 'module', true);
-
-			// parse the datagrid
-			$this->tpl->assign('dgInternal', $datagrid->getContent());
+			// message all
+			$this->tpl->assign('msgInternal', 'Found broken links.');
 
 			// num results
-			$this->tpl->assign('numInternal', $datagrid->getNumResults());
+			$this->tpl->assign('numInternal', count($all));
 		}
 		else
 		{
 			// no results
 			$this->tpl->assign('numInternal', 0);
+
+			// message internal
+			$this->tpl->assign('msgInternal', 'No broken links.');
 		}
 	}
 
@@ -145,35 +113,19 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// there are some results
 		if(!empty($all))
 		{
-			// get the datagrid
-			$datagrid = new BackendDataGridArray($all);
-
-			// set tab active
-			$datagrid->setActiveTab('tabExternal');
-
-			// set paging
-			$datagrid->setPaging(true);
-			$datagrid->setPagingLimit(10);
-
-			// set sorting column
-			$datagrid->setSortingColumns(array('module'));
-
-			// set columns hidden
-			$datagrid->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
-
-			// set column functions
-			$datagrid->setColumnFunction(array('BackendLinkCheckerWidgetLinks', 'getModuleLabel'), array('[module]'), 'module', true);
-
-			// parse the datagrid
-			$this->tpl->assign('dgExternal', $datagrid->getContent());
+			// message all
+			$this->tpl->assign('msgExternal', 'Found broken links.');
 
 			// num results
-			$this->tpl->assign('numExternal', $datagrid->getNumResults());
+			$this->tpl->assign('numExternal', count($all));
 		}
 		else
 		{
 			// no results
 			$this->tpl->assign('numExternal', 0);
+
+			// message external
+			$this->tpl->assign('msgExternal', 'No broken links.');
 		}
 	}
 
@@ -188,19 +140,6 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		$this->loadAll();
 		$this->loadInternal();
 		$this->loadExternal();
-	}
-
-
-	/**
-	 * Column function to convert the module into a label.
-	 *
-	 * @return	string
-	 * @param $errorCode		The error code.
-	 */
-	public static function getModuleLabel($module)
-	{
-		// return the label for the module
-		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
 	}
 }
 

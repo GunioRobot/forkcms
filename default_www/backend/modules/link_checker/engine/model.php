@@ -135,7 +135,7 @@ class BackendLinkCheckerModel
 	 */
 	public static function insertLinks($values)
 	{
-		BackendModel::getDB()->insert('link_checker_results', $values);
+		if(!empty($values)) BackendModel::getDB()->insert('link_checker_results', $values);
 	}
 
 

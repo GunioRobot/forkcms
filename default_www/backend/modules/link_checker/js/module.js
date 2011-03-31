@@ -15,7 +15,7 @@ jsBackend.link_checkerModule =
 				cache: false,
 				type: 'POST',
 				timeout: 50000000,
-				url: '/backend/ajax.php?module=link_checker&action=refresh_links_module&language=' + jsBackend.current.language,
+				url: '/backend/ajax.php?module=link_checker&action=refresh_links&language=' + jsBackend.current.language,
 				success: function(data, textStatus)
 				{
 					if(data.code == 200)

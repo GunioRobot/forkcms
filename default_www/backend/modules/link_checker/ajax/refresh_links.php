@@ -9,7 +9,7 @@
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
  */
-class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
+class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 {
 	/**
 	 * All links found
@@ -179,9 +179,9 @@ class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
 			$datagrid->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 			// set column functions
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getDescription'), array('[description]'), 'description', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module_name', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getDescription'), array('[description]'), 'description', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 		}
 
 		// parse the datagrid
@@ -226,9 +226,9 @@ class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
 			$datagrid->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 			// set column functions
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getDescription'), array('[description]'), 'description', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module_name', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getDescription'), array('[description]'), 'description', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 		}
 
 		// parse the datagrid
@@ -273,9 +273,9 @@ class BackendLinkCheckerAjaxRefreshLinksModule extends BackendBaseAJAXAction
 			$datagrid->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 			// set column functions
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getDescription'), array('[description]'), 'description', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getModuleLabel'), array('[module]'), 'module_name', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinksModule', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getDescription'), array('[description]'), 'description', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 		}
 
 		// parse the datagrid
