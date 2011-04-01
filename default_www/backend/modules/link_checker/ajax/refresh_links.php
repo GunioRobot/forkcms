@@ -138,15 +138,24 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
-			// dirty hack? - prolly...
-			// rename 'backend_ajax' to 'backend'
-			$a = (string) $datagrid->getColumn('edit')->getValue();
-			$b = str_replace('backend_ajax', 'backend', $a);
-			$datagrid->getColumn('edit')->setValue($b, true);
 
-			$a = (string) $datagrid->getColumn('title')->getUrl();
-			$b = str_replace('backend_ajax', 'backend', $a);
-			$datagrid->getColumn('title')->setUrl($b, true);
+			// rename the NAMED_APPLICATION from 'backend_ajax' to 'backend',
+			// otherwise we have a non working link/action in the backend
+
+			// first rename the edit column
+			$namedApplicationOld = (string) $datagrid->getColumn('edit')->getValue();
+			$namedApplicationNew = str_replace('backend_ajax', 'backend', $namedApplicationOld);
+			$datagrid->getColumn('edit')->setValue($namedApplicationNew, true);
+
+			// then edit the title column
+			$namedApplicationOld = (string) $datagrid->getColumn('title')->getURL();
+			$namedApplicationNew = str_replace('backend_ajax', 'backend', $namedApplicationOld);
+			$datagrid->getColumn('title')->setURL($namedApplicationNew);
+
+			// fix the datagrid navigation
+			$namedApplicationOld = (string) $datagrid->getURL();
+			$namedApplicationNew = str_replace('backend_ajax', 'backend', $namedApplicationOld);
+			$datagrid->setURL($namedApplicationNew, false);
 		}
 
 		// parse the datagrid
@@ -195,15 +204,24 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
-			// dirty hack? - prolly...
-			// rename 'backend_ajax' to 'backend'
-			$a = (string) $datagrid->getColumn('edit')->getValue();
-			$b = str_replace('backend_ajax', 'backend', $a);
-			$datagrid->getColumn('edit')->setValue($b, true);
 
-			$a = (string) $datagrid->getColumn('title')->getUrl();
-			$b = str_replace('backend_ajax', 'backend', $a);
-			$datagrid->getColumn('title')->setUrl($b, true);
+			// rename the NAMED_APPLICATION from 'backend_ajax' to 'backend',
+			// otherwise we have a non working link/action in the backend
+
+			// first rename the edit column
+			$namedApplicationOld = (string) $datagrid->getColumn('edit')->getValue();
+			$namedApplicationNew = str_replace('backend_ajax', 'backend', $namedApplicationOld);
+			$datagrid->getColumn('edit')->setValue($namedApplicationNew, true);
+
+			// then edit the title column
+			$namedApplicationOld = (string) $datagrid->getColumn('title')->getURL();
+			$namedApplicationNew = str_replace('backend_ajax', 'backend', $namedApplicationOld);
+			$datagrid->getColumn('title')->setURL($namedApplicationNew);
+
+			// fix the datagrid navigation
+			$namedApplicationOld = (string) $datagrid->getURL();
+			$namedApplicationNew = str_replace('backend_ajax', 'backend', $namedApplicationOld);
+			$datagrid->setURL($namedApplicationNew, false);
 		}
 
 		// parse the datagrid
@@ -252,15 +270,24 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
-			// dirty hack? - prolly...
-			// rename 'backend_ajax' to 'backend'
-			$a = (string) $datagrid->getColumn('edit')->getValue();
-			$b = str_replace('backend_ajax', 'backend', $a);
-			$datagrid->getColumn('edit')->setValue($b, true);
 
-			$a = (string) $datagrid->getColumn('title')->getUrl();
-			$b = str_replace('backend_ajax', 'backend', $a);
-			$datagrid->getColumn('title')->setUrl($b, true);
+			// rename the NAMED_APPLICATION from 'backend_ajax' to 'backend',
+			// otherwise we have a non working link/action in the backend
+
+			// fix the edit column
+			$namedApplicationOld = (string) $datagrid->getColumn('edit')->getValue();
+			$namedApplicationNew = str_replace('backend_ajax', 'backend', $namedApplicationOld);
+			$datagrid->getColumn('edit')->setValue($namedApplicationNew, true);
+
+			// fix the title column
+			$namedApplicationOld = (string) $datagrid->getColumn('title')->getURL();
+			$namedApplicationNew = str_replace('backend_ajax', 'backend', $namedApplicationOld);
+			$datagrid->getColumn('title')->setURL($namedApplicationNew);
+
+			// fix the datagrid navigation
+			$namedApplicationOld = (string) $datagrid->getURL();
+			$namedApplicationNew = str_replace('backend_ajax', 'backend', $namedApplicationOld);
+			$datagrid->setURL($namedApplicationNew, false);
 		}
 
 		// parse the datagrid
