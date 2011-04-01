@@ -8,7 +8,7 @@
 {form:settings}
 	<div class="box horizontal">
 		<div class="heading">
-			<h3>{$lblGeneral|ucfirst}</h3>
+			<h3>{$lblCurl}</h3>
 		</div>
 		<div class="options">
 			<ul class="inputList pb0">

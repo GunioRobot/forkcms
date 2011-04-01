@@ -137,6 +137,16 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getDescription'), array('[description]'), 'description', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+
+			// dirty hack? - prolly...
+			// rename 'backend_ajax' to 'backend'
+			$a = (string) $datagrid->getColumn('edit')->getValue();
+			$b = str_replace('backend_ajax', 'backend', $a);
+			$datagrid->getColumn('edit')->setValue($b, true);
+
+			$a = (string) $datagrid->getColumn('title')->getUrl();
+			$b = str_replace('backend_ajax', 'backend', $a);
+			$datagrid->getColumn('title')->setUrl($b, true);
 		}
 
 		// parse the datagrid
@@ -184,6 +194,16 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getDescription'), array('[description]'), 'description', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+
+			// dirty hack? - prolly...
+			// rename 'backend_ajax' to 'backend'
+			$a = (string) $datagrid->getColumn('edit')->getValue();
+			$b = str_replace('backend_ajax', 'backend', $a);
+			$datagrid->getColumn('edit')->setValue($b, true);
+
+			$a = (string) $datagrid->getColumn('title')->getUrl();
+			$b = str_replace('backend_ajax', 'backend', $a);
+			$datagrid->getColumn('title')->setUrl($b, true);
 		}
 
 		// parse the datagrid
@@ -231,6 +251,16 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getDescription'), array('[description]'), 'description', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
 			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+
+			// dirty hack? - prolly...
+			// rename 'backend_ajax' to 'backend'
+			$a = (string) $datagrid->getColumn('edit')->getValue();
+			$b = str_replace('backend_ajax', 'backend', $a);
+			$datagrid->getColumn('edit')->setValue($b, true);
+
+			$a = (string) $datagrid->getColumn('title')->getUrl();
+			$b = str_replace('backend_ajax', 'backend', $a);
+			$datagrid->getColumn('title')->setUrl($b, true);
 		}
 
 		// parse the datagrid
