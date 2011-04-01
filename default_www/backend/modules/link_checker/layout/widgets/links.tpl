@@ -1,50 +1,34 @@
 <div class="box" id="widgetLinkCheckerClassic">
 	<div class="heading">
 		<h3>
-			{$lblLinkChecker|ucfirst}
+			<a href="{$var|geturl:'index':'link_checker'}">{$lblLinkChecker|ucfirst}: {$lblDeadLinks|ucfirst}</a>
 		</h3>
 	</div>
 
-	<div class="options">
-		<div id="tabs" class="tabs">
-			<ul>
-				<li><a href="#tabAll">{$lblAll|ucfirst} ({$numAll})</a></li>
-				<li><a href="#tabInternal">{$lblInternal|ucfirst} ({$numInternal})</a></li>
-				<li><a href="#tabExternal">{$lblExternal|ucfirst} ({$numExternal})</a></li>
-			</ul>
-
-			<div id="tabAll">
-				{* All the links *}
-				<div id="datagridAll">
-					<p>
-						{$msgAll|ucfirst}
-					</p>
-				</div>
-			</div>
-
-			<div id="tabInternal">
-				{* All the internal links *}
-				<div id="datagridInternal">
-					<p>
-						{$msgInternal|ucfirst}
-					</p>
-				</div>
-			</div>
-
-			<div id="tabExternal">
-				{* All the external links *}
-				<div id="datagridExternal">
-					<p>
-						{$msgExternal|ucfirst}
-					</p>
-				</div>
+	{option:numDeadLinksFound}
+	<div class="moderate">
+		<div class="oneLiner">
+			<p>{$msgDeadLinksToModerate|sprintf:{$numDeadLinksFound}}</p>
+			<div class="buttonHolderRight">
+				<a href="{$var|geturl:'index':'link_checker'}" class="button"><span>{$msgAllLinks|ucfirst}</span></a>
 			</div>
 		</div>
 	</div>
-	<div class="footer">
-		<div class="buttonHolderRight">
-			<a href="{$var|geturl:'index':'link_checker'}" class="button"><span>{$msgAllLinks|ucfirst}</span></a>
-			<!-- <a href="#refresh" id="refreshLinks" class="submitButton button inputButton mainButton iconLink icon iconRefresh"><span></span></a>  -->
+	{/option:numDeadLinksFound}
+
+	{option:dgAll}
+	<div id="datagridAll">
+		<div class="options content">
+			<div class="datagridHolder">
+				{$dgAll}
+			</div>
 		</div>
 	</div>
+	{/option:dgAll}
+
+	{option:!dgAll}
+	<div class="options content">
+		<p>{$msgNoLinks|ucfirst}</p>
+	</div>
+	{/option:!dgAll}
 </div>

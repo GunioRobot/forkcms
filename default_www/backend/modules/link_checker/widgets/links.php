@@ -1,10 +1,5 @@
 <?php
 
-/*
-	@todo	I'd put all methods starting with "load" into execute(), and everything involving $this->tpl->assign() into the parse() method,
-			because $this->tpl->assign() essentially parses content into the template.
-*/
-
 /**
  * This is the linkchecker widget
  *
@@ -16,6 +11,14 @@
  */
 class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 {
+	/**
+	 * Datagrids
+	 *
+	 * @var	BackendDataGridDB
+	 */
+	private $dgAll;
+
+
 	/**
 	 * Execute the widget
 	 *
@@ -29,104 +32,31 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// delete non used dead links
 		BackendLinkCheckerHelper::cleanup();
 
-		// parse
+		// load datagrids
+		$this->loadDataGrid();
+
+		// parse page
 		$this->parse();
 
-		// add refresh javascript
-		$this->header->addJavascript('dashboard.js', 'link_checker');
-
-		// display
+		// display the page
 		$this->display();
 	}
 
 
 	/**
-	 * Load the datagrid for all links
+	 * Load the datagrids
 	 *
 	 * @return	void
 	 */
-	private function loadAll()
+	private function loadDataGrid()
 	{
-		// fetch all links
-		$all = BackendLinkCheckerModel::getAll();
+		$this->dgAll = new BackendDataGridArray(BackendLinkCheckerModel::getAll());
 
-		// there are some results
-		if(!empty($all))
-		{
-			// message all
-			$this->tpl->assign('msgAll', 'Found broken links.');
+		// set columns hidden
+		$this->dgAll->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
 
-			// num results
-			$this->tpl->assign('numAll', count($all));
-		}
-		else
-		{
-			// no results
-			$this->tpl->assign('numAll', 0);
-
-			// message all
-			$this->tpl->assign('msgAll', 'No broken links.');
-		}
-	}
-
-
-	/**
-	 * Load the datagrid for internal links
-	 *
-	 * @return	void
-	 */
-	private function loadInternal()
-	{
-		// fetch internal links
-		$all = BackendLinkCheckerModel::getInternal();
-
-		// there are some results
-		if(!empty($all))
-		{
-			// message all
-			$this->tpl->assign('msgInternal', 'Found broken links.');
-
-			// num results
-			$this->tpl->assign('numInternal', count($all));
-		}
-		else
-		{
-			// no results
-			$this->tpl->assign('numInternal', 0);
-
-			// message internal
-			$this->tpl->assign('msgInternal', 'No broken links.');
-		}
-	}
-
-
-	/**
-	 * Load the datagrid for external links
-	 *
-	 * @return	void
-	 */
-	private function loadExternal()
-	{
-		// fetch external links
-		$all = BackendLinkCheckerModel::getExternal();
-
-		// there are some results
-		if(!empty($all))
-		{
-			// message all
-			$this->tpl->assign('msgExternal', 'Found broken links.');
-
-			// num results
-			$this->tpl->assign('numExternal', count($all));
-		}
-		else
-		{
-			// no results
-			$this->tpl->assign('numExternal', 0);
-
-			// message external
-			$this->tpl->assign('msgExternal', 'No broken links.');
-		}
+		// set column functions
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerWidgetLinks', 'getModuleLabel'), array('[module]'), 'module', true);
 	}
 
 
@@ -137,9 +67,24 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 	 */
 	private function parse()
 	{
-		$this->loadAll();
-		$this->loadInternal();
-		$this->loadExternal();
+		// all datagrid and num results
+		$this->tpl->assign('dgAll', ($this->dgAll->getNumResults() != 0) ? $this->dgAll->getContent() : false);
+
+		// set moderation highlight message
+		$this->tpl->assign('numDeadLinksFound', $this->dgAll->getNumResults());
+	}
+
+
+	/**
+	 * Column function to convert the module into a label.
+	 *
+	 * @return	string
+	 * @param $errorCode		The error code.
+	 */
+	public static function getModuleLabel($module)
+	{
+		// return the label for the module
+		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
 	}
 }
 
