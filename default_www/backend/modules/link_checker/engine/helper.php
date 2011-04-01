@@ -175,8 +175,9 @@ class BackendLinkCheckerHelper
 	 * Get all links on a website
 	 *
 	 * @return array
+	 * @param	string [optional]$returnMode			The way we want the array to be build. 'singleArray' or 'multiArray'
 	 */
-	public static function getAllLinks()
+	public static function getAllLinks($returnMode = 'singleArray')
 	{
 		$allLinks = array();
 		$modules = BackendLinkCheckerHelper::$modules;
@@ -211,13 +212,36 @@ class BackendLinkCheckerHelper
 						// store every link inside this entry in the database
 						foreach($urlList as $url)
 						{
-							// check if a link is external or internal
-							// fork saves an internal link 'invalid'
-							$external = (spoonfilter::isURL($url)) ? 'Y' : 'N';
-							$saveUrl = ($external === 'Y') ? $url : SITE_URL . $url;
+							// return array with only the links
+							if($returnMode == 'singleArray')
+							{
+								// check if a link is external or internal
+								// fork saves an internal link 'invalid'
+								$external = (spoonfilter::isURL($url)) ? 'Y' : 'N';
+								$saveUrl = ($external === 'Y') ? $url : SITE_URL . $url;
 
-							// add to allLinks array
-							$allLinks[] = $saveUrl;
+								// add to allLinks array
+								$allLinks[] = $saveUrl;
+							}
+
+							// return multi array with all information about the link
+							else if($returnMode == 'multiArray')
+							{
+								// build the array to insert
+								$values = array();
+								$values['item_title'] = $entry['title'];
+								$values['module'] = $module;
+								$values['language'] = $entry['language'];
+								$values['item_id'] = $entry['id'];
+
+								// check if a link is external or internal
+								// fork saves an internal link 'invalid'
+								$values['external'] = (spoonfilter::isURL($url)) ? 'Y' : 'N';
+								$values['url'] = ($values['external'] === 'Y') ? $url : SITE_URL . $url;
+
+								// add to allLinks array
+								$allLinks[] = $values;
+							}
 						}
 					}
 				}

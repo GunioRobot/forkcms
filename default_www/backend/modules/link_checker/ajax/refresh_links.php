@@ -77,59 +77,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 	 */
 	private function getLinks()
 	{
-		// modules to check
-		$modules = array('blog', 'content_blocks', 'pages', 'faq');
-
-		// loop all modules
-		foreach($modules as $module)
-		{
-			// fetch all entries from a module
-			$entries = BackendLinkCheckerModel::getModuleEntries($module);
-
-			// seach every entry for links, if the module is not empty
-			if(isset($entries))
-			{
-				// we check everye entry in this module for links
-				foreach ($entries as $entry)
-				{
-					// get all links in this entry
-					if (preg_match_all("!href=\"(.*?)\"!", $entry['text'], $matches))
-					{
-						// all urls we find in this entry
-						$urlList = array();
-
-						// @todo	comment what happens inside the loop, and what you're looping (like an example of the format in case of $matches)
-						foreach ($matches[1] as $url)
-						{
-							// add the url to the list
-							$urlList[] = $url;
-						}
-
-						// remove duplicates
-						$urlList = array_values(array_unique($urlList));
-
-						// store every link inside this entry in the database
-						foreach($urlList as $url)
-						{
-							// build the array to insert
-							$values = array();
-							$values['item_title'] = $entry['title'];
-							$values['module'] = $module;
-							$values['language'] = $entry['language'];
-							$values['item_id'] = $entry['id'];
-
-							// check if a link is external or internal
-							// fork saves an internal link 'invalid'
-							$values['external'] = (spoonfilter::isURL($url)) ? 'Y' : 'N';
-							$values['url'] = ($values['external'] === 'Y') ? $url : SITE_URL . $url;
-
-							// add to allLinks array
-							$this->allLinks[] = $values;
-						}
-					}
-				}
-			}
-		}
+		$this->allLinks = BackendLinkCheckerHelper::getAllLinks('multiArray');
 	}
 
 
@@ -314,6 +262,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// return the label for the module
 		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
 	}
+
 
 	/**
 	 * Column function to get the time ago since the link was checked.
