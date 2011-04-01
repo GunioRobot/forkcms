@@ -12,7 +12,7 @@
 class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 {
 	/**
-	 * Datagrids
+	 * Datagrid
 	 *
 	 * @var	BackendDataGridDB
 	 */
@@ -32,7 +32,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// delete non used dead links
 		BackendLinkCheckerHelper::cleanup();
 
-		// load datagrids
+		// load datagrid
 		$this->loadDataGrid();
 
 		// parse page
@@ -44,13 +44,16 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 
 
 	/**
-	 * Load the datagrids
+	 * Load the datagrid
 	 *
 	 * @return	void
 	 */
 	private function loadDataGrid()
 	{
-		$this->dgAll = new BackendDataGridArray(BackendLinkCheckerModel::getAll());
+		// new data grid (only show the 5 most recent links)
+		$this->dgAll = new BackendDataGridArray(BackendLinkCheckerModel::getMostRecent());
+
+		$this->dgAll->setPagingLimit(5);
 
 		// set columns hidden
 		$this->dgAll->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
@@ -70,8 +73,8 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// all datagrid and num results
 		$this->tpl->assign('dgAll', ($this->dgAll->getNumResults() != 0) ? $this->dgAll->getContent() : false);
 
-		// set moderation highlight message
-		$this->tpl->assign('numDeadLinksFound', $this->dgAll->getNumResults());
+		// set moderation highlight message (count all dead links)
+		$this->tpl->assign('numDeadLinksFound', count(BackendLinkCheckerModel::getAll()));
 	}
 
 

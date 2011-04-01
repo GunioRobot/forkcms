@@ -15,9 +15,9 @@
 
 <div id="tabs" class="tabs">
 	<ul>
-		<li><a href="#tabAll">{$lblAll|ucfirst} ({$numAll})</a></li>
-		<li><a href="#tabInternal">{$lblInternal|ucfirst} ({$numInternal})</a></li>
-		<li><a href="#tabExternal">{$lblExternal|ucfirst} ({$numExternal})</a></li>
+		<li><a href="#tabAll">{$lblAll|ucfirst} (<span id="numAll">{$numAll}</span>)</a></li>
+		<li><a href="#tabInternal">{$lblInternal|ucfirst} (<span id="numInternal">{$numInternal}</span>)</a></li>
+		<li><a href="#tabExternal">{$lblExternal|ucfirst} (<span id="numExternal">{$numExternal}</span>)</a></li>
 	</ul>
 
 	<div id="tabAll">

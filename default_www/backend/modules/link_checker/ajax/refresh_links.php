@@ -47,7 +47,14 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		$externalHtml = $this->parseExternal();
 
 		// return status and data
-		$this->output(self::OK, array('status' => 'success', 'allHtml' => $allHtml, 'internalHtml' => $internalHtml, 'externalHtml' => $externalHtml, 'message' => 'Data has been retrieved.'));
+		$this->output(self::OK, array('status' => 'success',
+									'allHtml' => $allHtml,
+									'internalHtml' => $internalHtml,
+									'externalHtml' => $externalHtml,
+									'numAll' => count(BackendLinkCheckerModel::getAll()),
+									'numInternal' => count(BackendLinkCheckerModel::getInternal()),
+									'numExternal' => count(BackendLinkCheckerModel::getExternal()),
+									'message' => 'Links have been checked.'));
 	}
 
 

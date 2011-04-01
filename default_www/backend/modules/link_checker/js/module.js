@@ -20,10 +20,14 @@ jsBackend.link_checkerModule =
 				{
 					if(data.code == 200)
 					{
-						// show new data
+						// show new datagrid data
 						$('#tabAll').html(data.data.allHtml);
 						$('#tabInternal').html(data.data.internalHtml);
 						$('#tabExternal').html(data.data.externalHtml);
+						
+						$('#numAll').html(data.data.numAll);
+						$('#numInternal').html(data.data.numInternal);
+						$('#numExternal').html(data.data.numExternal);
 
 						// show message
 						jsBackend.messages.add('success', data.data.message);
