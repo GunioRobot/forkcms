@@ -53,13 +53,14 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 		// new data grid (only show the 5 most recent links)
 		$this->dgAll = new BackendDataGridArray(BackendLinkCheckerModel::getMostRecent());
 
+		// set datagrid paging limit
 		$this->dgAll->setPagingLimit(5);
 
 		// set columns hidden
 		$this->dgAll->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
 
 		// set column functions
-		$this->dgAll->setColumnFunction(array('BackendLinkCheckerWidgetLinks', 'getModuleLabel'), array('[module]'), 'module', true);
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module', true);
 	}
 
 
@@ -75,19 +76,6 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 
 		// set moderation highlight message (count all dead links)
 		$this->tpl->assign('numDeadLinksFound', count(BackendLinkCheckerModel::getAll()));
-	}
-
-
-	/**
-	 * Column function to convert the module into a label.
-	 *
-	 * @return	string
-	 * @param $errorCode		The error code.
-	 */
-	public static function getModuleLabel($module)
-	{
-		// return the label for the module
-		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
 	}
 }
 
