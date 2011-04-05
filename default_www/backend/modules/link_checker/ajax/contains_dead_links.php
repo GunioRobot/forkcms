@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This edit-action will return all the dead links from the database using Ajax
+ * This action will check a given text on dead links
  *
  * @package		backend
  * @subpackage	linkchecker
@@ -27,7 +27,7 @@ class BackendLinkCheckerAjaxContainsDeadLinks extends BackendBaseAJAXAction
 		// get post data
 		$text = SpoonFilter::getPostValue('text', null, '');
 
-		// get data
+		// check if the given string has dead links
 		$containsDeadLinks = BackendLinkCheckerHelper::containsDeadLink($text);
 
 		// return status and data

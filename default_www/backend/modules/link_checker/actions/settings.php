@@ -1,13 +1,13 @@
 <?php
 
 /**
- * This is the settings-action, it will display a form to set general location settings
+ * This is the settings-action, it will display a form to set general link checker settings
  *
  * @package		backend
- * @subpackage	location
+ * @subpackage	linkchecker
  *
- * @author		Matthias Mullie <matthias@netlash.com>
- * @since		2.1
+ * @author		Jeroen Maes <jeroenmaes@netlash.com>
+ * @since		2.0
  */
 class BackendLinkCheckerSettings extends BackendBaseActionEdit
 {

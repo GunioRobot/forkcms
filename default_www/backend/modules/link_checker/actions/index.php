@@ -47,16 +47,13 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 
 
 	/**
-	 * Loads the datagrids
+	 * Load the datagrids
 	 *
 	 * @return	void
 	 */
 	private function loadDataGrids()
 	{
-		/*
-		 * Datagrid for all links.
-		 */
-
+		// fill datagrid with all the links
 		$this->dgAll = new BackendDataGridArray(BackendLinkCheckerModel::getAll());
 
 		// active tab
@@ -82,14 +79,12 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgAll->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 		// set column functions
-		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module_name', true);
-		$this->dgAll->setColumnFunction(array('BackendLinkCheckerIndex', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerHelper', 'getDescription'), array('[description]'), 'description', true);
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module_name', true);
+		$this->dgAll->setColumnFunction(array('BackendLinkCheckerHelper', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
-		/*
-		 * Datagrid for internal links only.
-		 */
 
+		// fill datagrid with only the internal links
 		$this->dgInternal = new BackendDataGridArray(BackendLinkCheckerModel::getInternal());
 
 		// active tab
@@ -115,14 +110,12 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgInternal->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 		// set column functions
-		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module_name', true);
-		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getDescription'), array('[description]'), 'description', true);
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module_name', true);
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
-		/*
-		 * Datagrid for external links only.
-		 */
 
+		// fill datagrid with only the external links
 		$this->dgExternal = new BackendDataGridArray(BackendLinkCheckerModel::getExternal());
 
 		// active tab
@@ -149,9 +142,9 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgExternal->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 		// set column functions
-		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getDescription'), array('[description]'), 'description', true);
-		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getModuleLabel'), array('[module]'), 'module_name', true);
-		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerIndex', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getDescription'), array('[description]'), 'description', true);
+		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module_name', true);
+		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 	}
 
 
@@ -173,44 +166,6 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		// external datagrid and num results
 		$this->tpl->assign('dgExternal', ($this->dgExternal->getNumResults() != 0) ? $this->dgExternal->getContent() : false);
 		$this->tpl->assign('numExternal', $this->dgExternal->getNumResults());
-	}
-
-
-	/**
-	 * Column function to convert the http error code into a human readable message.
-	 *
-	 * @return	string
-	 * @param $errorCode		The error code.
-	 */
-	public static function getDescription($errorCode)
-	{
-		// return the label for the error code
-		return BL::msg('ErrorCode' . $errorCode);
-	}
-
-
-	/**
-	 * Column function to convert the module into a label.
-	 *
-	 * @return	string
-	 * @param $errorCode		The error code.
-	 */
-	public static function getModuleLabel($module)
-	{
-		// return the label for the module
-		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
-	}
-
-
-	/**
-	 * Column function to get the time ago since the link was checked.
-	 *
-	 * @return	string
-	 * @param $date		The date the link was checked.
-	 */
-	public static function getTimeAgo($date)
-	{
-		return SpoonDate::getTimeAgo(strtotime($date), BL::getWorkingLanguage());
 	}
 }
 

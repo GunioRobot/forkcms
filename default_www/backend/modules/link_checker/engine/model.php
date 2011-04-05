@@ -139,6 +139,7 @@ class BackendLinkCheckerModel
 	 */
 	public static function clear()
 	{
+		// truncate table
 		BackendModel::getDB()->truncate('link_checker_results');
 	}
 
@@ -150,6 +151,7 @@ class BackendLinkCheckerModel
 	 */
 	public static function insertLinks($values)
 	{
+		// insert freshly found dead links
 		if(!empty($values)) BackendModel::getDB()->insert('link_checker_results', $values);
 	}
 
@@ -161,6 +163,7 @@ class BackendLinkCheckerModel
 	 */
 	public static function deleteLink($url)
 	{
+		// remove a dead link
 		BackendModel::getDB()->delete('link_checker_results', 'url = ?', $url);
 	}
 }

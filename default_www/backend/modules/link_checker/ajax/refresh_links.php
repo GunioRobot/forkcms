@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This edit-action will refresh the link checker widget using Ajax
+ * This action will refresh the link checker module
  *
  * @package		backend
  * @subpackage	linkchecker
@@ -12,7 +12,7 @@
 class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 {
 	/**
-	 * All links found
+	 * All links found on the website
 	 *
 	 * @var bool
 	 */
@@ -29,7 +29,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// call parent, this will probably add some general CSS/JS or other required files
 		parent::execute();
 
-		// cleanup database
+		// empty database database
 		$this->emptyDatabase();
 
 		// require the helper class
@@ -47,14 +47,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		$externalHtml = $this->parseExternal();
 
 		// return status and data
-		$this->output(self::OK, array('status' => 'success',
-									'allHtml' => $allHtml,
-									'internalHtml' => $internalHtml,
-									'externalHtml' => $externalHtml,
-									'numAll' => count(BackendLinkCheckerModel::getAll()),
-									'numInternal' => count(BackendLinkCheckerModel::getInternal()),
-									'numExternal' => count(BackendLinkCheckerModel::getExternal()),
-									'message' => 'Links have been checked.'));
+		$this->output(self::OK, array('status' => 'success', 'allHtml' => $allHtml, 'internalHtml' => $internalHtml, 'externalHtml' => $externalHtml, 'numAll' => count(BackendLinkCheckerModel::getAll()), 'numInternal' => count(BackendLinkCheckerModel::getInternal()), 'numExternal' => count(BackendLinkCheckerModel::getExternal()), 'message' => 'Links have been checked.'));
 	}
 
 
@@ -65,18 +58,19 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 	 */
 	private function emptyDatabase()
 	{
-		// cleanup pages
+		// empty database
 		BackendLinkCheckerModel::clear();
 	}
 
 
 	/**
-	 * Get links from modules
+	 * Get links
 	 *
 	 * @return	void
 	 */
 	private function getLinks()
 	{
+		// get all the links a website contains in a multidimensional array containing all information about the link
 		$this->allLinks = BackendLinkCheckerHelper::getAllLinks('multiArray');
 	}
 
@@ -91,8 +85,8 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// loop every link if there are any
 		if(isset($this->allLinks))
 		{
-			// check all urls, get there error code and insert into database
-			BackendLinkCheckerHelper::checkLink($this->allLinks);
+			// check all links, get there error code and insert into database
+			BackendLinkCheckerHelper::checkLinks($this->allLinks);
 		}
 	}
 
@@ -134,9 +128,9 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 			// set column functions
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getDescription'), array('[description]'), 'description', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerHelper', 'getDescription'), array('[description]'), 'description', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module_name', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerHelper', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
 
 			// rename the NAMED_APPLICATION from 'backend_ajax' to 'backend',
@@ -200,9 +194,9 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 			// set column functions
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getDescription'), array('[description]'), 'description', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerHelper', 'getDescription'), array('[description]'), 'description', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module_name', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerHelper', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
 
 			// rename the NAMED_APPLICATION from 'backend_ajax' to 'backend',
@@ -266,9 +260,9 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
 
 			// set column functions
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getDescription'), array('[description]'), 'description', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getModuleLabel'), array('[module]'), 'module_name', true);
-			$datagrid->setColumnFunction(array('BackendLinkCheckerAjaxRefreshLinks', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerHelper', 'getDescription'), array('[description]'), 'description', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module_name', true);
+			$datagrid->setColumnFunction(array('BackendLinkCheckerHelper', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
 
 
 			// rename the NAMED_APPLICATION from 'backend_ajax' to 'backend',
@@ -292,44 +286,6 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 
 		// parse the datagrid
 		return (!empty($results) ? '<div class="datagridHolder">' . $datagrid->getContent() . '</div>' : '<p>' . BL::msg('NoLinks') . '</p>');
-	}
-
-
-	/**
-	 * Column function to convert the http error code into a human readable message.
-	 *
-	 * @return	string
-	 * @param $errorCode		The error code.
-	 */
-	public static function getDescription($errorCode)
-	{
-		// return the label for the error code
-		return BL::msg('ErrorCode' . $errorCode);
-	}
-
-
-	/**
-	 * Column function to convert the module into a label.
-	 *
-	 * @return	string
-	 * @param $errorCode		The error code.
-	 */
-	public static function getModuleLabel($module)
-	{
-		// return the label for the module
-		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
-	}
-
-
-	/**
-	 * Column function to get the time ago since the link was checked.
-	 *
-	 * @return	string
-	 * @param $date		The date the link was checked.
-	 */
-	public static function getTimeAgo($date)
-	{
-		return SpoonDate::getTimeAgo(strtotime($date), BL::getWorkingLanguage());
 	}
 }
 

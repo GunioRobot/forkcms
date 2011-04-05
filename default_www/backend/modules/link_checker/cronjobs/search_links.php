@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This cronjob will get every link in the given modules and store it in the database
+ * This cronjob will check every link on the website and store dead links in the database
  *
  * @package		backend
  * @subpackage	linkchecker
@@ -12,7 +12,7 @@
 class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 {
 	/**
-	 * All links found
+	 * All links found on the website
 	 *
 	 * @var bool
 	 */
@@ -26,7 +26,7 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 	 */
 	public function execute()
 	{
-		// cleanup database
+		// empty database
 		$this->emptyDatabase();
 
 		// require the helper class
@@ -47,18 +47,19 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 	 */
 	private function emptyDatabase()
 	{
-		// cleanup pages
+		// empty database
 		BackendLinkCheckerModel::clear();
 	}
 
 
 	/**
-	 * Get links from modules
+	 * Get links
 	 *
 	 * @return	void
 	 */
 	private function getLinks()
 	{
+		// get all the links a website contains in a multidimensional array containing all information about the link
 		$this->allLinks = BackendLinkCheckerHelper::getAllLinks('multiArray');
 	}
 
@@ -73,8 +74,8 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 		// loop every link if there are any
 		if(isset($this->allLinks))
 		{
-			// check all urls, get there error code and insert into database
-			BackendLinkCheckerHelper::checkLink($this->allLinks);
+			// check all links, get there error code and insert into database
+			BackendLinkCheckerHelper::checkLinks($this->allLinks);
 		}
 	}
 }

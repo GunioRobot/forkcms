@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This edit-action will return all the dead links from the database using Ajax
+ * This action will return all the dead links from the database
  *
  * @package		backend
  * @subpackage	linkchecker
@@ -11,14 +11,6 @@
  */
 class BackendLinkCheckerAjaxGetDeadLinks extends BackendBaseAJAXAction
 {
-	/**
-	 * All dead links found
-	 *
-	 * @var bool
-	 */
-	private $allDeadLinks = array();
-
-
 	/**
 	 * Execute the action
 	 *
@@ -30,10 +22,10 @@ class BackendLinkCheckerAjaxGetDeadLinks extends BackendBaseAJAXAction
 		parent::execute();
 
 		// get data
-		$this->allDeadLinks = BackendLinkCheckerModel::getDeadUrls();
+		$allDeadLinks = BackendLinkCheckerModel::getDeadUrls();
 
 		// return status and data
-		$this->output(self::OK, array('status' => 'success', 'deadLinks' => $this->allDeadLinks, 'message' => 'Data has been retrieved.'));
+		$this->output(self::OK, array('status' => 'success', 'deadLinks' => $allDeadLinks, 'message' => 'Data has been retrieved.'));
 	}
 }
 

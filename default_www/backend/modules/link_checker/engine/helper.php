@@ -1,5 +1,6 @@
 <?php
 
+// include the multicurl class
 require_once 'external/multicurl.php';
 
 /**
@@ -14,10 +15,6 @@ require_once 'external/multicurl.php';
  */
 class BackendLinkCheckerHelper
 {
-	// internal constant to enable/disable debugging
-	const DEBUG = false;
-
-
 	/**
 	 * All modules that will be checked
 	 *
@@ -27,7 +24,7 @@ class BackendLinkCheckerHelper
 
 
 	/**
-	 * All checked and dead links
+	 * All dead links
 	 *
 	 * @var bool
 	 */
@@ -35,12 +32,11 @@ class BackendLinkCheckerHelper
 
 
 	/**
-	 * Check a link using CURL
+	 * Check the links
 	 *
-	 * @return	string
-	 * @param	string $url						The link to check.
+	 * @param	array $urls				The links to check.
 	 */
-	public static function checkLink($urls)
+	public static function checkLinks($urls)
 	{
 		// get module setting
 		$doMultiCall = (bool) BackendModel::getModuleSetting('link_checker', 'multi_call');
@@ -48,9 +44,7 @@ class BackendLinkCheckerHelper
 		// single call
 		if(!$doMultiCall)
 		{
-			// start timer (debug only)
-			$timeStart = microtime(true);
-
+			// loop the urls
 			foreach ($urls as $url)
 			{
 				// initialize
@@ -59,7 +53,7 @@ class BackendLinkCheckerHelper
 				// set the url
 				curl_setopt($ch, CURLOPT_URL, $url['url']);
 
-				// set the options
+				// set the curl options
 				curl_setopt($ch, CURLOPT_HEADER, 1);
 				curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -77,10 +71,7 @@ class BackendLinkCheckerHelper
 				// free up the curl handle
 				curl_close($ch);
 
-				// echo and insert (debug only)
-				if(self::DEBUG) echo $url['url'] . ' => ' . $chinfo['http_code'] . PHP_EOL;
-
-				// insert only non working link
+				// insert only non working links
 				if($chinfo['http_code'] == 404 || $chinfo['http_code'] == 0)
 				{
 					// build array
@@ -96,12 +87,6 @@ class BackendLinkCheckerHelper
 
 			// insert into db
 			BackendLinkCheckerModel::insertLinks(self::$allDeadLinks);
-
-			// end timer (debug only)
-			$timeEnd = microtime(true);
-			$time = $timeEnd - $timeStart;
-			if(self::DEBUG) echo 'I did it in ' . round($time, 2) . ' seconds.';
-
 		}
 
 		// multi call
@@ -110,7 +95,7 @@ class BackendLinkCheckerHelper
 			// max connections
 			$maxRequests = (int) BackendModel::getModuleSetting('link_checker', 'num_connections');
 
-			// set the options
+			// set the curl options
 			$curlOptions = array(
 			    CURLOPT_TIMEOUT => 10,
 			    CURLOPT_USERAGENT => 'Spoon ' . SPOON_VERSION,
@@ -119,9 +104,6 @@ class BackendLinkCheckerHelper
 			    CURLOPT_HEADER => 1,
 			    CURLOPT_NOBODY => 1
 			);
-
-			// start timer (debug only)
-			$timeStart = microtime(true);
 
 			// new instance
 			$multiCurl = new MultiCurl($maxRequests, $curlOptions);
@@ -138,25 +120,24 @@ class BackendLinkCheckerHelper
 
 			// insert into db
 			BackendLinkCheckerModel::insertLinks(self::$allDeadLinks);
-
-			// end timer (debug only)
-			$timeEnd = microtime(true);
-			$time = $timeEnd - $timeStart;
-			if(self::DEBUG) echo 'I did it in ' . round($time, 2) . ' seconds.';
 		}
 	}
 
 
-	// This function gets called back for each request that completes
+	/**
+	 * This function gets called back for each request that completes
+	 *
+	 * @param	string $content				The HTML output.
+	 * @param   string $url					The checked url.
+	 * @param	object $ch					The cURL instance.
+	 * @param	array $userData				The passed through userData array.
+	 */
 	public static function onMultiCurlRequestDone($content, $url, $ch, $userData)
 	{
 	    // get the httpcode
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-	    // echo the url and httpcode (debug only)
-	    if(self::DEBUG) echo $url . ' => ' . $httpcode . PHP_EOL;
-
-		// insert only if non working link
+	    // insert only non working links
 	    if($httpcode == 404 || $httpcode == 0)
 		{
 			// build array
@@ -179,9 +160,13 @@ class BackendLinkCheckerHelper
 	 */
 	public static function getAllLinks($returnMode = 'singleArray')
 	{
+		// all the links
 		$allLinks = array();
+
+		// all the modules we want to check
 		$modules = BackendLinkCheckerHelper::$modules;
 
+		// loop the modules
 		foreach($modules as $module)
 		{
 			// fetch all entries from a module
@@ -247,12 +232,14 @@ class BackendLinkCheckerHelper
 				}
 			}
 		}
+
+		// return the links
 		return $allLinks;
 	}
 
 
 	/**
-	 * Check givin text if it contains a dead link
+	 * Check a givin text if it contains a dead link
 	 *
 	 * @return	bool
 	 */
@@ -298,7 +285,8 @@ class BackendLinkCheckerHelper
 
 
 	/**
-	 * Cleanup the dead links, check if the found dead links are still used on the site
+	 * Cleanup the dead links, check if the earlier found dead links are still used on the site,
+	 * otherwise we can delete them and asume the user had them corrected.
 	 *
 	 * @return	array
 	 */
@@ -313,13 +301,52 @@ class BackendLinkCheckerHelper
 		// check if all dead links are still on the website
 		foreach ($deadLinks as $url)
 		{
-			// this dead link is not found in the collection of all the site links
+			// the dead link is not found ont the site
 			if(!in_array($url, $allLinks))
 			{
 				// remove it
 				BackendLinkCheckerModel::deleteLink($url);
 			}
 		}
+	}
+
+
+	/**
+	 * Column function to convert the http error code into a human readable message.
+	 *
+	 * @return	string
+	 * @param $errorCode		The http error code.
+	 */
+	public static function getDescription($errorCode)
+	{
+		// return the label for the error code
+		return BL::msg('ErrorCode' . $errorCode);
+	}
+
+
+	/**
+	 * Column function to convert the module name into a label.
+	 *
+	 * @return	string
+	 * @param $module			The module name.
+	 */
+	public static function getModuleLabel($module)
+	{
+		// return the label for the module
+		return ucfirst(BL::lbl(str_replace(' ', '', ucwords(str_replace('_', ' ', $module)))));
+	}
+
+
+	/**
+	 * Column function to get the time ago since the link was checked.
+	 *
+	 * @return	string
+	 * @param $date				The date the link was checked.
+	 */
+	public static function getTimeAgo($date)
+	{
+		// return time ago
+		return SpoonDate::getTimeAgo(strtotime($date), BL::getWorkingLanguage());
 	}
 }
 
