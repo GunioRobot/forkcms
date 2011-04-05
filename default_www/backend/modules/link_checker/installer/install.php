@@ -40,9 +40,6 @@ class LinkCheckerInstall extends ModuleInstaller
 
 		// insert locale (en)
 		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'Url', 'destination');
-		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'All', 'all');
-		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'Internal', 'internal');
-		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'External', 'external');
 		$this->insertLocale('en', 'backend', 'dashboard', 'msg', 'NoLinks', 'No broken links.');
 		$this->insertLocale('en', 'backend', 'dashboard', 'msg', 'AllLinks', 'Edit links');
 
@@ -55,7 +52,7 @@ class LinkCheckerInstall extends ModuleInstaller
 		$this->insertLocale('en', 'backend', 'link_checker', 'msg', 'ErrorCode404', 'Page not found.');
 		$this->insertLocale('en', 'backend', 'link_checker', 'msg', 'ErrorCode0', 'Website is dead.');
 
-		$this->insertLocale('en', 'backend', 'core', 'msg', 'DeadLinksToModerate', '%1$s link(s) to moderate.');
+		$this->insertLocale('en', 'backend', 'core', 'msg', 'DeadLinksToModerate', '%1$s link(s) to correct.');
 		$this->insertLocale('en', 'backend', 'core', 'msg', 'NoLinks', 'No broken links.');
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'LinkChecker', 'link checker');
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'DeadLinks', 'dead links');
@@ -66,7 +63,6 @@ class LinkCheckerInstall extends ModuleInstaller
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'NumConnections', 'connections');
 
 		$this->insertLocale('en', 'backend', 'core', 'msg', 'EditorDeadLinks', 'There are dead/broken links.');
-
 	}
 }
 
