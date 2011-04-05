@@ -273,6 +273,10 @@ class BackendLinkCheckerHelper
 			// loop the matches
 			foreach ($matches[1] as $url)
 			{
+				// rewrite internal urls, to become compatible with the way internal links are stored in the database
+				$externalUrl = (spoonfilter::isURL($url)) ? 'Y' : 'N';
+				$url = ($externalUrl === 'Y') ? $url : SITE_URL . $url;
+
 				// if a url from the text is found in the array with dead urls, we know enough...
 				if(in_array($url, $deadUrlList))
 				{
