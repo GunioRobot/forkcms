@@ -108,7 +108,7 @@ class BackendLinkCheckerHelper
 		else
 		{
 			// max connections
-			$maxRequests = (int) BackendModel::getModuleSetting($this->getModule(), 'num_connections');
+			$maxRequests = (int) BackendModel::getModuleSetting('link_checker', 'num_connections');
 
 			// set the options
 			$curlOptions = array(
