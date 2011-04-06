@@ -1323,10 +1323,6 @@ jsBackend.tinyMCE =
 		}
 	},
 	
-	// @todo: linkchecker
-	// ------------------
-	//
-	// 1) fix for internal links?
 	
 	// custom check for dead links
 	checkDeadLinks: function(editor)
@@ -1338,7 +1334,7 @@ jsBackend.tinyMCE =
 			data: {'text' : editor.getContent()},
 			success: function(data, textStatus)
 			{
-				// the link checker module is installed, just do it
+				// the link checker module is installed, OK GO!
 				if(data.code == 200)
 				{				
 					// if the content has a dead link, show the warning
@@ -1373,7 +1369,7 @@ jsBackend.tinyMCE =
 										var link = String(editorLinks[i]);
 									
 										// if we have a '/' at the and of the string, lose it!
-										// because tinymce thinks it is cool to add one just for no reason...
+										// because TinyMCE thinks it is cool to add one for no reason...
 										var lastCharPosition = link.length - 1;
 										var lastChar = link.charAt(lastCharPosition);
 										
