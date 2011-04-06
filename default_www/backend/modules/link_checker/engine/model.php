@@ -92,43 +92,71 @@ class BackendLinkCheckerModel
 	 */
 	public static function getModuleEntries($module)
 	{
-		// contains the query
-		$query = '';
+		// contains the records
+		$records = array();
 
 		// each module has a different query
 		switch ($module)
 		{
 		    case 'blog':
-		        $query = "SELECT p.text, p.title, p.id, p.language FROM blog_posts AS p
+		        // build blog text query
+		    	$queryText = "SELECT p.text, p.title, p.id, p.language FROM blog_posts AS p
 						WHERE p.text LIKE '%href=%'
 						AND p.status = 'active'
 						AND p.hidden = 'N'";
+
+		    	// fetch text records
+		        $recordsText = (array) BackendModel::getDB()->getRecords($queryText);
+
+		         // build blog introduction query
+		    	$queryIntro = "SELECT p.introduction AS text, p.title, p.id, p.language FROM blog_posts AS p
+						WHERE p.introduction LIKE '%href=%'
+						AND p.status = 'active'
+						AND p.hidden = 'N'";
+
+		    	// fetch introduction records
+		        $recordsIntro = (array) BackendModel::getDB()->getRecords($queryIntro);
+
+		        // merge arrays
+		        $records = array_merge($recordsText, $recordsIntro);
 		    break;
 
 		    case 'content_blocks':
-		        $query = "SELECT c.text, c.title, c.id, c.language FROM content_blocks AS c
+		        // build query
+		    	$query = "SELECT c.text, c.title, c.id, c.language FROM content_blocks AS c
 						WHERE c.text LIKE '%href=%'
 						AND c.status = 'active'
 						AND c.hidden = 'N'";
+
+		        // fetch records
+		    	$records = BackendModel::getDB()->getRecords($query);
 		    break;
 
 		    case 'pages':
-		        $query = "SELECT p.html as text, pa.id, pa.title, pa.language FROM pages_blocks AS p
+		        // build query
+		    	$query = "SELECT p.html as text, pa.id, pa.title, pa.language FROM pages_blocks AS p
 						INNER JOIN pages AS pa on p.revision_id = pa.revision_id
 						WHERE p.html LIKE '%href=%'
 						AND pa.status = 'active'
 						AND pa.hidden = 'N'";
+
+		        // fetch records
+		    	$records = (array) BackendModel::getDB()->getRecords($query);
 		    break;
 
 		    case 'faq':
-		        $query = "SELECT f.answer as text, f.id, f.question as title, f.language FROM faq_questions AS f
+		        // build query
+		    	$query = "SELECT f.answer as text, f.id, f.question as title, f.language FROM faq_questions AS f
 						WHERE f.answer LIKE '%href=%'
 						AND f.hidden = 'N'";
+
+		        // fetch records
+		    	$records = (array) BackendModel::getDB()->getRecords($query);
 		    break;
 		}
 
-		// fetch and return the records
-		return (array) BackendModel::getDB()->getRecords($query);
+		// return records
+		return $records;
 	}
 
 
