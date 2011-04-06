@@ -233,6 +233,10 @@ class BackendLinkCheckerHelper
 			}
 		}
 
+		// at this point it is possible that we have duplicate entries in our array
+		// as some pages contain multiple text area's, where the same dead link might be used multiple times
+		$allLinks = self::removeDuplicates($allLinks);
+
 		// return the links
 		return $allLinks;
 	}
@@ -347,6 +351,28 @@ class BackendLinkCheckerHelper
 	{
 		// return time ago
 		return SpoonDate::getTimeAgo(strtotime($date), BL::getWorkingLanguage());
+	}
+
+
+	/**
+	 * Helper function to remove the duplicate entries from a multi-dimensional array.
+	 *
+	 * @return	$array
+	 * @param $array				The multi-dimensional array.
+	 */
+	public static function removeDuplicates($array)
+	{
+		$result = array_map("unserialize", array_unique(array_map("serialize", $array)));
+
+	  	foreach ($result as $key => $value)
+	  	{
+	    	if ( is_array($value) )
+	    	{
+	      		$result[$key] = self::removeDuplicates($value);
+	    	}
+	  	}
+
+	  	return $result;
 	}
 }
 
