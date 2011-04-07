@@ -4,7 +4,7 @@
  * This action will check a given text on dead links
  *
  * @package		backend
- * @subpackage	linkchecker
+ * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0

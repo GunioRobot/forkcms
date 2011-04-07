@@ -5,13 +5,38 @@
  * In this file we store all generic functions that we will be using in the linkchecker module
  *
  * @package		backend
- * @subpackage	linkchecker
+ * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
  */
 class BackendLinkCheckerModel
 {
+	/**
+	 * Empty database
+	 *
+	 * @return	array
+	 */
+	public static function clear()
+	{
+		// truncate table
+		BackendModel::getDB()->truncate('link_checker_results');
+	}
+
+
+	/**
+	 * Delete link
+	 *
+	 * @return	array
+	 * @param	string $url		The url to delte.
+	 */
+	public static function deleteLink($url)
+	{
+		// remove a dead link
+		BackendModel::getDB()->delete('link_checker_results', 'url = ?', $url);
+	}
+
+
 	/**
 	 * Get all urls
 	 *
@@ -27,32 +52,31 @@ class BackendLinkCheckerModel
 
 
 	/**
-	 * Get 5 most recent links
+	 * Get the requested dead url
 	 *
 	 * @return	array
+	 * @param	string $url		The url we want returned.
 	 */
-	public static function getMostRecent()
+	public static function getDeadUrl($url)
 	{
 		// fetch and return the records
-		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id, c.date_checked
+		return (array) BackendModel::getDB()->getRecord('SELECT c.module, c.item_id, c.item_title, c.url, c.error_code, c.external, c.language, c.date_checked
 															FROM link_checker_results AS c
-															WHERE c.language = ?
-															LIMIT 5', BL::getWorkingLanguage());
+															WHERE c.url = ?', $url);
 	}
 
 
 	/**
-	 * Get all internal urls
+	 * Get all dead urls
 	 *
 	 * @return	array
 	 */
-	public static function getInternal()
+	public static function getDeadUrls()
 	{
 		// fetch and return the records
-		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id, c.date_checked
+		return (array) BackendModel::getDB()->getColumn('SELECT c.url
 															FROM link_checker_results AS c
-															WHERE c.external = "N"
-															AND c.language = ?', BL::getWorkingLanguage());
+															WHERE c.language = ?', BL::getWorkingLanguage());
 	}
 
 
@@ -72,30 +96,17 @@ class BackendLinkCheckerModel
 
 
 	/**
-	 * Get all dead urls
+	 * Get all internal urls
 	 *
 	 * @return	array
 	 */
-	public static function getDeadUrls()
+	public static function getInternal()
 	{
 		// fetch and return the records
-		return (array) BackendModel::getDB()->getColumn('SELECT c.url
+		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id, c.date_checked
 															FROM link_checker_results AS c
-															WHERE c.language = ?', BL::getWorkingLanguage());
-	}
-
-
-	/**
-	 * Get the requested dead url
-	 *
-	 * @return	array
-	 */
-	public static function getDeadUrl($url)
-	{
-		// fetch and return the records
-		return (array) BackendModel::getDB()->getRecord('SELECT c.module, c.item_id, c.item_title, c.url, c.error_code, c.external, c.language, c.date_checked
-															FROM link_checker_results AS c
-															WHERE c.url = ?', $url);
+															WHERE c.external = "N"
+															AND c.language = ?', BL::getWorkingLanguage());
 	}
 
 
@@ -103,6 +114,7 @@ class BackendLinkCheckerModel
 	 * Get all module entries
 	 *
 	 * @return	array
+	 * @param	string $module		The module name.
 	 */
 	public static function getModuleEntries($module)
 	{
@@ -110,7 +122,7 @@ class BackendLinkCheckerModel
 		$records = array();
 
 		// each module has a different query
-		switch ($module)
+		switch($module)
 		{
 		    case 'blog':
 		        // build blog text query
@@ -175,14 +187,17 @@ class BackendLinkCheckerModel
 
 
 	/**
-	 * Empty database
+	 * Get 5 most recent links
 	 *
 	 * @return	array
 	 */
-	public static function clear()
+	public static function getMostRecent()
 	{
-		// truncate table
-		BackendModel::getDB()->truncate('link_checker_results');
+		// fetch and return the records
+		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id, c.date_checked
+															FROM link_checker_results AS c
+															WHERE c.language = ?
+															LIMIT 5', BL::getWorkingLanguage());
 	}
 
 
@@ -190,23 +205,12 @@ class BackendLinkCheckerModel
 	 * Insert links
 	 *
 	 * @return	array
+	 * @param	array $values		The values to insert.
 	 */
 	public static function insertLinks($values)
 	{
 		// insert freshly found dead links
 		if(!empty($values)) BackendModel::getDB()->insert('link_checker_results', $values);
-	}
-
-
-	/**
-	 * Delete link
-	 *
-	 * @return	array
-	 */
-	public static function deleteLink($url)
-	{
-		// remove a dead link
-		BackendModel::getDB()->delete('link_checker_results', 'url = ?', $url);
 	}
 }
 

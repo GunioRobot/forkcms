@@ -4,7 +4,7 @@
  * This cronjob will check every link on the website and store dead links in the database
  *
  * @package		backend
- * @subpackage	linkchecker
+ * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
@@ -17,6 +17,34 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 	 * @var bool
 	 */
 	private $allLinks = array();
+
+
+	/**
+	 * Check links
+	 *
+	 * @return	void
+	 */
+	private function checkLinks()
+	{
+		// loop every link if there are any
+		if(isset($this->allLinks))
+		{
+			// check all links, get there error code and insert into database
+			BackendLinkCheckerHelper::checkLinks($this->allLinks);
+		}
+	}
+
+
+	/**
+	 * Cleanup database
+	 *
+	 * @return	void
+	 */
+	private function emptyDatabase()
+	{
+		// empty database
+		BackendLinkCheckerModel::clear();
+	}
 
 
 	/**
@@ -44,18 +72,6 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 
 
 	/**
-	 * Cleanup database
-	 *
-	 * @return	void
-	 */
-	private function emptyDatabase()
-	{
-		// empty database
-		BackendLinkCheckerModel::clear();
-	}
-
-
-	/**
 	 * Get links
 	 *
 	 * @return	void
@@ -64,22 +80,6 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 	{
 		// get all the links a website contains in a multidimensional array containing all information about the link
 		$this->allLinks = BackendLinkCheckerHelper::getAllLinks('multiArray');
-	}
-
-
-	/**
-	 * Check links
-	 *
-	 * @return	void
-	 */
-	private function checkLinks()
-	{
-		// loop every link if there are any
-		if(isset($this->allLinks))
-		{
-			// check all links, get there error code and insert into database
-			BackendLinkCheckerHelper::checkLinks($this->allLinks);
-		}
 	}
 }
 

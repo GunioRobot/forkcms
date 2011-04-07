@@ -4,7 +4,7 @@
  * This is the settings-action, it will display a form to set general link checker settings
  *
  * @package		backend
- * @subpackage	linkchecker
+ * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0

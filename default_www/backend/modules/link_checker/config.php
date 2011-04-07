@@ -4,7 +4,7 @@
  * This is the configuration-object for the linkchecker module
  *
  * @package		backend
- * @subpackage	linkchecker
+ * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0

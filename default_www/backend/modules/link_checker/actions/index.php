@@ -4,7 +4,7 @@
  * This is the index-action, it will display the overview of all links checked by the linkchecker
  *
  * @package		backend
- * @subpackage	linkchecker
+ * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
  * @since		2.0
