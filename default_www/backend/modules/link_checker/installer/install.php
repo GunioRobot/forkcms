@@ -67,6 +67,8 @@ class LinkCheckerInstall extends ModuleInstaller
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'Caching', 'caching');
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'CacheTime', 'cache time');
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'CacheDeadLinks', 'cache dead links');
+
+		$this->insertLocale('en', 'backend', 'core', 'msg', 'HelpCacheTime', 'time in seconds');
 	}
 }
 

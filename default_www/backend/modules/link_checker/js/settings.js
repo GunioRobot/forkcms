@@ -28,6 +28,31 @@ jsBackend.link_checkerSettings =
 			}
 		});	
 		
+		
+		// disable the cacheTime input field when the cacheDeadLinks checkbox is unchecked
+		
+		$('#cacheTime').attr("disabled", "");
+		
+		if(!$('#cacheDeadLinks').attr("checked"))
+		{
+			// disable input field
+			$('#cacheTime').attr("disabled", "disabled");
+		}
+		
+		$('#cacheDeadLinks').change(function ()
+		{			
+			if(!$(this).attr("checked"))
+			{
+				// disable input field
+				$('#cacheTime').attr("disabled", "disabled");
+			}
+			else
+			{
+				// enable input field
+				$('#cacheTime').attr("disabled", "");
+			}
+		});	
+		
 	},
 
 

@@ -32,6 +32,7 @@
 			<p>
 				<label for="cacheTime">{$lblCacheTime|ucfirst}</label>
 				{$txtCacheTime} {$txtCacheTimeError}
+				<span class="helpTxt">{$msgHelpCacheTime}</span>
 			</p>
 		</div>
 	</div>
