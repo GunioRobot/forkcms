@@ -47,7 +47,7 @@ class MultiCurl
 	 * Creates an instance of MultiCurl, setting the maximum connections and options.
 	 *
 	 * @return	void
-	 * @param	int[optional] $maxRequests			The maximum connections.
+	 * @param	int[optional] $maxConnections			The maximum connections.
 	 * @param	array[optional] $options			The cURL options.
 	 */
     public function __construct($maxConnections = 10, $options = array())
@@ -76,6 +76,71 @@ class MultiCurl
 
 
     /**
+	 * Checks to see if any of the outstanding requests have finished.
+	 *
+	 * @return	void
+	 */
+    private function checkForCompletedRequests()
+    {
+
+        // call select to see if anything is waiting for us
+        if(curl_multi_select($this->multiHandle, 0.0) === -1) return;
+
+        // since something's waiting, give curl a chance to process it
+        do
+        {
+            $mrc = curl_multi_exec($this->multiHandle, $active);
+        }
+        while($mrc == CURLM_CALL_MULTI_PERFORM);
+
+        // now grab the information about the completed requests
+        while($info = curl_multi_info_read($this->multiHandle))
+        {
+			// get the handle instance
+            $ch = $info['handle'];
+
+            // check if we can find this handle in the oustanding requests
+            if(!isset($this->outstandingRequests[intval($ch)]))
+            {
+                // throw exception
+            	throw new MultiCurlException('Handle wasn\'t found in outstanding requests.');
+            }
+
+            // get the request
+            $request = $this->outstandingRequests[intval($ch)];
+            $url = $request['url'];
+            $callback = $request['callback'];
+            $userData = $request['user_data'];
+
+            // fetch the content
+            $content = curl_multi_getcontent($ch);
+
+            // call the callback funtion
+            call_user_func($callback, $content, $url, $ch, $userData);
+
+            // the handle is finished, remove it from the array
+            unset($this->outstandingRequests[intval($ch)]);
+
+            // remove the handle
+            curl_multi_remove_handle($this->multiHandle, $ch);
+        }
+    }
+
+
+	/**
+	 * You *MUST* call this function at the end of your script. It waits for any running requests
+	 * to complete, and calls their callback functions.
+	 *
+	 * @return	void
+	 */
+    public function finishAllRequests()
+    {
+        // waint until there is less then 1 open connection (= all requests done)
+    	$this->waitForOutstandingRequestsToDropBelow(1);
+    }
+
+
+	/**
 	 * Start a fetch from the $url address, calling the $callback function passing the optional
 	 * $userData value. The callback should accept 3 arguments, the url, curl handle and user
 	 * data, eg onMultiCurlRequestDone($url, $ch, $userData);
@@ -84,13 +149,12 @@ class MultiCurl
 	 * @param	string $url							The url to call.
 	 * @param	string $callback					The callback function.
 	 * @param	array[optional] $userData			The optional user data.
-	 * @param	array[optional] $postField			The post field.
+	 * @param	array[optional] $postFields			The post fields.
 	 */
-    public function startRequest($url, $callback, $userData = array(), $postFields=null)
+    public function startRequest($url, $callback, $userData = array(), $postFields = null)
     {
 		// check if there is an open connection
-		if($this->maxConnections > 0)
-	        $this->waitForOutstandingRequestsToDropBelow($this->maxConnections);
+		if($this->maxConnections > 0) $this->waitForOutstandingRequestsToDropBelow($this->maxConnections);
 
         // initialize
 	    $ch = curl_init();
@@ -125,72 +189,6 @@ class MultiCurl
 
 
     /**
-	 * You *MUST* call this function at the end of your script. It waits for any running requests
-	 * to complete, and calls their callback functions.
-	 *
-	 * @return	void
-	 */
-    public function finishAllRequests()
-    {
-        // waint until there is less then 1 open connection (= all requests done)
-    	$this->waitForOutstandingRequestsToDropBelow(1);
-    }
-
-
-    /**
-	 * Checks to see if any of the outstanding requests have finished.
-	 *
-	 * @return	void
-	 */
-    private function checkForCompletedRequests()
-    {
-
-        // call select to see if anything is waiting for us
-        if (curl_multi_select($this->multiHandle, 0.0) === -1)
-            return;
-
-        // since something's waiting, give curl a chance to process it
-        do
-        {
-            $mrc = curl_multi_exec($this->multiHandle, $active);
-        }
-        while ($mrc == CURLM_CALL_MULTI_PERFORM);
-
-        // now grab the information about the completed requests
-        while ($info = curl_multi_info_read($this->multiHandle))
-        {
-			// get the handle instance
-            $ch = $info['handle'];
-
-            // check if we can find this handle in the oustanding requests
-            if (!isset($this->outstandingRequests[intval($ch)]))
-            {
-                // throw exception
-            	throw new MultiCurlException('Handle wasn\'t found in outstanding requests.');
-            }
-
-            // get the request
-            $request = $this->outstandingRequests[intval($ch)];
-            $url = $request['url'];
-            $callback = $request['callback'];
-            $userData = $request['user_data'];
-
-            // fetch the content
-            $content = curl_multi_getcontent($ch);
-
-            // call the callback funtion
-            call_user_func($callback, $content, $url, $ch, $userData);
-
-            // the handle is finished, remove it from the array
-            unset($this->outstandingRequests[intval($ch)]);
-
-            // remove the handle
-            curl_multi_remove_handle($this->multiHandle, $ch);
-        }
-    }
-
-
-    /**
 	 * Blocks until there's less than the specified number of requests outstanding.
 	 *
 	 * @return	void
@@ -199,18 +197,17 @@ class MultiCurl
     private function waitForOutstandingRequestsToDropBelow($max)
     {
     	// loop
-    	while (1)
-        {
+    	while(1)
+    	{
             // check for completed requests
         	$this->checkForCompletedRequests();
 
         	// only break if the number of oustanding requests had dropped under the maximum number of connections
-            if (count($this->outstandingRequests)<$max)
-            	break;
+            if(count($this->outstandingRequests)<$max) break;
 
             // pause the code
             usleep(1000);
-        }
+    	}
     }
 }
 
@@ -226,7 +223,7 @@ class MultiCurlException extends Exception
 	 * Class constructor.
 	 *
 	 * @return	void
-	 * @param	string $message				The errormessage.
+	 * @param	string[optional] $message				The errormessage.
 	 */
 	public function __construct($message = null)
 	{
