@@ -11,11 +11,6 @@
  */
 class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 {
-	const cacheDeadLinks = true;
-
-	// wait 30min before re-checking a dead link
-	const cacheTime = 1800;
-
 	/**
 	 * All links found on the website
 	 *
@@ -87,7 +82,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// loop every link if there are any
 		if(isset($this->allLinks))
 		{
-			if(self::cacheDeadLinks)
+			if((bool) BackendModel::getModuleSetting('link_checker', 'cache_dead_links'))
 			{
 				// all the dead links from the previous run
 				$prevDeadLinks = BackendLinkCheckerModel::getDeadUrls();
@@ -112,7 +107,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 							$deadLink = BackendLinkCheckerModel::getDeadUrl($link['url']);
 
 							// check if the link isn't too old
-							if((time() - strtotime($deadLink['date_checked'])) > self::cacheTime)
+							if((time() - strtotime($deadLink['date_checked'])) > (int) BackendModel::getModuleSetting('link_checker', 'cache_time'))
 							{
 								// time to re-check this one
 								$tempAllLinks[] = $link;
@@ -140,7 +135,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$this->emptyDatabase();
 
 
-			if(self::cacheDeadLinks)
+			if((bool) BackendModel::getModuleSetting('link_checker', 'cache_dead_links'))
 			{
 				// do we have dead links that we already knew to be deads?
 				if(isset($knownDeadLinks) && count($knownDeadLinks) > 0)

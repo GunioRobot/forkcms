@@ -53,6 +53,12 @@ class BackendLinkCheckerSettings extends BackendBaseActionEdit
 
 		// add fields for num connections
 		$this->frm->addText('num_connections', BackendModel::getModuleSetting($this->URL->getModule(), 'num_connections', 10));
+
+		// add fields for cache
+		$this->frm->addCheckbox('cache_dead_links', BackendModel::getModuleSetting($this->URL->getModule(), 'cache_dead_links', false));
+
+		// add fields for cache time
+		$this->frm->addText('cache_time', BackendModel::getModuleSetting($this->URL->getModule(), 'cache_time', 1800));
 	}
 
 
@@ -77,6 +83,11 @@ class BackendLinkCheckerSettings extends BackendBaseActionEdit
 
 				$numConnections = $this->frm->getField('num_connections')->getValue() == "" ? BackendModel::getModuleSetting($this->URL->getModule(), 'num_connections', 10) : $this->frm->getField('num_connections')->getValue();
 				BackendModel::setModuleSetting($this->URL->getModule(), 'num_connections', (int) $numConnections);
+
+				BackendModel::setModuleSetting($this->URL->getModule(), 'cache_dead_links', (bool) $this->frm->getField('cache_dead_links')->getValue());
+
+				$numConnections = $this->frm->getField('cache_time')->getValue() == "" ? BackendModel::getModuleSetting($this->URL->getModule(), 'cache_time', 1800) : $this->frm->getField('cache_time')->getValue();
+				BackendModel::setModuleSetting($this->URL->getModule(), 'cache_time', (int) $numConnections);
 
 				// redirect to the settings page
 				$this->redirect(BackendModel::createURLForAction('settings') . '&report=saved');

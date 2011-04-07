@@ -21,6 +21,21 @@
 		</div>
 	</div>
 
+	<div class="box horizontal">
+		<div class="heading">
+			<h3>{$lblCaching|ucfirst}</h3>
+		</div>
+		<div class="options">
+			<ul class="inputList pb0">
+				<li><label for="cacheDeadLinks">{$chkCacheDeadLinks} {$lblCacheDeadLinks|ucfirst}</label></li>
+			</ul>
+			<p>
+				<label for="cacheTime">{$lblCacheTime|ucfirst}</label>
+				{$txtCacheTime} {$txtCacheTimeError}
+			</p>
+		</div>
+	</div>
+
 	<div class="fullwidthOptions">
 		<div class="buttonHolderRight">
 			<input id="save" class="inputButton button mainButton" type="submit" name="save" value="{$lblSave|ucfirst}" />
