@@ -156,7 +156,7 @@ class BackendLinkCheckerHelper
 	 * Get all links on a website
 	 *
 	 * @return array
-	 * @param	string [optional]$returnMode			The way we want the array to be build. 'singleArray' or 'multiArray'
+	 * @param	string[optional] $returnMode			The way we want the array to be build. 'singleArray' or 'multiArray'
 	 */
 	public static function getAllLinks($returnMode = 'singleArray')
 	{

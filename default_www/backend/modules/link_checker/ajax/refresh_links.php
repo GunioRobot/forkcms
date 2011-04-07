@@ -11,6 +11,11 @@
  */
 class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 {
+	const cacheDeadLinks = true;
+
+	// wait 30min before re-checking a dead link
+	const cacheTime = 1800;
+
 	/**
 	 * All links found on the website
 	 *
@@ -82,47 +87,67 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// loop every link if there are any
 		if(isset($this->allLinks))
 		{
-			// all the dead links from the previous run
-			$prevDeadLinks = BackendLinkCheckerModel::getDeadUrls();
-
-			// all the dead links we are about to re-insert
-			$knownDeadLinks = array();
-
-			// as it is stupid to check links we already know to be dead, we remove the dead ones!
-			// loop all previously known dead links
-			if(isset($prevDeadLinks) && count($prevDeadLinks) > 0)
+			if(self::cacheDeadLinks)
 			{
-				// new array
-				$tempAllLinks = array();
+				// all the dead links from the previous run
+				$prevDeadLinks = BackendLinkCheckerModel::getDeadUrls();
 
-				// loop the links we found in the database
-				foreach($this->allLinks as $link)
+				// all the dead links we are about to re-insert
+				$knownDeadLinks = array();
+
+				// as it is stupid to check links we already know to be dead, we remove the dead ones!
+				// loop all previously known dead links
+				if(isset($prevDeadLinks) && count($prevDeadLinks) > 0)
 				{
-					// if the link is found in the array with dead links
-					if(in_array($link['url'], $prevDeadLinks))
-					{
-						// add it to the list that we are about to re-insert without re-checking the http status
-						$knownDeadLinks[] = BackendLinkCheckerModel::getDeadUrl($link['url']);
-					}
-					else
-					{
-						// we don't know if the link is dead, copy it to the array with links we need to check
-						$tempAllLinks[] = $link;
-					}
-				}
+					// new array
+					$tempAllLinks = array();
 
-				// copy the temp array back to the working array
-				$this->allLinks = $tempAllLinks;
+					// loop the links we found in the database
+					foreach($this->allLinks as $link)
+					{
+						// if the link is found in the array with dead links
+						if(in_array($link['url'], $prevDeadLinks))
+						{
+							// get the dead link
+							$deadLink = BackendLinkCheckerModel::getDeadUrl($link['url']);
+
+							// check if the link isn't too old
+							if((time() - strtotime($deadLink['date_checked'])) > self::cacheTime)
+							{
+								// time to re-check this one
+								$tempAllLinks[] = $link;
+							}
+							else
+							{
+
+								// add it to the list that we are about to re-insert without re-checking the http status
+								$knownDeadLinks[] = $deadLink;
+							}
+						}
+						else
+						{
+							// we don't know if the link is dead, copy it to the array with links we need to check
+							$tempAllLinks[] = $link;
+						}
+					}
+
+					// copy the temp array back to the working array
+					$this->allLinks = $tempAllLinks;
+				}
 			}
 
 			// empty database database
 			$this->emptyDatabase();
 
-			// do we have dead links that we already knew to be deads?
-			if(isset($knownDeadLinks) && count($knownDeadLinks) > 0)
+
+			if(self::cacheDeadLinks)
 			{
-				// yes, insert them in the database
-				BackendLinkCheckerModel::insertLinks($knownDeadLinks);
+				// do we have dead links that we already knew to be deads?
+				if(isset($knownDeadLinks) && count($knownDeadLinks) > 0)
+				{
+					// yes, insert them in the database
+					BackendLinkCheckerModel::insertLinks($knownDeadLinks);
+				}
 			}
 
 			// check all links, get there error code and insert into database
