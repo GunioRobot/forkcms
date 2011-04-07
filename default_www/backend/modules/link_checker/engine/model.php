@@ -86,6 +86,20 @@ class BackendLinkCheckerModel
 
 
 	/**
+	 * Get the requested dead url
+	 *
+	 * @return	array
+	 */
+	public static function getDeadUrl($url)
+	{
+		// fetch and return the records
+		return (array) BackendModel::getDB()->getRecord('SELECT c.module, c.item_id, c.item_title, c.url, c.error_code, c.external, c.language, c.date_checked
+															FROM link_checker_results AS c
+															WHERE c.url = ?', $url);
+	}
+
+
+	/**
 	 * Get all module entries
 	 *
 	 * @return	array
