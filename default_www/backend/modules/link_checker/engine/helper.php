@@ -48,41 +48,68 @@ class BackendLinkCheckerHelper
 			// loop the urls
 			foreach($urls as $url)
 			{
-				// initialize
-				$ch = curl_init();
-
-				// set the url
-				curl_setopt($ch, CURLOPT_URL, $url['url']);
-
-				// set the curl options
-				curl_setopt($ch, CURLOPT_HEADER, 1);
-				curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-				curl_setopt($ch, CURLOPT_NOBODY, 1);
-				curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
-				curl_setopt($ch, CURLOPT_USERAGENT, 'Spoon ' . SPOON_VERSION);
-
-				// execute and fetch the resulting HTML output
-				curl_exec($ch);
-
-				// get the info on the curl handle
-				$chinfo = curl_getinfo($ch);
-
-				// free up the curl handle
-				curl_close($ch);
-
-				// insert only non working links
-				if($chinfo['http_code'] == 404 || $chinfo['http_code'] == 0)
+				// check if url is found in cache
+				if(BackendLinkCheckerModel::isValidCache($url['url']))
 				{
-					// build array
-					$value = array();
-				    $value = $url;
-				    $value['error_code'] = $chinfo['http_code'];
-				    $value['date_checked'] = SpoonDate::getDate('Y-m-d H:i:s');
+					// get the information we have in cache
+					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
 
-				    // add to all dead links array
-				    self::$allDeadLinks[] = $value;
+					// insert only non working links
+					if($cacheLink['error_code'] == 404 || $cacheLink['error_code'] == 0)
+					{
+						// build array
+						$value = array();
+					    $value = $url;
+					    $value['error_code'] = $cacheLink['error_code'];
+					    $value['date_checked'] = $cacheLink['date_checked'];
+
+					    // add to all dead links array
+					    self::$allDeadLinks[] = $value;
+					}
+				}
+
+				// url not found in cache or too old
+				else
+				{
+					// initialize
+					$ch = curl_init();
+
+					// set the url
+					curl_setopt($ch, CURLOPT_URL, $url['url']);
+
+					// set the curl options
+					curl_setopt($ch, CURLOPT_HEADER, 1);
+					curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+					curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+					curl_setopt($ch, CURLOPT_NOBODY, 1);
+					curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+					curl_setopt($ch, CURLOPT_USERAGENT, 'Spoon ' . SPOON_VERSION);
+
+					// execute and fetch the resulting HTML output
+					curl_exec($ch);
+
+					// get the info on the curl handle
+					$chinfo = curl_getinfo($ch);
+
+					// free up the curl handle
+					curl_close($ch);
+
+					// insert only non working links
+					if($chinfo['http_code'] == 404 || $chinfo['http_code'] == 0)
+					{
+						// build array
+						$value = array();
+					    $value = $url;
+					    $value['error_code'] = $chinfo['http_code'];
+					    $value['date_checked'] = SpoonDate::getDate('Y-m-d H:i:s');
+
+					    // add to all dead links array
+					    self::$allDeadLinks[] = $value;
+					}
+
+					// insert cache
+					BackendLinkCheckerModel::insertCache($url['url'], $chinfo['http_code'], SpoonDate::getDate('Y-m-d H:i:s'));
 				}
 			}
 
@@ -112,8 +139,32 @@ class BackendLinkCheckerHelper
 			// loop the urls
 			foreach($urls as $url)
 			{
-				// add request
-				$multiCurl->startRequest($url['url'], array('BackendLinkCheckerHelper', 'onMultiCurlRequestDone'), $url);
+				// check if url is found in cache
+				if(BackendLinkCheckerModel::isValidCache($url['url']))
+				{
+					// get the information we have in cache
+					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
+
+					// insert only non working links
+					if($cacheLink['error_code'] == 404 || $cacheLink['error_code'] == 0)
+					{
+						// build array
+						$value = array();
+					    $value = $url;
+					    $value['error_code'] = $cacheLink['error_code'];
+					    $value['date_checked'] = $cacheLink['date_checked'];
+
+					    // add to all dead links array
+					    self::$allDeadLinks[] = $value;
+					}
+				}
+
+				// url not found in cache or too old
+				else
+				{
+					// add request
+					$multiCurl->startRequest($url['url'], array('BackendLinkCheckerHelper', 'onMultiCurlRequestDone'), $url);
+				}
 			}
 
 			// finish all open requests
@@ -354,6 +405,9 @@ class BackendLinkCheckerHelper
 		    // add to all dead links array
 		    self::$allDeadLinks[] = $value;
 	    }
+
+	    // insert cache
+		BackendLinkCheckerModel::insertCache($userData['url'], $httpcode, SpoonDate::getDate('Y-m-d H:i:s'));
 	}
 
 

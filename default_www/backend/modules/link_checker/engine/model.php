@@ -15,12 +15,24 @@ class BackendLinkCheckerModel
 	/**
 	 * Empty database
 	 *
-	 * @return	array
+	 * @return	void
 	 */
 	public static function clear()
 	{
 		// truncate table
 		BackendModel::getDB()->truncate('link_checker_results');
+	}
+
+
+	/**
+	 * Empty cache
+	 *
+	 * @return	void
+	 */
+	public static function clearCache()
+	{
+		// truncate table
+		BackendModel::getDB()->truncate('link_checker_cache');
 	}
 
 
@@ -48,6 +60,19 @@ class BackendLinkCheckerModel
 		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id, c.date_checked
 															FROM link_checker_results AS c
 															WHERE c.language = ?', BL::getWorkingLanguage());
+	}
+
+
+	/**
+	 * Get cache url
+	 *
+	 * @return	array
+	 * @param string $url	The requested url.
+	 */
+	public static function getCacheLink($url)
+	{
+		// fetch and return the records
+		return (array) BackendModel::getDB()->getRecord('SELECT l.url, l.error_code, l.date_checked FROM link_checker_cache AS l WHERE l.url = ? ORDER BY l.date_checked DESC', $url);
 	}
 
 
@@ -202,6 +227,21 @@ class BackendLinkCheckerModel
 
 
 	/**
+	 * Insert cache
+	 *
+	 * @return	array
+	 * @param	string $url				The checked url.
+	 * @param	string $httpCode		The http code of the checked url.
+	 * @param	string $dateChecked		The date the url was checked.
+	 */
+	public static function insertCache($url, $httpCode, $dateChecked)
+	{
+		// insert cache
+		BackendModel::getDB()->insert('link_checker_cache', array('url' => $url, 'error_code' => $httpCode, 'date_checked' => $dateChecked));
+	}
+
+
+	/**
 	 * Insert links
 	 *
 	 * @return	array
@@ -211,6 +251,28 @@ class BackendLinkCheckerModel
 	{
 		// insert freshly found dead links
 		if(!empty($values)) BackendModel::getDB()->insert('link_checker_results', $values);
+	}
+
+
+	/**
+	 * Is the link a valid cache url?
+	 *
+	 * @return	bool
+	 * @param	string $url		The url to check.
+	 */
+	public static function isValidCache($url)
+	{
+		// max cache time
+		$maxTime = (int) BackendModel::getModuleSetting('link_checker', 'cache_time');
+
+		// retrieve most recent saved cache url
+		$return = BackendModel::getDB()->getRecord("SELECT l.url, l.error_code, l.date_checked FROM link_checker_cache AS l WHERE l.url = ? ORDER BY l.date_checked DESC", array($url));
+
+		// check if most recent is still valid
+		if((time() - strtotime($return['date_checked'])) < $maxTime) return true;
+
+		// else
+		return false;
 	}
 }
 

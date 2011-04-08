@@ -44,6 +44,9 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 	{
 		// empty database
 		BackendLinkCheckerModel::clear();
+
+		// empty cache
+		BackendLinkCheckerModel::clearCache();
 	}
 
 
