@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<locale>
+  <backend>
+    <link_checker>
+      <item type="label" name="All">
+        <translation language="en"><![CDATA[all]]></translation>
+      </item>
+      <item type="label" name="Code">
+        <translation language="en"><![CDATA[code]]></translation>
+      </item>
+      <item type="label" name="DateChecked">
+        <translation language="en"><![CDATA[last checked]]></translation>
+      </item>
+      <item type="label" name="External">
+        <translation language="en"><![CDATA[external]]></translation>
+      </item>
+      <item type="label" name="Internal">
+        <translation language="en"><![CDATA[internal]]></translation>
+      </item>
+      <item type="label" name="Url">
+        <translation language="en"><![CDATA[destination]]></translation>
+      </item>
+      <item type="message" name="ErrorCode0">
+        <translation language="en"><![CDATA[Website is dead.]]></translation>
+      </item>
+      <item type="message" name="ErrorCode404">
+        <translation language="en"><![CDATA[Page not found.]]></translation>
+      </item>
+    </link_checker>
+  </backend>
+</locale>

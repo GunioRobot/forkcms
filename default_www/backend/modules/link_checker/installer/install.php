@@ -19,7 +19,7 @@ class LinkCheckerInstall extends ModuleInstaller
 	protected function execute()
 	{
 		// load install.sql
-		$this->importSQL(dirname(__FILE__) . '/install.sql');
+		$this->importSQL(dirname(__FILE__) . '/data/install.sql');
 
 		// add 'link_checker' as a module
 		$this->addModule('link_checker', 'The link checker module.');
@@ -38,19 +38,13 @@ class LinkCheckerInstall extends ModuleInstaller
 		$this->setActionRights(1, 'link_checker', 'index');
 		$this->setActionRights(1, 'link_checker', 'settings');
 
+		// import locale
+		$this->importLocale(dirname(__FILE__) . '/data/locale.xml');
+
 		// insert locale (en)
 		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'Url', 'destination');
 		$this->insertLocale('en', 'backend', 'dashboard', 'msg', 'NoLinks', 'No broken links.');
 		$this->insertLocale('en', 'backend', 'dashboard', 'msg', 'AllLinks', 'Edit links');
-
-		$this->insertLocale('en', 'backend', 'link_checker', 'lbl', 'All', 'all');
-		$this->insertLocale('en', 'backend', 'link_checker', 'lbl', 'Internal', 'internal');
-		$this->insertLocale('en', 'backend', 'link_checker', 'lbl', 'External', 'external');
-		$this->insertLocale('en', 'backend', 'link_checker', 'lbl', 'Code', 'code');
-		$this->insertLocale('en', 'backend', 'link_checker', 'lbl', 'Url', 'destination');
-		$this->insertLocale('en', 'backend', 'link_checker', 'lbl', 'DateChecked', 'last checked');
-		$this->insertLocale('en', 'backend', 'link_checker', 'msg', 'ErrorCode404', 'Page not found.');
-		$this->insertLocale('en', 'backend', 'link_checker', 'msg', 'ErrorCode0', 'Website is dead.');
 
 		$this->insertLocale('en', 'backend', 'core', 'msg', 'DeadLinksToModerate', '%1$s link(s) to correct.');
 		$this->insertLocale('en', 'backend', 'core', 'msg', 'NoLinks', 'No broken links.');
