@@ -39,8 +39,9 @@ class BackendLinkCheckerHelper
 	 */
 	public static function checkLinks($urls)
 	{
-		// get module setting
+		// get module settings
 		$doMultiCall = (bool) BackendModel::getModuleSetting('link_checker', 'multi_call');
+		$linkCacheEnabled = (bool) BackendModel::getModuleSetting('link_checker', 'cache_links');
 
 		// single call
 		if(!$doMultiCall)
@@ -49,7 +50,7 @@ class BackendLinkCheckerHelper
 			foreach($urls as $url)
 			{
 				// check if url is found in cache
-				if(BackendLinkCheckerModel::isValidCache($url['url']))
+				if(BackendLinkCheckerModel::isValidCache($url['url']) && $linkCacheEnabled)
 				{
 					// get the information we have in cache
 					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
@@ -140,7 +141,7 @@ class BackendLinkCheckerHelper
 			foreach($urls as $url)
 			{
 				// check if url is found in cache
-				if(BackendLinkCheckerModel::isValidCache($url['url']))
+				if(BackendLinkCheckerModel::isValidCache($url['url']) && $linkCacheEnabled)
 				{
 					// get the information we have in cache
 					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);

@@ -27,7 +27,7 @@
 		</div>
 		<div class="options">
 			<ul class="inputList pb0">
-				<li><label for="cacheDeadLinks">{$chkCacheDeadLinks} {$lblCacheDeadLinks|ucfirst}</label></li>
+				<li><label for="cacheLinks">{$chkCacheLinks} {$lblCacheLinks|ucfirst}</label></li>
 			</ul>
 			<p>
 				<label for="cacheTime">{$lblCacheTime|ucfirst}</label>

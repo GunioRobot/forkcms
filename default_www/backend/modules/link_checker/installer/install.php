@@ -28,7 +28,7 @@ class LinkCheckerInstall extends ModuleInstaller
 		$this->setSetting('link_checker', 'multi_call', false);
 		$this->setSetting('link_checker', 'multi_call', 10);
 
-		$this->setSetting('link_checker', 'cache_dead_links', false);
+		$this->setSetting('link_checker', 'cache_links', false);
 		$this->setSetting('link_checker', 'cache_time', 1800);
 
 		// module rights
@@ -66,7 +66,7 @@ class LinkCheckerInstall extends ModuleInstaller
 
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'Caching', 'caching');
 		$this->insertLocale('en', 'backend', 'core', 'lbl', 'CacheTime', 'cache time');
-		$this->insertLocale('en', 'backend', 'core', 'lbl', 'CacheDeadLinks', 'cache dead links');
+		$this->insertLocale('en', 'backend', 'core', 'lbl', 'CacheLinks', 'cache links');
 
 		$this->insertLocale('en', 'backend', 'core', 'msg', 'HelpCacheTime', 'time in seconds');
 	}

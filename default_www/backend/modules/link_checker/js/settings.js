@@ -33,13 +33,13 @@ jsBackend.link_checkerSettings =
 		
 		$('#cacheTime').attr("disabled", "");
 		
-		if(!$('#cacheDeadLinks').attr("checked"))
+		if(!$('#cacheLinks').attr("checked"))
 		{
 			// disable input field
 			$('#cacheTime').attr("disabled", "disabled");
 		}
 		
-		$('#cacheDeadLinks').change(function ()
+		$('#cacheLinks').change(function ()
 		{			
 			if(!$(this).attr("checked"))
 			{
