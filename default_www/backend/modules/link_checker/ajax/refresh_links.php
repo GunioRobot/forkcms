@@ -29,69 +29,6 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// loop every link if there are any
 		if(isset($this->allLinks))
 		{
-			if((bool) BackendModel::getModuleSetting('link_checker', 'cache_dead_links'))
-			{
-				// all the dead links from the previous run
-				$prevDeadLinks = BackendLinkCheckerModel::getDeadUrls();
-
-				// all the dead links we are about to re-insert
-				$knownDeadLinks = array();
-
-				// as it is stupid to check links we already know to be dead, we remove the dead ones!
-				// loop all previously known dead links
-				if(isset($prevDeadLinks) && count($prevDeadLinks) > 0)
-				{
-					// new array
-					$tempAllLinks = array();
-
-					// loop the links we found in the database
-					foreach($this->allLinks as $link)
-					{
-						// if the link is found in the array with dead links
-						if(in_array($link['url'], $prevDeadLinks))
-						{
-							// get the dead link
-							$deadLink = BackendLinkCheckerModel::getDeadUrl($link['url']);
-
-							// check if the link isn't too old
-							if((time() - strtotime($deadLink['date_checked'])) > (int) BackendModel::getModuleSetting('link_checker', 'cache_time'))
-							{
-								// time to re-check this one
-								$tempAllLinks[] = $link;
-							}
-							else
-							{
-
-								// add it to the list that we are about to re-insert without re-checking the http status
-								$knownDeadLinks[] = $deadLink;
-							}
-						}
-						else
-						{
-							// we don't know if the link is dead, copy it to the array with links we need to check
-							$tempAllLinks[] = $link;
-						}
-					}
-
-					// copy the temp array back to the working array
-					$this->allLinks = $tempAllLinks;
-				}
-			}
-
-			// empty database database
-			$this->emptyDatabase();
-
-
-			if((bool) BackendModel::getModuleSetting('link_checker', 'cache_dead_links'))
-			{
-				// do we have dead links that we already knew to be deads?
-				if(isset($knownDeadLinks) && count($knownDeadLinks) > 0)
-				{
-					// yes, insert them in the database
-					BackendLinkCheckerModel::insertLinks($knownDeadLinks);
-				}
-			}
-
 			// check all links, get there error code and insert into database
 			BackendLinkCheckerHelper::checkLinks($this->allLinks);
 		}
@@ -119,6 +56,9 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 	{
 		// call parent, this will probably add some general CSS/JS or other required files
 		parent::execute();
+
+		// empty database
+		$this->emptyDatabase();
 
 		// require the helper class
 		require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
