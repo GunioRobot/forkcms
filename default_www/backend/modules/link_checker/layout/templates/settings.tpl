@@ -14,7 +14,7 @@
 			<ul class="inputList pb0">
 				<li><label for="multiCall">{$chkMultiCall} {$lblMultiCall|ucfirst}</label></li>
 			</ul>
-			<p>
+			<p id="setConnections">
 				<label for="numConnections">{$lblNumConnections|ucfirst}</label>
 				{$txtNumConnections} {$txtNumConnectionsError}
 			</p>
@@ -29,7 +29,7 @@
 			<ul class="inputList pb0">
 				<li><label for="cacheLinks">{$chkCacheLinks} {$lblCacheLinks|ucfirst}</label></li>
 			</ul>
-			<p>
+			<p id="setCache">
 				<label for="cacheTime">{$lblCacheTime|ucfirst}</label>
 				{$txtCacheTime} {$txtCacheTimeError}
 				<span class="helpTxt">{$msgHelpCacheTime}</span>

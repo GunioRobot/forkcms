@@ -4,7 +4,7 @@ jsBackend.link_checkerSettings =
 {
 	init: function()
 	{
-		// disable the numConnections input field when the multicall checkbox is unchecked
+		// disable and hide the numConnections input field when the multicall checkbox is unchecked
 		
 		$('#numConnections').attr("disabled", "");
 		
@@ -12,6 +12,9 @@ jsBackend.link_checkerSettings =
 		{
 			// disable input field
 			$('#numConnections').attr("disabled", "disabled");
+			
+			// hide the input field
+			$('#setConnections').hide();
 		}
 		
 		$('#multiCall').change(function ()
@@ -20,16 +23,22 @@ jsBackend.link_checkerSettings =
 			{
 				// disable input field
 				$('#numConnections').attr("disabled", "disabled");
+				
+				// hide the input field
+				$('#setConnections').hide();
 			}
 			else
 			{
 				// enable input field
 				$('#numConnections').attr("disabled", "");
+				
+				// show the input field
+				$('#setConnections').show();
 			}
 		});	
 		
 		
-		// disable the cacheTime input field when the cacheDeadLinks checkbox is unchecked
+		// disable and hide the cacheTime input field when the cacheDeadLinks checkbox is unchecked
 		
 		$('#cacheTime').attr("disabled", "");
 		
@@ -37,6 +46,9 @@ jsBackend.link_checkerSettings =
 		{
 			// disable input field
 			$('#cacheTime').attr("disabled", "disabled");
+			
+			// hide the input field
+			$('#setCache').hide();
 		}
 		
 		$('#cacheLinks').change(function ()
@@ -45,11 +57,17 @@ jsBackend.link_checkerSettings =
 			{
 				// disable input field
 				$('#cacheTime').attr("disabled", "disabled");
+				
+				// hide the input field
+				$('#setCache').hide();
 			}
 			else
 			{
 				// enable input field
 				$('#cacheTime').attr("disabled", "");
+				
+				// show the input field
+				$('#setCache').show();
 			}
 		});	
 		
