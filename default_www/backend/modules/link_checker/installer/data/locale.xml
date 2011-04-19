@@ -67,6 +67,9 @@
       <item type="message" name="HelpCacheTime">
         <translation language="en"><![CDATA[time in seconds]]></translation>
       </item>
+      <item type="message" name="ClearLinkCache">
+        <translation language="en"><![CDATA[clear cache]]></translation>
+      </item>
     </core>    
     <dashboard>
       <item type="label" name="Url">

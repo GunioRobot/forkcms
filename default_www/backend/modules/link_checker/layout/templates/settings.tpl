@@ -14,10 +14,10 @@
 			<ul class="inputList pb0">
 				<li><label for="multiCall">{$chkMultiCall} {$lblMultiCall|ucfirst}</label></li>
 			</ul>
-			<p id="setConnections">
+			<div id="setConnections">
 				<label for="numConnections">{$lblNumConnections|ucfirst}</label>
 				{$txtNumConnections} {$txtNumConnectionsError}
-			</p>
+			</div>
 		</div>
 	</div>
 
@@ -29,11 +29,18 @@
 			<ul class="inputList pb0">
 				<li><label for="cacheLinks">{$chkCacheLinks} {$lblCacheLinks|ucfirst}</label></li>
 			</ul>
-			<p id="setCache">
+			<div id="setCache">
 				<label for="cacheTime">{$lblCacheTime|ucfirst}</label>
 				{$txtCacheTime} {$txtCacheTimeError}
 				<span class="helpTxt">{$msgHelpCacheTime}</span>
-			</p>
+
+				<br/>
+				<div class="buttonHolder">
+					<a href="#" class="submitButton button inputButton" id="clearLinkCache">
+						<span>{$msgClearLinkCache|ucfirst}</span>
+					</a>
+				</div>
+			</div>
 		</div>
 	</div>
 
