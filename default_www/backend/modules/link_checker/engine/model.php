@@ -67,7 +67,7 @@ class BackendLinkCheckerModel
 	 * Get cache url
 	 *
 	 * @return	array
-	 * @param string $url	The requested url.
+	 * @param	string $url		The requested url.
 	 */
 	public static function getCacheLink($url)
 	{
