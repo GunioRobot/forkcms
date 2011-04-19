@@ -49,27 +49,31 @@ class BackendLinkCheckerHelper
 			// loop the urls
 			foreach($urls as $url)
 			{
-				// check if url is found in cache
-				if(BackendLinkCheckerModel::isValidCache($url['url']) && $linkCacheEnabled)
+				// use chache?
+				if($linkCacheEnabled)
 				{
-					// get the information we have in cache
-					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
-
-					// insert only non working links
-					if($cacheLink['error_code'] == 404 || $cacheLink['error_code'] == 0)
+					// check if url is found in cache
+					if(BackendLinkCheckerModel::isValidCache($url['url']))
 					{
-						// build array
-						$value = array();
-					    $value = $url;
-					    $value['error_code'] = $cacheLink['error_code'];
-					    $value['date_checked'] = $cacheLink['date_checked'];
+						// get the information we have in cache
+						$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
 
-					    // add to all dead links array
-					    self::$allDeadLinks[] = $value;
+						// insert only non working links
+						if($cacheLink['error_code'] == 404 || $cacheLink['error_code'] == 0)
+						{
+							// build array
+							$value = array();
+						    $value = $url;
+						    $value['error_code'] = $cacheLink['error_code'];
+						    $value['date_checked'] = $cacheLink['date_checked'];
+
+						    // add to all dead links array
+						    self::$allDeadLinks[] = $value;
+						}
 					}
 				}
 
-				// url not found in cache or too old
+				// url not found in cache, too old or cache is disabled
 				else
 				{
 					// initialize
