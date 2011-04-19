@@ -150,7 +150,9 @@ class BackendLinkCheckerModel
 		switch($module)
 		{
 		    case 'blog':
-		        // build blog text query
+		        // here we need two queries as a blog post has an independant intro text
+
+		    	// build blog text query
 		    	$queryText = "SELECT p.text, p.title, p.id, p.language FROM blog_posts AS p
 						WHERE p.text LIKE '%href=%'
 						AND p.status = 'active'
@@ -168,7 +170,7 @@ class BackendLinkCheckerModel
 		    	// fetch introduction records
 		        $recordsIntro = (array) BackendModel::getDB()->getRecords($queryIntro);
 
-		        // merge arrays
+		        // merge both result arrays
 		        $records = array_merge($recordsText, $recordsIntro);
 		    break;
 
@@ -212,17 +214,19 @@ class BackendLinkCheckerModel
 
 
 	/**
-	 * Get 5 most recent links
+	 * Get the most recent found dead links
 	 *
 	 * @return	array
+	 * @param	int $limit		The amout of links to display.
+	 *
 	 */
-	public static function getMostRecent()
+	public static function getMostRecent($limit)
 	{
 		// fetch and return the records
 		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id, c.date_checked
 															FROM link_checker_results AS c
 															WHERE c.language = ?
-															LIMIT 5', BL::getWorkingLanguage());
+															LIMIT ?', array(BL::getWorkingLanguage(), $limit));
 	}
 
 

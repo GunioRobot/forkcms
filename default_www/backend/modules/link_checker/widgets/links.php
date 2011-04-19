@@ -16,7 +16,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 	 *
 	 * @var	BackendDataGridDB
 	 */
-	private $dgAll;
+	private $dgRecent;
 
 
 	/**
@@ -51,16 +51,13 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 	private function loadDataGrid()
 	{
 		// new data grid (only show the 5 most recent links)
-		$this->dgAll = new BackendDataGridArray(BackendLinkCheckerModel::getMostRecent());
-
-		// set datagrid paging limit
-		$this->dgAll->setPagingLimit(5);
+		$this->dgRecent = new BackendDataGridArray(BackendLinkCheckerModel::getMostRecent(5));
 
 		// set columns hidden
-		$this->dgAll->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
+		$this->dgRecent->setColumnsHidden(array('title', 'description', 'item_id', 'date_checked'));
 
 		// set column functions
-		$this->dgAll->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module', true);
+		$this->dgRecent->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module', true);
 	}
 
 
@@ -72,7 +69,7 @@ class BackendLinkCheckerWidgetLinks extends BackendBaseWidget
 	private function parse()
 	{
 		// all datagrid and num results
-		$this->tpl->assign('dgAll', ($this->dgAll->getNumResults() != 0) ? $this->dgAll->getContent() : false);
+		$this->tpl->assign('dgRecent', ($this->dgRecent->getNumResults() != 0) ? $this->dgRecent->getContent() : false);
 
 		// set moderation highlight message (count all dead links)
 		$this->tpl->assign('numDeadLinksFound', count(BackendLinkCheckerModel::getAll()));

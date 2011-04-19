@@ -16,19 +16,19 @@
 	</div>
 	{/option:numDeadLinksFound}
 
-	{option:dgAll}
-	<div id="datagridAll">
+	{option:dgRecent}
+	<div id="datagridRecent">
 		<div class="options content">
 			<div class="datagridHolder">
-				{$dgAll}
+				{$dgRecent}
 			</div>
 		</div>
 	</div>
-	{/option:dgAll}
+	{/option:dgRecent}
 
-	{option:!dgAll}
+	{option:!dgRecent}
 	<div class="options content">
 		<p>{$msgNoLinks|ucfirst}</p>
 	</div>
-	{/option:!dgAll}
+	{/option:!dgRecent}
 </div>
