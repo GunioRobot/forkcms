@@ -7,7 +7,7 @@
  * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
- * @since		2.0
+ * @since		2.1
  */
 class BackendLinkCheckerSettings extends BackendBaseActionEdit
 {
@@ -34,7 +34,7 @@ class BackendLinkCheckerSettings extends BackendBaseActionEdit
 		$this->display();
 
 		// add javascript
-		$this->header->addJavascript('settings.js', 'link_checker');
+		$this->header->addJS('settings.js');
 	}
 
 

@@ -7,7 +7,7 @@
  * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
- * @since		2.0
+ * @since		2.1
  */
 class BackendLinkCheckerIndex extends BackendBaseActionIndex
 {
@@ -30,7 +30,7 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		parent::execute();
 
 		// add refresh javascript
-		$this->header->addJavascript('module.js', 'link_checker');
+		$this->header->addJS('module.js');
 
 		// delete non used dead links
 		BackendLinkCheckerHelper::cleanup();

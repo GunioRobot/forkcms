@@ -11,7 +11,7 @@ require_once 'external/multicurl.php';
  * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
- * @since		2.0
+ * @since		2.1
  */
 class BackendLinkCheckerHelper
 {
