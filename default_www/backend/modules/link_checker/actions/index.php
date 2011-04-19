@@ -63,7 +63,7 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgAll->setPagingLimit(10);
 
 		// sorting
-		$this->dgAll->setSortingColumns(array('title'), 'title');
+		$this->dgAll->setSortingColumns(array('title', 'date_checked'), 'title');
 		$this->dgAll->setSortParameter('desc');
 
 		// add edit column
@@ -94,7 +94,7 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgInternal->setPagingLimit(10);
 
 		// sorting
-		$this->dgInternal->setSortingColumns(array('title'), 'title');
+		$this->dgInternal->setSortingColumns(array('title', 'date_checked'), 'title');
 		$this->dgInternal->setSortParameter('desc');
 
 		// add edit column
@@ -125,7 +125,7 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgExternal->setPagingLimit(10);
 
 		// sorting
-		$this->dgExternal->setSortingColumns(array('title'), 'title');
+		$this->dgExternal->setSortingColumns(array('title', 'date_checked'), 'title');
 
 		$this->dgExternal->setSortParameter('desc');
 

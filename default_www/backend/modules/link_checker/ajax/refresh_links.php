@@ -112,7 +112,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('title'), 'title');
+			$datagrid->setSortingColumns(array('title', 'date_checked'), 'title');
 			$datagrid->setSortParameter('desc');
 
 			// add edit column
@@ -178,7 +178,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('title'), 'title');
+			$datagrid->setSortingColumns(array('title', 'date_checked'), 'title');
 			$datagrid->setSortParameter('desc');
 
 			// add edit column
@@ -244,7 +244,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('title'), 'title');
+			$datagrid->setSortingColumns(array('title', 'date_checked'), 'title');
 			$datagrid->setSortParameter('desc');
 
 			// add edit column
