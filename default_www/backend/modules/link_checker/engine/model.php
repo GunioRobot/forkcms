@@ -72,7 +72,9 @@ class BackendLinkCheckerModel
 	public static function getCacheLink($url)
 	{
 		// fetch and return the records
-		return (array) BackendModel::getDB()->getRecord('SELECT l.url, l.error_code, l.date_checked FROM link_checker_cache AS l WHERE l.url = ? ORDER BY l.date_checked DESC', $url);
+		return (array) BackendModel::getDB()->getRecord('SELECT l.url, l.error_code, l.date_checked
+															FROM link_checker_cache AS l
+															WHERE l.url = ? ORDER BY l.date_checked DESC', $url);
 	}
 
 
@@ -154,18 +156,18 @@ class BackendLinkCheckerModel
 
 		    	// build blog text query
 		    	$queryText = "SELECT p.text, p.title, p.id, p.language FROM blog_posts AS p
-						WHERE p.text LIKE '%href=%'
-						AND p.status = 'active'
-						AND p.hidden = 'N'";
+								WHERE p.text LIKE '%href=%'
+								AND p.status = 'active'
+								AND p.hidden = 'N'";
 
 		    	// fetch text records
 		        $recordsText = (array) BackendModel::getDB()->getRecords($queryText);
 
 		         // build blog introduction query
 		    	$queryIntro = "SELECT p.introduction AS text, p.title, p.id, p.language FROM blog_posts AS p
-						WHERE p.introduction LIKE '%href=%'
-						AND p.status = 'active'
-						AND p.hidden = 'N'";
+								WHERE p.introduction LIKE '%href=%'
+								AND p.status = 'active'
+								AND p.hidden = 'N'";
 
 		    	// fetch introduction records
 		        $recordsIntro = (array) BackendModel::getDB()->getRecords($queryIntro);
@@ -177,9 +179,9 @@ class BackendLinkCheckerModel
 		    case 'content_blocks':
 		        // build query
 		    	$query = "SELECT c.text, c.title, c.id, c.language FROM content_blocks AS c
-						WHERE c.text LIKE '%href=%'
-						AND c.status = 'active'
-						AND c.hidden = 'N'";
+							WHERE c.text LIKE '%href=%'
+							AND c.status = 'active'
+							AND c.hidden = 'N'";
 
 		        // fetch records
 		    	$records = BackendModel::getDB()->getRecords($query);
@@ -188,10 +190,10 @@ class BackendLinkCheckerModel
 		    case 'pages':
 		        // build query
 		    	$query = "SELECT p.html as text, pa.id, pa.title, pa.language FROM pages_blocks AS p
-						INNER JOIN pages AS pa on p.revision_id = pa.revision_id
-						WHERE p.html LIKE '%href=%'
-						AND pa.status = 'active'
-						AND pa.hidden = 'N'";
+							INNER JOIN pages AS pa on p.revision_id = pa.revision_id
+							WHERE p.html LIKE '%href=%'
+							AND pa.status = 'active'
+							AND pa.hidden = 'N'";
 
 		        // fetch records
 		    	$records = (array) BackendModel::getDB()->getRecords($query);
@@ -200,8 +202,8 @@ class BackendLinkCheckerModel
 		    case 'faq':
 		        // build query
 		    	$query = "SELECT f.answer as text, f.id, f.question as title, f.language FROM faq_questions AS f
-						WHERE f.answer LIKE '%href=%'
-						AND f.hidden = 'N'";
+							WHERE f.answer LIKE '%href=%'
+							AND f.hidden = 'N'";
 
 		        // fetch records
 		    	$records = (array) BackendModel::getDB()->getRecords($query);
@@ -255,28 +257,6 @@ class BackendLinkCheckerModel
 	{
 		// insert freshly found dead links
 		if(!empty($values)) BackendModel::getDB()->insert('link_checker_results', $values);
-	}
-
-
-	/**
-	 * Is the link a valid cache url?
-	 *
-	 * @return	bool
-	 * @param	string $url		The url to check.
-	 */
-	public static function isValidCache($url)
-	{
-		// max cache time
-		$maxTime = (int) BackendModel::getModuleSetting('link_checker', 'cache_time');
-
-		// retrieve most recent saved cache url
-		$return = BackendModel::getDB()->getRecord("SELECT l.url, l.error_code, l.date_checked FROM link_checker_cache AS l WHERE l.url = ? ORDER BY l.date_checked DESC", array($url));
-
-		// check if most recent is still valid
-		if((time() - strtotime($return['date_checked'])) < $maxTime) return true;
-
-		// else
-		return false;
 	}
 }
 

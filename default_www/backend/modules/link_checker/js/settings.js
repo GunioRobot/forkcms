@@ -6,6 +6,7 @@ jsBackend.link_checkerSettings =
 	{
 		// disable and hide the numConnections input field when the multicall checkbox is unchecked
 		
+		// add the disabled attribute
 		$('#numConnections').attr("disabled", "");
 		
 		if(!$('#multiCall').attr("checked"))
@@ -17,6 +18,7 @@ jsBackend.link_checkerSettings =
 			$('#setConnections').hide();
 		}
 		
+		// checkbox onchange
 		$('#multiCall').change(function ()
 		{			
 			if(!$(this).attr("checked"))
@@ -40,6 +42,7 @@ jsBackend.link_checkerSettings =
 		
 		// disable and hide the cacheTime input field when the cacheDeadLinks checkbox is unchecked
 		
+		// add the disabled attribute
 		$('#cacheTime').attr("disabled", "");
 		
 		if(!$('#cacheLinks').attr("checked"))
@@ -51,6 +54,7 @@ jsBackend.link_checkerSettings =
 			$('#setCache').hide();
 		}
 		
+		// checkbox onchange
 		$('#cacheLinks').change(function ()
 		{			
 			if(!$(this).attr("checked"))

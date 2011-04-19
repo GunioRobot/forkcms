@@ -50,7 +50,7 @@ class BackendLinkCheckerHelper
 			foreach($urls as $url)
 			{
 				// use cache? and is the url a valid cache entry?
-				if($linkCacheEnabled && BackendLinkCheckerModel::isValidCache($url['url']))
+				if($linkCacheEnabled && BackendLinkCheckerHelper::isValidCache($url['url']))
 				{
 					// get the information we have in cache
 					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
@@ -141,7 +141,7 @@ class BackendLinkCheckerHelper
 			foreach($urls as $url)
 			{
 				// use cache? and is the url a valid cache entry?
-				if($linkCacheEnabled && BackendLinkCheckerModel::isValidCache($url['url']))
+				if($linkCacheEnabled && BackendLinkCheckerHelper::isValidCache($url['url']))
 				{
 					// get the information we have in cache
 					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
@@ -381,6 +381,28 @@ class BackendLinkCheckerHelper
 
 
 	/**
+	 * Is the link a valid cache url?
+	 *
+	 * @return	bool
+	 * @param	string $url		The url to check.
+	 */
+	public static function isValidCache($url)
+	{
+		// max cache time
+		$maxTime = (int) BackendModel::getModuleSetting('link_checker', 'cache_time');
+
+		// retrieve most recent saved cache url
+		$return = BackendLinkCheckerModel::getCacheLink($url);
+
+		// check if most recent is still valid
+		if((time() - strtotime($return['date_checked'])) < $maxTime) return true;
+
+		// else
+		return false;
+	}
+
+
+	/**
 	 * This function gets called back for each request that completes
 	 *
 	 * @return	void
@@ -413,10 +435,11 @@ class BackendLinkCheckerHelper
 
 
 	/**
-	 * Helper function to remove the duplicate entries from a multi-dimensional array.
+	 * Recursive array unique function to remove the duplicate entries from an (multi-dimensional) array.
+	 * http://www.php.net/manual/en/function.array-unique.php#97285
 	 *
 	 * @return	$array
-	 * @param	array $array				The multi-dimensional array.
+	 * @param	array $array				The (multi-dimensional) array.
 	 */
 	public static function removeDuplicates($array)
 	{
