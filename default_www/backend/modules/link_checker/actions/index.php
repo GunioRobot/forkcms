@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This is the index-action, it will display the overview of all links checked by the linkchecker
+ * This is the index-action, it will display the overview of all links checked by the module
  *
  * @package		backend
  * @subpackage	link_checker
@@ -87,9 +87,6 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		// fill datagrid with only the internal links
 		$this->dgInternal = new BackendDataGridArray(BackendLinkCheckerModel::getInternal());
 
-		// active tab
-		$this->dgInternal->setActiveTab('tabInternal');
-
 		// num items per page
 		$this->dgInternal->setPagingLimit(10);
 
@@ -117,9 +114,6 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 
 		// fill datagrid with only the external links
 		$this->dgExternal = new BackendDataGridArray(BackendLinkCheckerModel::getExternal());
-
-		// active tab
-		$this->dgExternal->setActiveTab('tabExternal');
 
 		// num items per page
 		$this->dgExternal->setPagingLimit(10);
