@@ -283,7 +283,7 @@ class BackendLinkCheckerHelper
 						// all urls we find in this entry
 						$urlList = array();
 
-						// @todo	comment what happens inside the loop, and what you're looping (like an example of the format in case of $matches)
+						// loop $matches[1] as this contains the URLs that matched our regular expression
 						foreach($matches[1] as $url)
 						{
 							// add the url to the list
@@ -420,7 +420,7 @@ class BackendLinkCheckerHelper
 	 */
 	public static function removeDuplicates($array)
 	{
-		$result = array_map("unserialize", array_unique(array_map("serialize", $array)));
+		$result = array_map('unserialize', array_unique(array_map('serialize', $array)));
 
 	  	foreach($result as $key => $value)
 	  	{
