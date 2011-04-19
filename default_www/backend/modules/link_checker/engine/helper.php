@@ -24,6 +24,22 @@ class BackendLinkCheckerHelper
 
 
 	/**
+	 * cUrl options array
+	 *
+	 * @var array
+	 */
+	private static $curlOptions = array(
+		CURLOPT_TIMEOUT => 10,
+		CURLOPT_USERAGENT => 'Fork CMS LinkChecker',
+		CURLOPT_FOLLOWLOCATION => 1,
+		CURLOPT_RETURNTRANSFER => 1,
+		CURLOPT_MAXREDIRS => 5,
+		CURLOPT_HEADER => 1,
+		CURLOPT_NOBODY => 1
+	);
+
+
+	/**
 	 * All modules that will be checked
 	 *
 	 * @var array
@@ -50,7 +66,7 @@ class BackendLinkCheckerHelper
 			foreach($urls as $url)
 			{
 				// use cache? and is the url a valid cache entry?
-				if($linkCacheEnabled && BackendLinkCheckerHelper::isValidCache($url['url']))
+				if($linkCacheEnabled && self::isValidCache($url['url']))
 				{
 					// get the information we have in cache
 					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
@@ -79,13 +95,7 @@ class BackendLinkCheckerHelper
 					curl_setopt($ch, CURLOPT_URL, $url['url']);
 
 					// set the curl options
-					curl_setopt($ch, CURLOPT_HEADER, 1);
-					curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-					curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-					curl_setopt($ch, CURLOPT_NOBODY, 1);
-					curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
-					curl_setopt($ch, CURLOPT_USERAGENT, 'Spoon ' . SPOON_VERSION);
+					curl_setopt_array($ch, self::$curlOptions);
 
 					// execute and fetch the resulting HTML output
 					curl_exec($ch);
@@ -124,24 +134,14 @@ class BackendLinkCheckerHelper
 			// max connections
 			$maxRequests = (int) BackendModel::getModuleSetting('link_checker', 'num_connections');
 
-			// set the curl options
-			$curlOptions = array(
-			    CURLOPT_TIMEOUT => 10,
-			    CURLOPT_USERAGENT => 'Spoon ' . SPOON_VERSION,
-			    CURLOPT_FOLLOWLOCATION => 1,
-			    CURLOPT_MAXREDIRS => 5,
-			    CURLOPT_HEADER => 1,
-			    CURLOPT_NOBODY => 1
-			);
-
 			// new instance
-			$multiCurl = new MultiCurl($maxRequests, $curlOptions);
+			$multiCurl = new MultiCurl($maxRequests, self::$curlOptions);
 
 			// loop the urls
 			foreach($urls as $url)
 			{
 				// use cache? and is the url a valid cache entry?
-				if($linkCacheEnabled && BackendLinkCheckerHelper::isValidCache($url['url']))
+				if($linkCacheEnabled && self::isValidCache($url['url']))
 				{
 					// get the information we have in cache
 					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
@@ -186,7 +186,7 @@ class BackendLinkCheckerHelper
 	public static function cleanup()
 	{
 		// get all links on the website
-		$allLinks = BackendLinkCheckerHelper::getAllLinks();
+		$allLinks = self::getAllLinks();
 
 		// get all dead links
 		$deadLinks = BackendLinkCheckerModel::getDeadUrls();
@@ -263,7 +263,7 @@ class BackendLinkCheckerHelper
 		$allLinks = array();
 
 		// all the modules we want to check
-		$modules = BackendLinkCheckerHelper::$modules;
+		$modules = self::$modules;
 
 		// loop the modules
 		foreach($modules as $module)
