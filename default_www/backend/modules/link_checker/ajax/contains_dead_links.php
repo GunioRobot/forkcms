@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This action will check a given text on dead links
+ * This action will check a given text-string on dead links
  *
  * @package		backend
  * @subpackage	link_checker
