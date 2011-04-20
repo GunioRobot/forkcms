@@ -1401,7 +1401,7 @@ jsBackend.tinyMCE =
 										{
 											// we found the link, this is a dead link (no shit sherlock)
 											// add class for the dead link to highlight them
-											editor.dom.addClass(editor.dom.select('a')[i], 'deadLink');
+											editor.dom.addClass(editor.dom.select('a')[i], 'deadlink');
 										}
 									}
 								}
