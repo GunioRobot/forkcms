@@ -79,18 +79,6 @@ class BackendLinkCheckerModel
 
 
 	/**
-	 * Get cache size
-	 *
-	 * @return	int
-	 */
-	public static function getCacheSize()
-	{
-		// return the number of rows in the cache table
-		return (int) BackendModel::getDB()->getNumRows('SELECT date_checked FROM link_checker_cache');
-	}
-
-
-	/**
 	 * Get the requested dead url
 	 *
 	 * @return	array

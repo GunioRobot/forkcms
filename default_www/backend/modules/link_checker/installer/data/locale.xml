@@ -37,24 +37,6 @@
       <item type="label" name="Refresh">
         <translation language="en"><![CDATA[refresh]]></translation>
       </item>
-      <item type="label" name="Curl">
-        <translation language="en"><![CDATA[cURL]]></translation>
-      </item>
-      <item type="label" name="MultiCall">
-        <translation language="en"><![CDATA[use Multi-Threading]]></translation>
-      </item>
-      <item type="label" name="NumConnections">
-        <translation language="en"><![CDATA[connections]]></translation>
-      </item>
-      <item type="label" name="Caching">
-        <translation language="en"><![CDATA[caching]]></translation>
-      </item>
-      <item type="label" name="CacheTime">
-        <translation language="en"><![CDATA[cache time]]></translation>
-      </item>
-      <item type="label" name="CacheLinks">
-        <translation language="en"><![CDATA[cache links]]></translation>
-      </item>
       <item type="message" name="DeadLinksToModerate">
         <translation language="en"><![CDATA[%1$s link(s) to correct.]]></translation>
       </item>
@@ -63,12 +45,6 @@
       </item>
       <item type="message" name="EditorDeadLinks">
         <translation language="en"><![CDATA[There are dead/broken links.]]></translation>
-      </item>
-      <item type="message" name="HelpCacheTime">
-        <translation language="en"><![CDATA[time in seconds]]></translation>
-      </item>
-      <item type="message" name="ClearLinkCache">
-        <translation language="en"><![CDATA[clear cache]]></translation>
       </item>
     </core>    
     <dashboard>

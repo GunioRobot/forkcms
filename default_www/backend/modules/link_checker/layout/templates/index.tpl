@@ -7,9 +7,6 @@
 		<a href="#refresh" id="refreshLinks" class="submitButton button inputButton mainButton icon iconRefresh " title="{$lblRefresh|ucfirst}">
 			<span>{$lblRefresh|ucfirst}</span>
 		</a>
-		<a href="{$var|geturl:'settings'}" class="button icon iconSettings" title="{$lblSettings|ucfirst}">
-			<span>{$lblSettings|ucfirst}</span>
-		</a>
 	</div>
 </div>
 

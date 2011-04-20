@@ -55,18 +55,14 @@ class BackendLinkCheckerHelper
 	 */
 	public static function checkLinks($urls)
 	{
-		// get module settings
-		$doMultiCall = (bool) BackendModel::getModuleSetting('link_checker', 'multi_call');
-		$linkCacheEnabled = (bool) BackendModel::getModuleSetting('link_checker', 'cache_links');
-
 		// single call
-		if(!$doMultiCall)
+		if(PHP_OS == "WIN32" || PHP_OS == "WINNT")
 		{
 			// loop the urls
 			foreach($urls as $url)
 			{
-				// use cache? and is the url a valid cache entry?
-				if($linkCacheEnabled && self::isValidCache($url['url']))
+				// is the url a valid cache entry?
+				if(self::isValidCache($url['url']))
 				{
 					// get the information we have in cache
 					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
@@ -132,7 +128,7 @@ class BackendLinkCheckerHelper
 		else
 		{
 			// max connections
-			$maxRequests = (int) BackendModel::getModuleSetting('link_checker', 'num_connections');
+			$maxRequests = 10;
 
 			// new instance
 			$multiCurl = new MultiCurl($maxRequests, self::$curlOptions);
@@ -140,8 +136,8 @@ class BackendLinkCheckerHelper
 			// loop the urls
 			foreach($urls as $url)
 			{
-				// use cache? and is the url a valid cache entry?
-				if($linkCacheEnabled && self::isValidCache($url['url']))
+				// is the url a valid cache entry?
+				if(self::isValidCache($url['url']))
 				{
 					// get the information we have in cache
 					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
@@ -389,7 +385,7 @@ class BackendLinkCheckerHelper
 	public static function isValidCache($url)
 	{
 		// max cache time
-		$maxTime = (int) BackendModel::getModuleSetting('link_checker', 'cache_time');
+		$maxTime = 1800;
 
 		// retrieve most recent saved cache url
 		$return = BackendLinkCheckerModel::getCacheLink($url);
