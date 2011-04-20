@@ -34,11 +34,12 @@
 				{$txtCacheTime} {$txtCacheTimeError}
 				<span class="helpTxt">{$msgHelpCacheTime}</span>
 
-				<br/>
+				<br />
 				<div class="buttonHolder">
-					<a href="#" class="submitButton button inputButton" id="clearLinkCache">
+					<a href="#clear" class="submitButton button inputButton" id="clearLinkCache">
 						<span>{$msgClearLinkCache|ucfirst}</span>
 					</a>
+					<span class="helpTxt">{$numCache} items in cache</span>
 				</div>
 			</div>
 		</div>

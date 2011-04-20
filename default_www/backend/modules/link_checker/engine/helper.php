@@ -395,7 +395,10 @@ class BackendLinkCheckerHelper
 		$return = BackendLinkCheckerModel::getCacheLink($url);
 
 		// check if most recent is still valid
-		if((time() - strtotime($return['date_checked'])) < $maxTime) return true;
+		if(count($return) > 0)
+		{
+			if((time() - strtotime($return['date_checked'])) < $maxTime) return true;
+		}
 
 		// else
 		return false;

@@ -59,6 +59,9 @@ class BackendLinkCheckerSettings extends BackendBaseActionEdit
 
 		// add fields for cache time
 		$this->frm->addText('cache_time', BackendModel::getModuleSetting($this->URL->getModule(), 'cache_time', 1800));
+
+		// parse number of cached items
+		$this->tpl->assign('numCache', BackendLinkCheckerModel::getCacheSize());
 	}
 
 

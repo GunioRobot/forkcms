@@ -18,7 +18,7 @@ jsBackend.link_checkerSettings =
 					if(data.code == 200)
 					{
 						// show message
-						jsBackend.messages.add('success', data.message);						
+						jsBackend.messages.add('success', data.data.message);						
 					}
 					else
 					{
