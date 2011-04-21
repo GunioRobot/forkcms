@@ -1345,10 +1345,10 @@ jsBackend.tinyMCE =
 	// custom check for dead links
 	checkDeadLinks: function(editor)
 	{
-		// remove all deadlink classes (needed for refresh)
+		// remove all deadlink classes, so they don't end up in the database text (needed for refresh)
 		editor.dom.removeClass(editor.dom.select('a'), 'deadlink');
 		
-		// send the content as string, retrieve a boolean
+		// send the content as string, get a boolean back
 		$.ajax(
 		{
 			url: '/backend/ajax.php?module=link_checker&action=contains_dead_links&language=' + jsBackend.current.language,
@@ -1394,32 +1394,30 @@ jsBackend.tinyMCE =
 										var lastCharPosition = link.length - 1;
 										var lastChar = link.charAt(lastCharPosition);
 										
+										// check last char
 										if(lastChar == '/')
 										{
+											// remove it
 											link = link.substring(0, lastCharPosition);
 										}									
 										
 										// check if the current url in the text editor, is found in the dead links array
 										if(allDeadLinks.indexOf(link) != -1)
 										{
-											// we found the link, this is a dead link (no shit sherlock)
+											// we found the link, this is a dead link
 											// add class for the dead link to highlight them
 											editor.dom.addClass(editor.dom.select('a')[i], 'deadlink');
 										}
 									}
 								}
-							},
-							// the link checker module is not installed, shut up
-							error: function(XMLHttpRequest, textStatus, errorThrown){}
+							}
 						});		
 					}
 					
 					// no dead links
 					else $('#' + editor.id + '_linkchecker_warning').remove();
 				}
-			},
-			// the link checker module is not installed, shut up
-			error: function(XMLHttpRequest, textStatus, errorThrown){}
+			}
 		});
 	},
 
