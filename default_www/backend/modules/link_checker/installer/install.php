@@ -41,7 +41,7 @@ class LinkCheckerInstall extends ModuleInstaller
 		// import locale
 		$this->importLocale(dirname(__FILE__) . '/data/locale.xml');
 
-		// insert locale (en)
+		// insert locale (en) @todo	jeroen: port these to the locale.xml file
 		$this->insertLocale('en', 'backend', 'dashboard', 'lbl', 'Url', 'destination');
 		$this->insertLocale('en', 'backend', 'dashboard', 'msg', 'NoLinks', 'No broken links.');
 		$this->insertLocale('en', 'backend', 'dashboard', 'msg', 'AllLinks', 'Edit links');

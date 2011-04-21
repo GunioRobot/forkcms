@@ -15,6 +15,7 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 	 * Datagrids
 	 *
 	 * @var	BackendDataGridDB
+	 * @todo	jeroen: Are you sure these are instances of the BackendDataGridDB class? :)
 	 */
 	private $dgAll, $dgInternal, $dgExternal;
 
@@ -48,6 +49,8 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 
 	/**
 	 * Load the datagrids
+	 *
+	 * @todo	jeroen: Put each datagrid in a separate method for improved readability
 	 *
 	 * @return	void
 	 */

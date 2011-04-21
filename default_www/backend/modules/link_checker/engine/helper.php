@@ -1,6 +1,7 @@
 <?php
 
 // include the multicurl class
+// @todo	jeroen: move this to config.php of this module.
 require_once 'external/multicurl.php';
 
 /**
@@ -25,6 +26,8 @@ class BackendLinkCheckerHelper
 
 	/**
 	 * All modules that will be checked
+	 *
+	 * @todo	jeroen: Is it an option to port this to the settings page? Remind me to discuss this.
 	 *
 	 * @var array
 	 */
@@ -205,7 +208,7 @@ class BackendLinkCheckerHelper
 
 
 	/**
-	 * Check a givin text if it contains a dead link
+	 * Check a given text if it contains a dead link
 	 *
 	 * @return	bool
 	 * @param	string $text		The string to be checked.
@@ -283,7 +286,7 @@ class BackendLinkCheckerHelper
 						// all urls we find in this entry
 						$urlList = array();
 
-						// @todo	comment what happens inside the loop, and what you're looping (like an example of the format in case of $matches)
+						// @todo	Jeroen: comment what happens inside the loop, and what you're looping (like an example of the format in case of $matches)
 						foreach($matches[1] as $url)
 						{
 							// add the url to the list
@@ -416,10 +419,11 @@ class BackendLinkCheckerHelper
 	 * Helper function to remove the duplicate entries from a multi-dimensional array.
 	 *
 	 * @return	$array
-	 * @param	array $array				The multi-dimensional array.
+	 * @param	array $array		The multi-dimensional array.
 	 */
 	public static function removeDuplicates($array)
 	{
+		// @todo	jeroen: no comments inline?
 		$result = array_map("unserialize", array_unique(array_map("serialize", $array)));
 
 	  	foreach($result as $key => $value)

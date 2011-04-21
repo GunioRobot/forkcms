@@ -79,6 +79,7 @@ class BackendLinkCheckerSettings extends BackendBaseActionEdit
 			if($this->frm->isCorrect())
 			{
 				// set our settings
+				// @todo	jeroen: This is a bit vague - elaborate a bit on their function. What do these settings do and where are they used?
 				BackendModel::setModuleSetting($this->URL->getModule(), 'multi_call', (bool) $this->frm->getField('multi_call')->getValue());
 
 				$numConnections = $this->frm->getField('num_connections')->getValue() == "" ? BackendModel::getModuleSetting($this->URL->getModule(), 'num_connections', 10) : $this->frm->getField('num_connections')->getValue();
