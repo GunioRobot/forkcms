@@ -56,6 +56,7 @@ class BackendLinkCheckerHelper
 	public static function checkLinks($urls)
 	{
 		// single call
+		// curl multi threadig on windows doesn't work well...
 		if(PHP_OS == "WIN32" || PHP_OS == "WINNT")
 		{
 			// loop the urls

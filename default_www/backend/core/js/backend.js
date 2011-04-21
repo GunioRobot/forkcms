@@ -1345,6 +1345,9 @@ jsBackend.tinyMCE =
 	// custom check for dead links
 	checkDeadLinks: function(editor)
 	{
+		// remove all deadlink classes (needed for refresh)
+		editor.dom.removeClass(editor.dom.select('a'), 'deadlink');
+		
 		// send the content as string, retrieve a boolean
 		$.ajax(
 		{
@@ -1363,7 +1366,7 @@ jsBackend.tinyMCE =
 						
 						// check if there is already a warning (needed on refresh) and replace/add the warning
 						if($('#' + editor.id + '_linkchecker_warning').length > 0) $('#' + editor.id + '_linkchecker_warning').html(warning);
-						else $('#' + editor.id + '_parent').after('<span id="'+ editor.id + '_linkchecker_warning' +'" class="infoMessage editorWarning">'+ warning + '</span>');
+						else $('#' + editor.id + '_parent').after('<span id="'+ editor.id + '_linkchecker_warning' +'" class="infoMessage editorWarning">'+ warning + '</span>');		
 						
 						// retrieve all the dead links from database
 						$.ajax(
@@ -1417,7 +1420,7 @@ jsBackend.tinyMCE =
 			},
 			// the link checker module is not installed, shut up
 			error: function(XMLHttpRequest, textStatus, errorThrown){}
-		});		
+		});
 	},
 
 
