@@ -9,6 +9,7 @@ Bugfixes:
 * Bugfix: removed empty widgets, as reported on http://forkcms.lighthouseapp.com/projects/61890/tickets/150.
 * Bugfix: hover-event wasn't unbind correctly when sorting the widgets was done.
 * Bugfix: importing addresses into the mailmotor was borked, as reported on http://forkcms.lighthouseapp.com/projects/61890/tickets/143.
+* Bugfix: focusFirst was focusing on an element on hidden tabs, as reported on http://forkcms.lighthouseapp.com/projects/61890-fork-cms/tickets/153.
 
 Improvements:
 * Core: when using datefields with till, from, range set, it will be validated according the type.
@@ -36,10 +37,14 @@ Improvements:
 * Pages: when changing templates the textual-content isn't deleted anymore.
 * Locale: you can now import/export locale from/to xml. The installers also use xml's.
 * Locale: export for missing locale.
+* Locale: remove deprecated insertLocale function.
+* Locale: created an incredibly nasty hotfix for some deprecated PHP functionality.
 * Mailmotor: added extra validation (reported on http://forkcms.lighthouseapp.com/projects/61890/tickets/137).
 * Mailmotor: added extra validation for adding address(es).
 * Mailmotor: adding multiple addresses now uses the multipleTextbox-functionality.
 * Installer: refactored pages installation.
+* Installer: split up step languages & modules into 2 steps; moved db step behind those.
+* Installer: ask for backend interface languages seperate from frontend languages.
 
 2.1.0 (2011-03-14)
 --
