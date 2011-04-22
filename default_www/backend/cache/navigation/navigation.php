@@ -129,6 +129,11 @@ $navigation = array(
 					'form_builder/data',
 					'form_builder/data_details'
 				)
+			),
+			array(
+				'url' => 'link_checker/index',
+				'label' => 'LinkChecker'
+
 			)
 		)
 	),
@@ -296,6 +301,10 @@ $navigation = array(
 					array(
 						'url' => 'location/settings',
 						'label' => 'Location'
+					),
+					array(
+						'url' => 'link_checker/settings',
+						'label' => 'LinkChecker'
 					)
 				)
 			)

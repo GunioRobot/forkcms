@@ -42,7 +42,7 @@ jsBackend =
 		jsBackend.tooltip.init();
 		jsBackend.tableSequenceByDragAndDrop.init();
 		jsBackend.tinyMCE.init();
-
+		
 		// IE fixes
 		jsBackend.selectors.init();
 		jsBackend.focusfix.init();
@@ -1340,16 +1340,98 @@ jsBackend.tinyMCE =
 			object.content = object.content.replace(matches[i], newLink);
 		}
 	},
+	
+	
+	// custom check for dead links
+	checkDeadLinks: function(editor)
+	{
+		// send the content as string, retrieve a boolean
+		$.ajax(
+		{
+			url: '/backend/ajax.php?module=link_checker&action=contains_dead_links&language=' + jsBackend.current.language,
+			data: {'text' : editor.getContent()},
+			success: function(data, textStatus)
+			{
+				// the link checker module is installed, OK GO!
+				if(data.code == 200)
+				{				
+					// if the content has a dead link, show the warning
+					if(data.data.containsDeadLinks)
+					{
+						// set the warning to display
+						var warning = '{$msgEditorDeadLinks|addslashes}';						
+						
+						// check if there is already a warning (needed on refresh) and replace/add the warning
+						if($('#' + editor.id + '_linkchecker_warning').length > 0) $('#' + editor.id + '_linkchecker_warning').html(warning);
+						else $('#' + editor.id + '_parent').after('<span id="'+ editor.id + '_linkchecker_warning' +'" class="infoMessage editorWarning">'+ warning + '</span>');
+						
+						// retrieve all the dead links from database
+						$.ajax(
+						{
+							url: '/backend/ajax.php?module=link_checker&action=get_dead_links&language=' + jsBackend.current.language,
+							success: function(data, textStatus)
+							{
+								// OK GO!
+								if(data.code == 200)
+								{									
+									// all the dead links we have in our database
+									var allDeadLinks = data.data.deadLinks;
+									
+									// get all the links in the editor
+									var editorLinks = editor.dom.select('a');
+									
+									// loop all links in the editor
+									for(var i in editorLinks)
+									{									    			
+										// parse item to string
+										var link = String(editorLinks[i]);
+									
+										// if we have a '/' at the and of the string, lose it!
+										// because TinyMCE thinks it is cool to add one for no reason...
+										var lastCharPosition = link.length - 1;
+										var lastChar = link.charAt(lastCharPosition);
+										
+										if(lastChar == '/')
+										{
+											link = link.substring(0, lastCharPosition);
+										}									
+										
+										// check if the current url in the text editor, is found in the dead links array
+										if(allDeadLinks.indexOf(link) != -1)
+										{
+											// we found the link, this is a dead link (no shit sherlock)
+											// add class for the dead link to highlight them
+											editor.dom.addClass(editor.dom.select('a')[i], 'deadLink');
+										}
+									}
+								}
+							},
+							// the link checker module is not installed, shut up
+							error: function(XMLHttpRequest, textStatus, errorThrown){}
+						});		
+					}
+					
+					// no dead links
+					else $('#' + editor.id + '_linkchecker_warning').remove();
+				}
+			},
+			// the link checker module is not installed, shut up
+			error: function(XMLHttpRequest, textStatus, errorThrown){}
+		});		
+	},
 
 
 	// custom content checks
 	checkContent: function(editor)
 	{
+		// check for dead links
+		jsBackend.tinyMCE.checkDeadLinks(editor);
+		
 		if(editor.isDirty())
 		{
 			var content = editor.getContent();
 			var warnings = [];
-
+			
 			// no alt?
 			if(content.match(/<img(.*)alt=""(.*)/im)) { warnings.push('{$msgEditorImagesWithoutAlt|addslashes}'); }
 
@@ -1365,9 +1447,8 @@ jsBackend.tinyMCE =
 
 			// no warnings
 			else $('#' + editor.id + '_warnings').remove();
-		}
+		}		
 	},
-
 
 	// end
 	eoo: true

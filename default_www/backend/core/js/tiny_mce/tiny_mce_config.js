@@ -79,7 +79,7 @@ tinyMCE.init(
 	
 	media_strict: false,
 	
-	onchange_callback: jsBackend.tinyMCE.checkContent,
+	onchange_callback: jsBackend.tinyMCE.checkContent,	
 	setup: function(editor)
 	{
 		// catch some events
@@ -88,7 +88,7 @@ tinyMCE.init(
 
 		// set content
 		editor.onLoadContent.add(jsBackend.tinyMCE.checkContent);
-
+		
 		// add event
 		editor.onKeyUp.add(function(editor, event)
 		{
@@ -149,7 +149,7 @@ tinyMCE.init(
 				if($('#' + editor.id + '_external').is(':visible')) $('#' + editor.id + '_external').hide();
 
 				// check the content
-				jsBackend.tinyMCE.checkContent(editor);
+				jsBackend.tinyMCE.checkContent(editor);	
 			});
 		}
 	}
