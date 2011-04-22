@@ -1,21 +1,25 @@
 <?php
 
 /**
- * This is the index-action, it will display the overview of all links checked by the linkchecker
+ * This is the index-action, it will display the overview of all links checked by the module
  *
  * @package		backend
  * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
- * @since		2.0
+ * @since		2.1
  */
 class BackendLinkCheckerIndex extends BackendBaseActionIndex
 {
 	/**
 	 * Datagrids
 	 *
+<<<<<<< HEAD
 	 * @var	BackendDataGridDB
 	 * @todo	jeroen: Are you sure these are instances of the BackendDataGridDB class? :)
+=======
+	 * @var	BackendDataGridArray
+>>>>>>> jeroen/linkchecker
 	 */
 	private $dgAll, $dgInternal, $dgExternal;
 
@@ -31,7 +35,7 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		parent::execute();
 
 		// add refresh javascript
-		$this->header->addJavascript('module.js', 'link_checker');
+		$this->header->addJS('module.js');
 
 		// delete non used dead links
 		BackendLinkCheckerHelper::cleanup();
@@ -50,7 +54,11 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 	/**
 	 * Load the datagrids
 	 *
+<<<<<<< HEAD
 	 * @todo	jeroen: Put each datagrid in a separate method for improved readability
+=======
+	 * @todo  Put each datagrid in a separate method for improved readability
+>>>>>>> jeroen/linkchecker
 	 *
 	 * @return	void
 	 */
@@ -66,7 +74,7 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgAll->setPagingLimit(10);
 
 		// sorting
-		$this->dgAll->setSortingColumns(array('title'), 'title');
+		$this->dgAll->setSortingColumns(array('title', 'date_checked'), 'title');
 		$this->dgAll->setSortParameter('desc');
 
 		// add edit column
@@ -90,14 +98,11 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		// fill datagrid with only the internal links
 		$this->dgInternal = new BackendDataGridArray(BackendLinkCheckerModel::getInternal());
 
-		// active tab
-		$this->dgInternal->setActiveTab('tabInternal');
-
 		// num items per page
 		$this->dgInternal->setPagingLimit(10);
 
 		// sorting
-		$this->dgInternal->setSortingColumns(array('title'), 'title');
+		$this->dgInternal->setSortingColumns(array('title', 'date_checked'), 'title');
 		$this->dgInternal->setSortParameter('desc');
 
 		// add edit column
@@ -121,14 +126,11 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		// fill datagrid with only the external links
 		$this->dgExternal = new BackendDataGridArray(BackendLinkCheckerModel::getExternal());
 
-		// active tab
-		$this->dgExternal->setActiveTab('tabExternal');
-
 		// num items per page
 		$this->dgExternal->setPagingLimit(10);
 
 		// sorting
-		$this->dgExternal->setSortingColumns(array('title'), 'title');
+		$this->dgExternal->setSortingColumns(array('title', 'date_checked'), 'title');
 
 		$this->dgExternal->setSortParameter('desc');
 

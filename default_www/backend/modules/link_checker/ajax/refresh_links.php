@@ -1,5 +1,8 @@
 <?php
 
+// require the helper class
+require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
+
 /**
  * This action will refresh the link checker module
  *
@@ -7,7 +10,7 @@
  * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
- * @since		2.0
+ * @since		2.1
  */
 class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 {
@@ -60,9 +63,6 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 		// empty database
 		$this->emptyDatabase();
 
-		// require the helper class
-		require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
-
 		// get data
 		$this->getLinks();
 
@@ -112,7 +112,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('title'), 'title');
+			$datagrid->setSortingColumns(array('title', 'date_checked'), 'title');
 			$datagrid->setSortParameter('desc');
 
 			// add edit column
@@ -178,7 +178,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('title'), 'title');
+			$datagrid->setSortingColumns(array('title', 'date_checked'), 'title');
 			$datagrid->setSortParameter('desc');
 
 			// add edit column
@@ -244,7 +244,7 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 			$datagrid->setPagingLimit(10);
 
 			// set sorting column
-			$datagrid->setSortingColumns(array('title'), 'title');
+			$datagrid->setSortingColumns(array('title', 'date_checked'), 'title');
 			$datagrid->setSortParameter('desc');
 
 			// add edit column

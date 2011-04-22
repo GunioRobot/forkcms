@@ -52,4 +52,4 @@ font[face=mceinline] {font-family:inherit !important}
 	Link Checker dead links
 */
 
-a.deadLink, a:link .deadLink {background-color:red; color:white;}
+.deadlink {background-color:red; color:white;}

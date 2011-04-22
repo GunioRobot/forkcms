@@ -1,13 +1,16 @@
 <?php
 
+// require the helper class
+require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
+
 /**
- * This action will check a given text on dead links
+ * This action will check a given text-string on dead links
  *
  * @package		backend
  * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
- * @since		2.0
+ * @since		2.1
  */
 class BackendLinkCheckerAjaxContainsDeadLinks extends BackendBaseAJAXAction
 {
@@ -20,9 +23,6 @@ class BackendLinkCheckerAjaxContainsDeadLinks extends BackendBaseAJAXAction
 	{
 		// call parent, this will probably add some general CSS/JS or other required files
 		parent::execute();
-
-		// require the helper class
-		require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
 
 		// get post data
 		$text = SpoonFilter::getPostValue('text', null, '');

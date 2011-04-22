@@ -12,7 +12,7 @@ require_once 'external/multicurl.php';
  * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
- * @since		2.0
+ * @since		2.1
  */
 class BackendLinkCheckerHelper
 {
@@ -22,6 +22,22 @@ class BackendLinkCheckerHelper
 	 * @var bool
 	 */
 	private static $allDeadLinks = array();
+
+
+	/**
+	 * cUrl options array
+	 *
+	 * @var array
+	 */
+	private static $curlOptions = array(
+		CURLOPT_TIMEOUT => 10,
+		CURLOPT_USERAGENT => 'Fork CMS LinkChecker',
+		CURLOPT_FOLLOWLOCATION => 1,
+		CURLOPT_RETURNTRANSFER => 1,
+		CURLOPT_MAXREDIRS => 5,
+		CURLOPT_HEADER => 1,
+		CURLOPT_NOBODY => 1
+	);
 
 
 	/**
@@ -42,18 +58,15 @@ class BackendLinkCheckerHelper
 	 */
 	public static function checkLinks($urls)
 	{
-		// get module settings
-		$doMultiCall = (bool) BackendModel::getModuleSetting('link_checker', 'multi_call');
-		$linkCacheEnabled = (bool) BackendModel::getModuleSetting('link_checker', 'cache_links');
-
 		// single call
-		if(!$doMultiCall)
+		// curl multi threadig on windows doesn't work well...
+		if(PHP_OS == "WIN32" || PHP_OS == "WINNT")
 		{
 			// loop the urls
 			foreach($urls as $url)
 			{
-				// check if url is found in cache
-				if(BackendLinkCheckerModel::isValidCache($url['url']) && $linkCacheEnabled)
+				// is the url a valid cache entry?
+				if(self::isValidCache($url['url']))
 				{
 					// get the information we have in cache
 					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
@@ -82,13 +95,7 @@ class BackendLinkCheckerHelper
 					curl_setopt($ch, CURLOPT_URL, $url['url']);
 
 					// set the curl options
-					curl_setopt($ch, CURLOPT_HEADER, 1);
-					curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-					curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-					curl_setopt($ch, CURLOPT_NOBODY, 1);
-					curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
-					curl_setopt($ch, CURLOPT_USERAGENT, 'Spoon ' . SPOON_VERSION);
+					curl_setopt_array($ch, self::$curlOptions);
 
 					// execute and fetch the resulting HTML output
 					curl_exec($ch);
@@ -125,26 +132,16 @@ class BackendLinkCheckerHelper
 		else
 		{
 			// max connections
-			$maxRequests = (int) BackendModel::getModuleSetting('link_checker', 'num_connections');
-
-			// set the curl options
-			$curlOptions = array(
-			    CURLOPT_TIMEOUT => 10,
-			    CURLOPT_USERAGENT => 'Spoon ' . SPOON_VERSION,
-			    CURLOPT_FOLLOWLOCATION => 1,
-			    CURLOPT_MAXREDIRS => 5,
-			    CURLOPT_HEADER => 1,
-			    CURLOPT_NOBODY => 1
-			);
+			$maxRequests = 10;
 
 			// new instance
-			$multiCurl = new MultiCurl($maxRequests, $curlOptions);
+			$multiCurl = new MultiCurl($maxRequests, self::$curlOptions);
 
 			// loop the urls
 			foreach($urls as $url)
 			{
-				// check if url is found in cache
-				if(BackendLinkCheckerModel::isValidCache($url['url']) && $linkCacheEnabled)
+				// is the url a valid cache entry?
+				if(self::isValidCache($url['url']))
 				{
 					// get the information we have in cache
 					$cacheLink = BackendLinkCheckerModel::getCacheLink($url['url']);
@@ -189,7 +186,7 @@ class BackendLinkCheckerHelper
 	public static function cleanup()
 	{
 		// get all links on the website
-		$allLinks = BackendLinkCheckerHelper::getAllLinks();
+		$allLinks = self::getAllLinks();
 
 		// get all dead links
 		$deadLinks = BackendLinkCheckerModel::getDeadUrls();
@@ -227,7 +224,7 @@ class BackendLinkCheckerHelper
 			// retrieve the dead urls we know
 			$deadUrlList = BackendLinkCheckerModel::getDeadUrls();
 
-			// loop the matches
+			// loop $matches[1] as this contains the URLs that matched our regular expression
 			foreach($matches[1] as $url)
 			{
 				// rewrite internal urls, to become compatible with the way internal links are stored in the database
@@ -266,7 +263,7 @@ class BackendLinkCheckerHelper
 		$allLinks = array();
 
 		// all the modules we want to check
-		$modules = BackendLinkCheckerHelper::$modules;
+		$modules = self::$modules;
 
 		// loop the modules
 		foreach($modules as $module)
@@ -286,7 +283,7 @@ class BackendLinkCheckerHelper
 						// all urls we find in this entry
 						$urlList = array();
 
-						// @todo	Jeroen: comment what happens inside the loop, and what you're looping (like an example of the format in case of $matches)
+						// loop $matches[1] as this contains the URLs that matched our regular expression
 						foreach($matches[1] as $url)
 						{
 							// add the url to the list
@@ -384,6 +381,31 @@ class BackendLinkCheckerHelper
 
 
 	/**
+	 * Is the link a valid cache url?
+	 *
+	 * @return	bool
+	 * @param	string $url		The url to check.
+	 */
+	public static function isValidCache($url)
+	{
+		// max cache time
+		$maxTime = 1800;
+
+		// retrieve most recent saved cache url
+		$return = BackendLinkCheckerModel::getCacheLink($url);
+
+		// check if most recent is still valid
+		if(count($return) > 0)
+		{
+			if((time() - strtotime($return['date_checked'])) < $maxTime) return true;
+		}
+
+		// else
+		return false;
+	}
+
+
+	/**
 	 * This function gets called back for each request that completes
 	 *
 	 * @return	void
@@ -416,15 +438,16 @@ class BackendLinkCheckerHelper
 
 
 	/**
-	 * Helper function to remove the duplicate entries from a multi-dimensional array.
+	 * Recursive array unique function to remove the duplicate entries from an (multi-dimensional) array.
+	 * http://www.php.net/manual/en/function.array-unique.php#97285
 	 *
 	 * @return	$array
-	 * @param	array $array		The multi-dimensional array.
+	 * @param	array $array	The (multi-dimensional) array.
 	 */
 	public static function removeDuplicates($array)
 	{
-		// @todo	jeroen: no comments inline?
-		$result = array_map("unserialize", array_unique(array_map("serialize", $array)));
+		// @todo  jeroen: no comments inline?
+		$result = array_map('unserialize', array_unique(array_map('serialize', $array)));
 
 	  	foreach($result as $key => $value)
 	  	{

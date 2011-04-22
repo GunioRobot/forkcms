@@ -4,10 +4,14 @@ jsBackend.link_checkerModule =
 {
 	init: function()
 	{
-		$('#refreshLinks').bind('click', function ()
+		// cache for speed
+		var refreshLinksButton = $('#refreshLinks');
+		
+		// bin the click action
+		refreshLinksButton.bind('click', function ()
 		{
 			// disable button
-			$('#refreshLinks').addClass('disabledButton');
+			refreshLinksButton.addClass('disabledButton');
 
 			// make the call to check the status
 			$.ajax(
@@ -39,7 +43,9 @@ jsBackend.link_checkerModule =
 					}
 
 					// enable button
-					$('#refreshLinks').removeClass('disabledButton');
+					refreshLinksButton.removeClass('disabledButton');
+					
+					alert(console.timeEnd('cache'));
 
 					// alert the user
 					if(data.code != 200 && jsBackend.debug) { alert(data.message); }
@@ -47,7 +53,7 @@ jsBackend.link_checkerModule =
 				error: function(XMLHttpRequest, textStatus, errorThrown)
 				{
 					// enable button
-					$('#refreshLinks').removeClass('disabledButton');
+					refreshLinksButton.removeClass('disabledButton');
 
 					// alert the user
 					if(jsBackend.debug) alert(textStatus);
@@ -60,6 +66,5 @@ jsBackend.link_checkerModule =
 	// end
 	eoo: true
 }
-
 
 $(document).ready(jsBackend.link_checkerModule.init);

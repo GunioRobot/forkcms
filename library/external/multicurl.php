@@ -161,7 +161,6 @@ class MultiCurl
 
 	    // set the options
 	    curl_setopt_array($ch, $this->options);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
 	    // set the url
 	    curl_setopt($ch, CURLOPT_URL, $url);

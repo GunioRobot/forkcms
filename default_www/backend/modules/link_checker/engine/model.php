@@ -8,7 +8,7 @@
  * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
- * @since		2.0
+ * @since		2.1
  */
 class BackendLinkCheckerModel
 {
@@ -67,12 +67,14 @@ class BackendLinkCheckerModel
 	 * Get cache url
 	 *
 	 * @return	array
-	 * @param string $url	The requested url.
+	 * @param	string $url		The requested url.
 	 */
 	public static function getCacheLink($url)
 	{
 		// fetch and return the records
-		return (array) BackendModel::getDB()->getRecord('SELECT l.url, l.error_code, l.date_checked FROM link_checker_cache AS l WHERE l.url = ? ORDER BY l.date_checked DESC', $url);
+		return (array) BackendModel::getDB()->getRecord('SELECT l.url, l.error_code, l.date_checked
+															FROM link_checker_cache AS l
+															WHERE l.url = ? ORDER BY l.date_checked DESC', $url);
 	}
 
 
@@ -150,34 +152,36 @@ class BackendLinkCheckerModel
 		switch($module)
 		{
 		    case 'blog':
-		        // build blog text query
+		        // here we need two queries as a blog post has an independant intro text
+
+		    	// build blog text query
 		    	$queryText = "SELECT p.text, p.title, p.id, p.language FROM blog_posts AS p
-						WHERE p.text LIKE '%href=%'
-						AND p.status = 'active'
-						AND p.hidden = 'N'";
+								WHERE p.text LIKE '%href=%'
+								AND p.status = 'active'
+								AND p.hidden = 'N'";
 
 		    	// fetch text records
 		        $recordsText = (array) BackendModel::getDB()->getRecords($queryText);
 
 		         // build blog introduction query
 		    	$queryIntro = "SELECT p.introduction AS text, p.title, p.id, p.language FROM blog_posts AS p
-						WHERE p.introduction LIKE '%href=%'
-						AND p.status = 'active'
-						AND p.hidden = 'N'";
+								WHERE p.introduction LIKE '%href=%'
+								AND p.status = 'active'
+								AND p.hidden = 'N'";
 
 		    	// fetch introduction records
 		        $recordsIntro = (array) BackendModel::getDB()->getRecords($queryIntro);
 
-		        // merge arrays
+		        // merge both result arrays
 		        $records = array_merge($recordsText, $recordsIntro);
 		    break;
 
 		    case 'content_blocks':
 		        // build query
 		    	$query = "SELECT c.text, c.title, c.id, c.language FROM content_blocks AS c
-						WHERE c.text LIKE '%href=%'
-						AND c.status = 'active'
-						AND c.hidden = 'N'";
+							WHERE c.text LIKE '%href=%'
+							AND c.status = 'active'
+							AND c.hidden = 'N'";
 
 		        // fetch records
 		    	$records = BackendModel::getDB()->getRecords($query);
@@ -186,10 +190,10 @@ class BackendLinkCheckerModel
 		    case 'pages':
 		        // build query
 		    	$query = "SELECT p.html as text, pa.id, pa.title, pa.language FROM pages_blocks AS p
-						INNER JOIN pages AS pa on p.revision_id = pa.revision_id
-						WHERE p.html LIKE '%href=%'
-						AND pa.status = 'active'
-						AND pa.hidden = 'N'";
+							INNER JOIN pages AS pa on p.revision_id = pa.revision_id
+							WHERE p.html LIKE '%href=%'
+							AND pa.status = 'active'
+							AND pa.hidden = 'N'";
 
 		        // fetch records
 		    	$records = (array) BackendModel::getDB()->getRecords($query);
@@ -198,8 +202,8 @@ class BackendLinkCheckerModel
 		    case 'faq':
 		        // build query
 		    	$query = "SELECT f.answer as text, f.id, f.question as title, f.language FROM faq_questions AS f
-						WHERE f.answer LIKE '%href=%'
-						AND f.hidden = 'N'";
+							WHERE f.answer LIKE '%href=%'
+							AND f.hidden = 'N'";
 
 		        // fetch records
 		    	$records = (array) BackendModel::getDB()->getRecords($query);
@@ -212,17 +216,19 @@ class BackendLinkCheckerModel
 
 
 	/**
-	 * Get 5 most recent links
+	 * Get the most recent found dead links
 	 *
 	 * @return	array
+	 * @param	int $limit		The amout of links to display.
+	 *
 	 */
-	public static function getMostRecent()
+	public static function getMostRecent($limit)
 	{
 		// fetch and return the records
 		return (array) BackendModel::getDB()->getRecords('SELECT c.item_title AS title, c.module, c.error_code AS description, c.url, c.item_id, c.date_checked
 															FROM link_checker_results AS c
 															WHERE c.language = ?
-															LIMIT 5', BL::getWorkingLanguage());
+															LIMIT ?', array(BL::getWorkingLanguage(), $limit));
 	}
 
 
@@ -251,28 +257,6 @@ class BackendLinkCheckerModel
 	{
 		// insert freshly found dead links
 		if(!empty($values)) BackendModel::getDB()->insert('link_checker_results', $values);
-	}
-
-
-	/**
-	 * Is the link a valid cache url?
-	 *
-	 * @return	bool
-	 * @param	string $url		The url to check.
-	 */
-	public static function isValidCache($url)
-	{
-		// max cache time
-		$maxTime = (int) BackendModel::getModuleSetting('link_checker', 'cache_time');
-
-		// retrieve most recent saved cache url
-		$return = BackendModel::getDB()->getRecord("SELECT l.url, l.error_code, l.date_checked FROM link_checker_cache AS l WHERE l.url = ? ORDER BY l.date_checked DESC", array($url));
-
-		// check if most recent is still valid
-		if((time() - strtotime($return['date_checked'])) < $maxTime) return true;
-
-		// else
-		return false;
 	}
 }
 

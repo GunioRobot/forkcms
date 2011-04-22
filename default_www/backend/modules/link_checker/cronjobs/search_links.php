@@ -1,5 +1,8 @@
 <?php
 
+// require the helper class
+require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
+
 /**
  * This cronjob will check every link on the website and store dead links in the database
  *
@@ -7,7 +10,7 @@
  * @subpackage	link_checker
  *
  * @author		Jeroen Maes <jeroenmaes@netlash.com>
- * @since		2.0
+ * @since		2.1
  */
 class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 {
@@ -62,9 +65,6 @@ class BackendLinkCheckerCronjobSearchLinks extends BackendBaseCronjob
 
 		// empty database
 		$this->emptyDatabase();
-
-		// require the helper class
-		require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
 
 		// get data
 		$this->getLinks();
