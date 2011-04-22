@@ -4,6 +4,8 @@ jsBackend.link_checkerSettings =
 {
 	init: function()
 	{
+		// @todo  jeroen: Not really noticable for small bits of JS code, but it's performance-friendly to cache frequently recurring jQuery objects by storing them in a var. Poke me if I'm not clear enough. ^^
+				
 		// disable and hide the numConnections input field when the multicall checkbox is unchecked
 		
 		// add the disabled attribute

@@ -1,5 +1,8 @@
 <?php
 
+// require the helper class
+require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
+
 /**
  * This action will refresh the link checker module
  *
@@ -59,9 +62,6 @@ class BackendLinkCheckerAjaxRefreshLinks extends BackendBaseAJAXAction
 
 		// empty database
 		$this->emptyDatabase();
-
-		// require the helper class
-		require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
 
 		// get data
 		$this->getLinks();

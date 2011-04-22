@@ -1,5 +1,8 @@
 <?php
 
+// require the helper class
+require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
+
 /**
  * This action will check a given text-string on dead links
  *
@@ -20,9 +23,6 @@ class BackendLinkCheckerAjaxContainsDeadLinks extends BackendBaseAJAXAction
 	{
 		// call parent, this will probably add some general CSS/JS or other required files
 		parent::execute();
-
-		// require the helper class
-		require_once BACKEND_MODULES_PATH . '/link_checker/engine/helper.php';
 
 		// get post data
 		$text = SpoonFilter::getPostValue('text', null, '');

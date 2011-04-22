@@ -202,7 +202,7 @@ class BackendLinkCheckerHelper
 
 
 	/**
-	 * Check a givin text if it contains a dead link
+	 * Check a given text if it contains a dead link
 	 *
 	 * @return	bool
 	 * @param	string $text		The string to be checked.
@@ -439,10 +439,11 @@ class BackendLinkCheckerHelper
 	 * http://www.php.net/manual/en/function.array-unique.php#97285
 	 *
 	 * @return	$array
-	 * @param	array $array				The (multi-dimensional) array.
+	 * @param	array $array	The (multi-dimensional) array.
 	 */
 	public static function removeDuplicates($array)
 	{
+		// @todo  jeroen: no comments inline?
 		$result = array_map('unserialize', array_unique(array_map('serialize', $array)));
 
 	  	foreach($result as $key => $value)
