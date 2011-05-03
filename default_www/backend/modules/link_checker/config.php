@@ -1,7 +1,5 @@
 <?php
 
-// @todo	jeroen: require the multicurl class here by expanding this class with its construct, so you can add additional methods. Check mailmotor's config.php if you don't know what the hell I'm talking about.
-
 /**
  * This is the configuration-object for the linkchecker module
  *

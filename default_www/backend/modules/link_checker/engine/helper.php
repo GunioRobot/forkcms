@@ -1,7 +1,6 @@
 <?php
 
 // include the multicurl class
-// @todo	jeroen: move this to config.php of this module.
 require_once 'external/multicurl.php';
 
 /**
@@ -42,8 +41,6 @@ class BackendLinkCheckerHelper
 
 	/**
 	 * All modules that will be checked
-	 *
-	 * @todo	jeroen: Is it an option to port this to the settings page? Remind me to discuss this.
 	 *
 	 * @var array
 	 */
