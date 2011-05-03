@@ -446,7 +446,6 @@ class BackendLinkCheckerHelper
 	 */
 	public static function removeDuplicates($array)
 	{
-		// @todo  jeroen: no comments inline?
 		$result = array_map('unserialize', array_unique(array_map('serialize', $array)));
 
 	  	foreach($result as $key => $value)

@@ -44,8 +44,6 @@ jsBackend.link_checkerModule =
 
 					// enable button
 					refreshLinksButton.removeClass('disabledButton');
-					
-					alert(console.timeEnd('cache'));
 
 					// alert the user
 					if(data.code != 200 && jsBackend.debug) { alert(data.message); }

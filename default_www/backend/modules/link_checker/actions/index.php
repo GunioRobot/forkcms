@@ -14,12 +14,7 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 	/**
 	 * Datagrids
 	 *
-<<<<<<< HEAD
-	 * @var	BackendDataGridDB
-	 * @todo	jeroen: Are you sure these are instances of the BackendDataGridDB class? :)
-=======
 	 * @var	BackendDataGridArray
->>>>>>> jeroen/linkchecker
 	 */
 	private $dgAll, $dgInternal, $dgExternal;
 
@@ -52,17 +47,11 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 
 
 	/**
-	 * Load the datagrids
-	 *
-<<<<<<< HEAD
-	 * @todo	jeroen: Put each datagrid in a separate method for improved readability
-=======
-	 * @todo  Put each datagrid in a separate method for improved readability
->>>>>>> jeroen/linkchecker
+	 * Load All
 	 *
 	 * @return	void
 	 */
-	private function loadDataGrids()
+	private function loadDataGridAll()
 	{
 		// fill datagrid with all the links
 		$this->dgAll = new BackendDataGridArray(BackendLinkCheckerModel::getAll());
@@ -93,36 +82,16 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgAll->setColumnFunction(array('BackendLinkCheckerHelper', 'getDescription'), array('[description]'), 'description', true);
 		$this->dgAll->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module_name', true);
 		$this->dgAll->setColumnFunction(array('BackendLinkCheckerHelper', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+	}
 
 
-		// fill datagrid with only the internal links
-		$this->dgInternal = new BackendDataGridArray(BackendLinkCheckerModel::getInternal());
-
-		// num items per page
-		$this->dgInternal->setPagingLimit(10);
-
-		// sorting
-		$this->dgInternal->setSortingColumns(array('title', 'date_checked'), 'title');
-		$this->dgInternal->setSortParameter('desc');
-
-		// add edit column
-		$this->dgInternal->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]', BL::lbl('Edit'));
-
-		// add module name column
-		$this->dgInternal->addColumn('module_name', ucfirst(BL::lbl('Module')), BL::lbl('Module'), '', BL::lbl('Module'), '', 2);
-
-		// hide columns
-		$this->dgInternal->setColumnsHidden('item_id');
-
-		// set column URLs
-		$this->dgInternal->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
-
-		// set column functions
-		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getDescription'), array('[description]'), 'description', true);
-		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module_name', true);
-		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
-
-
+	/**
+	 * Load External
+	 *
+	 * @return	void
+	 */
+	private function loadDataGridExternal()
+	{
 		// fill datagrid with only the external links
 		$this->dgExternal = new BackendDataGridArray(BackendLinkCheckerModel::getExternal());
 
@@ -150,6 +119,60 @@ class BackendLinkCheckerIndex extends BackendBaseActionIndex
 		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getDescription'), array('[description]'), 'description', true);
 		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module_name', true);
 		$this->dgExternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+	}
+
+
+	/**
+	 * Load Internal
+	 *
+	 * @return	void
+	 */
+	private function loadDataGridInternal()
+	{
+		// fill datagrid with only the internal links
+		$this->dgInternal = new BackendDataGridArray(BackendLinkCheckerModel::getInternal());
+
+		// num items per page
+		$this->dgInternal->setPagingLimit(10);
+
+		// sorting
+		$this->dgInternal->setSortingColumns(array('title', 'date_checked'), 'title');
+		$this->dgInternal->setSortParameter('desc');
+
+		// add edit column
+		$this->dgInternal->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]', BL::lbl('Edit'));
+
+		// add module name column
+		$this->dgInternal->addColumn('module_name', ucfirst(BL::lbl('Module')), BL::lbl('Module'), '', BL::lbl('Module'), '', 2);
+
+		// hide columns
+		$this->dgInternal->setColumnsHidden('item_id');
+
+		// set column URLs
+		$this->dgInternal->setColumnURL('title', BackendModel::createURLForAction('edit', '[module]') . '&amp;id=[item_id]');
+
+		// set column functions
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getDescription'), array('[description]'), 'description', true);
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getModuleLabel'), array('[module]'), 'module_name', true);
+		$this->dgInternal->setColumnFunction(array('BackendLinkCheckerHelper', 'getTimeAgo'), array('[date_checked]'), 'date_checked', true);
+	}
+
+
+	/**
+	 * Load the datagrids
+	 *
+	 * @return	void
+	 */
+	private function loadDataGrids()
+	{
+		// load all links
+		$this->loadDataGridAll();
+
+		// load external links
+		$this->loadDataGridExternal();
+
+		// load internal links
+		$this->loadDataGridInternal();
 	}
 
 
