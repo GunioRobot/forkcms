@@ -296,6 +296,14 @@ $navigation = array(
 					array(
 						'url' => 'location/settings',
 						'label' => 'Location'
+					),
+					array(
+						'url' => 'manage/index',
+						'label' => 'ManageModules',
+						'selected_for' => array(
+							'manage/add',
+							'manage/edit'
+						)
 					)
 				)
 			)

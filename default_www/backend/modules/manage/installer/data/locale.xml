@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<locale>
+	<backend>
+		<core>
+			<item type="label" name="ManageModules">
+				<translation language="en"><![CDATA[manage modules]]></translation>
+				<translation language="nl"><![CDATA[beheer modules]]></translation>
+			</item>
+		</core>
+		<manage>
+			<item type="label" name="Activate">
+				<translation language="en"><![CDATA[activate]]></translation>
+				<translation language="nl"><![CDATA[activeer]]></translation>
+			</item>
+			<item type="label" name="Add">
+				<translation language="en"><![CDATA[add module]]></translation>
+				<translation language="nl"><![CDATA[module toevoegen]]></translation>
+			</item>
+			<item type="label" name="AddMoreFields">
+				<translation language="en"><![CDATA[add more fields]]></translation>
+				<translation language="nl"><![CDATA[meer velden toevoegen]]></translation>
+			</item>
+			<item type="label" name="AddMoreSettings">
+				<translation language="en"><![CDATA[add more settings]]></translation>
+				<translation language="nl"><![CDATA[instelling toevoegen]]></translation>
+			</item>
+			<item type="label" name="DataFields">
+				<translation language="en"><![CDATA[datafields]]></translation>
+				<translation language="nl"><![CDATA[database-velden]]></translation>
+			</item>
+			<item type="label" name="Deactivate">
+				<translation language="en"><![CDATA[deactivate]]></translation>
+				<translation language="nl"><![CDATA[deactiveer]]></translation>
+			</item>
+			<item type="label" name="DeleteField">
+				<translation language="en"><![CDATA[delete field]]></translation>
+				<translation language="nl"><![CDATA[veld verwijderen]]></translation>
+			</item>
+			<item type="label" name="DeleteSetting">
+				<translation language="en"><![CDATA[instelling verwijderen]]></translation>
+				<translation language="nl"><![CDATA[delete setting]]></translation>
+			</item>
+			<item type="label" name="FormInputCheckbox">
+				<translation language="en"><![CDATA[checkbox]]></translation>
+				<translation language="nl"><![CDATA[checkbox]]></translation>
+			</item>
+			<item type="label" name="FormInputDropdown">
+				<translation language="en"><![CDATA[dropdown]]></translation>
+				<translation language="nl"><![CDATA[dropdown]]></translation>
+			</item>
+			<item type="label" name="FormInputRadiobutton">
+				<translation language="en"><![CDATA[radiobutton]]></translation>
+				<translation language="nl"><![CDATA[radiobutton]]></translation>
+			</item>
+			<item type="label" name="FormInputTextfield">
+				<translation language="en"><![CDATA[textfield]]></translation>
+				<translation language="nl"><![CDATA[textfield]]></translation>
+			</item>
+			<item type="label" name="FormInputTextarea">
+				<translation language="en"><![CDATA[textarea]]></translation>
+				<translation language="nl"><![CDATA[textarea]]></translation>
+			</item>
+			<item type="label" name="Install">
+				<translation language="en"><![CDATA[install]]></translation>
+				<translation language="nl"><![CDATA[installeer]]></translation>
+			</item>
+			<item type="label" name="Left">
+				<translation language="en"><![CDATA[left]]></translation>
+				<translation language="nl"><![CDATA[links]]></translation>
+			</item>
+			<item type="label" name="ReloadLocale">
+				<translation language="en"><![CDATA[reload locale]]></translation>
+				<translation language="nl"><![CDATA[herlaad vertalingen]]></translation>
+			</item>
+			<item type="label" name="Right">
+				<translation language="en"><![CDATA[right]]></translation>
+				<translation language="nl"><![CDATA[rechts]]></translation>
+			</item>
+			<item type="label" name="SelectLocation">
+				<translation language="en"><![CDATA[select location]]></translation>
+				<translation language="nl"><![CDATA[selecteer plaats]]></translation>
+			</item>
+			<item type="label" name="SelectType">
+				<translation language="en"><![CDATA[select input type]]></translation>
+				<translation language="nl"><![CDATA[selecteer input-type]]></translation>
+			</item>
+			<item type="label" name="Uninstall">
+				<translation language="en"><![CDATA[uninstall]]></translation>
+				<translation language="nl"><![CDATA[verwijderen]]></translation>
+			</item>
+			<item type="message" name="Added">
+				<translation language="en"><![CDATA[The module "%1$s" was added.]]></translation>
+				<translation language="nl"><![CDATA[De module "%1$s" werd toegevoegd.]]></translation>
+			</item>
+			<item type="message" name="ConfirmDeactivation">
+				<translation language="en"><![CDATA[Are your sure you want to deactivate module "%1$s"?]]></translation>
+				<translation language="nl"><![CDATA[Ben je zeker dat je de module "%1$s" wil deactiveren?]]></translation>
+			</item>
+			<item type="message" name="Edited">
+				<translation language="en"><![CDATA[The settings for "%1$s" were saved.]]></translation>
+				<translation language="nl"><![CDATA[De instellingen voor "%1$s" werden opgeslagen.]]></translation>
+			</item>
+			<item type="message" name="EditModule">
+				<translation language="en"><![CDATA[edit module "%1$s"]]></translation>
+				<translation language="nl"><![CDATA[bewerk module "%1$s"]]></translation>
+			</item>
+			<item type="message" name="HelpActive">
+				<translation language="en"><![CDATA[Activate the module.]]></translation>
+				<translation language="nl"><![CDATA[Activeer de module.]]></translation>
+			</item>
+			<item type="message" name="ModuleInstalled">
+				<translation language="en"><![CDATA[The module was successfully installed.]]></translation>
+				<translation language="nl"><![CDATA[De module is geïnstalleerd.]]></translation>
+			</item>
+			<item type="message" name="ReloadedLocale">
+				<translation language="en"><![CDATA[All translations have been reloaded.]]></translation>
+				<translation language="nl"><![CDATA[Alle vertalingen zijn opnieuw ingeladen.]]></translation>
+			</item>
+			<item type="error" name="Restored">
+				<translation language="en"><![CDATA[The module "%1$s" has been activated.]]></translation>
+				<translation language="nl"><![CDATA[De module "%1$s" werd terug geactiveerd.]]></translation>
+			</item>
+			<item type="error" name="NonExisting">
+				<translation language="en"><![CDATA[This module doesn\'t exist.]]></translation>
+				<translation language="nl"><![CDATA[Deze module bestaat niet.]]></translation>
+			</item>
+			<item type="error" name="CantDeactivateModule">
+				<translation language="en"><![CDATA[You cannot deactivate this module.]]></translation>
+				<translation language="nl"><![CDATA[Je kan deze module niet deactiveren.]]></translation>
+			</item>
+		</manage>
+	</backend>
+</locale>
