@@ -131,26 +131,15 @@ $navigation = array(
 				)
 			),
 			array(
-				'url' => 'profiles/index',
-				'label' => 'Profiles',
-				'children' => array(
-					array(
-						'url' => 'profiles/index',
-						'selected_for' => array(
-							'profiles/edit',
-							'profiles/add_profile_group',
-							'profiles/edit_profile_group'
-						),
-						'label' => 'Profiles'
-					),
-					array(
-						'url' => 'profiles/groups',
-						'selected_for' => array(
-							'profiles/add_group',
-							'profiles/edit_group'
-						),
-						'label' => 'Groups'
-					)
+				'url' => 'slideshows/index',
+				'label' => 'Slideshows',
+				'selected_for' => array(
+					'slideshows/add',
+					'slideshows/add_image',
+					'slideshows/edit',
+					'slideshows/edit_image',
+					'slideshows/index',
+					'slideshows/images',
 				)
 			),
 		)

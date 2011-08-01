@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<locale>
+  	<backend>
+    	<core>
+			<item type="label" name="Slideshows">
+				<translation language="nl"><![CDATA[slideshows]]></translation>
+				<translation language="en"><![CDATA[slideshows]]></translation>
+			</item>
+		</core>
+    	<slideshows>
+    		<item type="label" name="AddImage">
+				<translation language="nl"><![CDATA[afbeelding toevoegen]]></translation>
+				<translation language="en"><![CDATA[add image]]></translation>
+			</item>
+    		<item type="label" name="BackToOverview">
+				<translation language="nl"><![CDATA[terug naar het overzicht]]></translation>
+				<translation language="en"><![CDATA[back to overview]]></translation>
+			</item>
+			<item type="label" name="Caption">
+				<translation language="nl"><![CDATA[bijschrift]]></translation>
+				<translation language="en"><![CDATA[caption]]></translation>
+			</item>
+			<item type="label" name="EditImage">
+				<translation language="nl"><![CDATA[afbeelding wijzigen]]></translation>
+				<translation language="en"><![CDATA[edit image]]></translation>
+			</item>
+			<item type="label" name="Height">
+				<translation language="nl"><![CDATA[hoogte]]></translation>
+				<translation language="en"><![CDATA[height]]></translation>
+			</item>
+			<item type="label" name="ManageImages">
+				<translation language="nl"><![CDATA[afbeeldingen beheren]]></translation>
+				<translation language="en"><![CDATA[manage images]]></translation>
+			</item>
+    		<item type="label" name="Measurements">
+				<translation language="nl"><![CDATA[afmetingen]]></translation>
+				<translation language="en"><![CDATA[measurements]]></translation>
+			</item>
+			<item type="label" name="Width">
+				<translation language="nl"><![CDATA[breedte]]></translation>
+				<translation language="en"><![CDATA[width]]></translation>
+			</item>
+			<item type="message" name="HelpCaption">
+				<translation language="nl"><![CDATA[Het bijschrift is een stukje tekst dat bij de afbeelding hoort, zoals bv. een stukje beschrijvende tekst met een link.]]></translation>
+				<translation language="en"><![CDATA[The caption is a bit of text to go with the image, for example a basic description with an external link.]]></translation>
+			</item>
+		</slideshows>
+	</backend>
+</locale>
