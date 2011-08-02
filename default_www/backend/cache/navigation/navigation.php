@@ -320,6 +320,10 @@ $navigation = array(
 					array(
 						'url' => 'location/settings',
 						'label' => 'Location'
+					),
+					array(
+						'url' => 'slideshows/settings',
+						'label' => 'Slideshows'
 					)
 				)
 			)

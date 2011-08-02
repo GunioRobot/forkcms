@@ -20,7 +20,7 @@
 						{iteration:items}
 
 						<li rel="#{$items.index}">
-							{$items.title}
+							{$items.caption}
 
 							{*
 								You can't use any other anchor elements then the one below, because
