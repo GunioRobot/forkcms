@@ -76,13 +76,21 @@ class BackendSlideshowsSettings extends BackendBaseActionEdit
 		if($this->frm->isSubmitted())
 		{
 			// shorten fields
-			$modules = $this->frm->getField('modules');
+			$modules = $this->frm->getField('modules')->getValue();
 
 			// form is validated
 			if($this->frm->isCorrect())
 			{
 				// set our settings
-				BackendModel::setModuleSetting('slideshows', 'modules', $modules->getValue());
+				BackendModel::setModuleSetting('slideshows', 'modules', $modules);
+
+				if(!empty($modules))
+				{
+					foreach($modules as $module)
+					{
+						BackendSlideshowsHelper::writeHelperFile($module);
+					}
+				}
 
 				// redirect to the settings page
 				$this->redirect(BackendModel::createURLForAction('settings') . '&report=saved');

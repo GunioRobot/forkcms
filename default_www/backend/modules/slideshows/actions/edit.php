@@ -62,7 +62,7 @@ class BackendSlideshowsEdit extends BackendBaseActionEdit
 		$this->frm->addText('name', $this->record['name']);
 		$this->frm->addDropdown('type', BackendSlideshowsModel::getTypesAsPairs(), $this->record['type_id']);
 		$this->frm->addDropdown('module', BackendSlideshowsHelper::getSupportedModules(), $this->record['module']);
-		$this->frm->addDropdown('methods', BackendSlideshowsHelper::getSupportedMethodsByModuleAsPairs('events'), $this->record['data_callback_method']);
+		$this->frm->addDropdown('methods', BackendSlideshowsHelper::getSupportedMethodsByModuleAsPairs($this->record['module']), $this->record['data_callback_method']);
 
 		$this->frm->addText('width', $this->record['width']);
 		$this->frm->addText('height', $this->record['height']);
@@ -80,6 +80,11 @@ class BackendSlideshowsEdit extends BackendBaseActionEdit
 
 		$this->tpl->assign('id', $this->id);
 		$this->tpl->assign('item', $this->record);
+
+		if(BackendSlideshowsHelper::getModules())
+		{
+			$this->tpl->assign('modules', true);
+		}
 	}
 
 
@@ -98,7 +103,6 @@ class BackendSlideshowsEdit extends BackendBaseActionEdit
 
 			// shorten fields
 			$module = $this->frm->getField('module');
-			$method = $this->frm->getField('methods');
 			$width = $this->frm->getField('width');
 			$height = $this->frm->getField('height');
 
@@ -112,6 +116,9 @@ class BackendSlideshowsEdit extends BackendBaseActionEdit
 			{
 				$width->isNumeric(BL::err('NumericCharactersOnly'));
 			}
+
+			// the method is filled by javascript, so we have to fetch it from POST
+			$method = isset($_POST['methods']) ? $_POST['methods'] : null;
 
 			// no errors?
 			if($this->frm->isCorrect())

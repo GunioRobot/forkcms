@@ -12,7 +12,7 @@ jsBackend.slideshows =
 	init: function() 
 	{
 		var module = $('#module');
-		
+
 		jsBackend.slideshows.toggleMethods(module);
 
 		if(module.length > 0) 

@@ -35,7 +35,7 @@ class BackendSlideshowsAdd extends BackendBaseActionEdit
 		$this->frm->addTexts('name', 'width', 'height');
 		$this->frm->addDropdown('type', BackendSlideshowsModel::getTypesAsPairs());
 		$this->frm->addDropdown('module', BackendSlideshowsHelper::getSupportedModules());
-		$this->frm->addDropdown('methods', BackendSlideshowsHelper::getSupportedMethodsByModuleAsPairs('events'), $this->record['data_callback_method']);
+		$this->frm->addDropdown('methods');
 	}
 
 
@@ -65,7 +65,6 @@ class BackendSlideshowsAdd extends BackendBaseActionEdit
 
 			// shorten fields
 			$module = $this->frm->getField('module');
-			$method = $this->frm->getField('methods');
 			$width = $this->frm->getField('width');
 			$height = $this->frm->getField('height');
 
@@ -83,6 +82,9 @@ class BackendSlideshowsAdd extends BackendBaseActionEdit
 				}
 			}
 
+			// the method is filled by javascript, so we have to fetch it from POST
+			$method = isset($_POST['methods']) ? $_POST['methods'] : null;
+
 			// form validated with no errors
 			if($this->frm->isCorrect())
 			{
@@ -93,7 +95,7 @@ class BackendSlideshowsAdd extends BackendBaseActionEdit
 				$item['module'] = ($module->getValue() == '0') ? null : $module->getValue();
 				if($item['module'] !== null)
 				{
-					$item['data_callback_method'] = $method->getValue();
+					$item['data_callback_method'] = $method;
 				}
 				else
 				{

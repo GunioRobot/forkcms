@@ -105,7 +105,7 @@ class BackendSlideshowsAddImage extends BackendBaseActionEdit
 				$item['title'] = $this->frm->getField('title')->getValue();
 				$item['caption'] = (!$caption->isFilled()) ? null : $caption->getValue();
 
-				// set events files path for this record
+				// set files path for this record
 				$path = FRONTEND_FILES_PATH . '/slideshows/' . $item['slideshow_id'];
 				$format = $this->slideshow['width'] . 'x' . $this->slideshow['height'];
 

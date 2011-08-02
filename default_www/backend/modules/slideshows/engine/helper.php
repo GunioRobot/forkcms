@@ -125,38 +125,18 @@ class BackendSlideshowsHelper
 	 */
 	public static function getSupportedMethodsByModule($module)
 	{
-		$enginePath = FRONTEND_MODULES_PATH . '/' . $module . '/engine';
-		$engineFiles = SpoonFile::getList($enginePath);
-
-		if(empty($engineFiles)) return array();
-
+		$helperFile = FRONTEND_MODULES_PATH . '/'. $module . '/engine/slideshows.php';
+		$helperFileContents = SpoonFile::getContent($helperFile);
 		$results = array();
 
-		foreach($engineFiles as $key => $file)
+		preg_match_all('/public static function (.*)\((.*)\)/', $helperFileContents, $matches);
+
+		if(isset($matches[1]) && !empty($matches[1]))
 		{
-			$classContents = SpoonFile::getContent($enginePath . '/' . $file);
-
-			preg_match('/class (.*)/', $classContents, $matches);
-
-			if(!empty($matches))
+			foreach($matches[1] as $key => $method)
 			{
-				$explodedMatches = explode(' ', $matches[1]);
-
-				$class = $explodedMatches[0];
-
-				$results[$key]['class'] = $class;
-
-				preg_match_all('/function getSlideshow(.*)\((.*)\)/', $classContents, $matches);
-
-				if(isset($matches[1]) && !empty($matches[1]))
-				{
-					foreach($matches[1] as $method)
-					{
-						$method = 'getSlideshow' . $method;
-
-						$results[$key]['methods'][] = $method;
-					}
-				}
+				$results[$key]['class'] = 'Frontend'. SpoonFilter::toCamelCase($module) . 'SlideshowsHelper';
+				$results[$key]['methods'][] = $method;
 			}
 		}
 
@@ -250,6 +230,39 @@ class BackendSlideshowsHelper
 		}
 
 		return $results;
+	}
+
+
+	/**
+	 * Write a slideshows helper file for the specified module
+	 *
+	 * @return	void
+	 */
+	public static function writeHelperFile($module)
+	{
+		$module = SpoonFilter::toCamelCase($module);
+		$helperFile = FRONTEND_MODULES_PATH . '/' . $module .'/engine/slideshows.php';
+
+		if(!SpoonFile::exists($helperFile))
+		{
+			$content = '<?php
+
+class Frontend' . $module. 'SlideshowsModel
+{
+	public static function getImages()
+	{
+		$db = BackendModel::getDB();
+
+		$records = array();
+
+		return $records;
+	}
+}
+
+?>';
+
+			SpoonFile::setContent($helperFile, $content);
+		}
 	}
 }
 
