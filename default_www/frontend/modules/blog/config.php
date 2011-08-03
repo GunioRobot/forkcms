@@ -1,5 +1,7 @@
 <?php
 
+require_once FRONTEND_MODULES_PATH .'/blog/engine/slideshows.php';
+
 /**
  * This is the configuration-object
  *

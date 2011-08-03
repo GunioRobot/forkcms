@@ -35,6 +35,23 @@ class FrontendSlideshowsModel
 
 
 	/**
+	 * Returns the dataset method
+	 *
+	 * @return	string
+	 */
+	public static function getDataSetMethod($id)
+	{
+		$db = FrontendModel::getDB();
+
+		return $db->getVar('SELECT i.method
+							FROM slideshows_datasets AS i
+							WHERE
+							i.id = ?',
+							array($id));
+	}
+
+
+	/**
 	 * Returns the images for a given slideshow ID
 	 *
 	 * @return	array
@@ -47,7 +64,8 @@ class FrontendSlideshowsModel
 		$records = $db->getRecords('SELECT a.*
 									FROM slideshows_images AS a
 									WHERE
-									a.slideshow_id = ?',
+									a.slideshow_id = ?
+									ORDER BY a.sequence',
 									array((int) $slideshowID));
 
 		if(empty($records)) return array();
@@ -67,6 +85,7 @@ class FrontendSlideshowsModel
 
 		return $records;
 	}
+
 }
 
 ?>

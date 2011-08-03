@@ -9,7 +9,7 @@
  * @author		Dave Lens <dave@netlash.com>
  * @since		2.5
  */
-class BackendSlideshowsAjaxGetMethods extends BackendBaseAJAXAction
+class BackendSlideshowsAjaxGetSupportedMethods extends BackendBaseAJAXAction
 {
 	/**
 	 * Execute the action

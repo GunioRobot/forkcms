@@ -62,7 +62,7 @@ class BackendSlideshowsEdit extends BackendBaseActionEdit
 		$this->frm->addText('name', $this->record['name']);
 		$this->frm->addDropdown('type', BackendSlideshowsModel::getTypesAsPairs(), $this->record['type_id']);
 		$this->frm->addDropdown('module', BackendSlideshowsHelper::getSupportedModules(), $this->record['module']);
-		$this->frm->addDropdown('methods', BackendSlideshowsHelper::getSupportedMethodsByModuleAsPairs($this->record['module']), $this->record['data_callback_method']);
+		$this->frm->addDropdown('methods', BackendSlideshowsModel::getDataSetMethodsAsPairs($this->record['module']), $this->record['dataset_id']);
 
 		$this->frm->addText('width', $this->record['width']);
 		$this->frm->addText('height', $this->record['height']);
@@ -132,7 +132,7 @@ class BackendSlideshowsEdit extends BackendBaseActionEdit
 				$item['module'] = ($module->getValue() == '0') ? null : $module->getValue();
 				if($item['module'] !== null)
 				{
-					$item['data_callback_method'] = $method->getValue();
+					$item['dataset_id'] = $method;
 				}
 				else
 				{

@@ -95,7 +95,7 @@ class BackendSlideshowsAdd extends BackendBaseActionEdit
 				$item['module'] = ($module->getValue() == '0') ? null : $module->getValue();
 				if($item['module'] !== null)
 				{
-					$item['data_callback_method'] = $method;
+					$item['dataset_id'] = $method;
 				}
 				else
 				{

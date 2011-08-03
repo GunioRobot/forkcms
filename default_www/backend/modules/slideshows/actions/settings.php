@@ -20,6 +20,7 @@ class BackendSlideshowsSettings extends BackendBaseActionEdit
 	{
 		// call parent, this will probably add some general CSS/JS or other required files
 		parent::execute();
+		$this->header->addJS('settings.js');
 
 		// load form
 		$this->loadForm();
@@ -48,11 +49,13 @@ class BackendSlideshowsSettings extends BackendBaseActionEdit
 		// get all active modules and rewrite them so key = value
 		$modules = BackendModel::getModules();
 
-		// loop the modules
+		// loop the modules and build the multi-checkbox values
 		foreach($modules as $key => &$module)
 		{
+			// the slideshows module shouldn't be in the list ^^
 			if($module === 'slideshows') unset($modules[$key]);
 
+			// build the values for this checkbox
 			$label = BL::lbl(SpoonFilter::toCamelCase($module));
 			$module = array('label' => $label, 'value' => $module);
 		}

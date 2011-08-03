@@ -135,7 +135,7 @@ class BackendSlideshowsHelper
 		{
 			foreach($matches[1] as $key => $method)
 			{
-				$results[$key]['class'] = 'Frontend'. SpoonFilter::toCamelCase($module) . 'SlideshowsHelper';
+				$results[$key]['class'] = 'Frontend'. SpoonFilter::toCamelCase($module) . 'SlideshowsModel';
 				$results[$key]['methods'][] = $method;
 			}
 		}
@@ -240,18 +240,18 @@ class BackendSlideshowsHelper
 	 */
 	public static function writeHelperFile($module)
 	{
-		$module = SpoonFilter::toCamelCase($module);
+		$camelcasedModule = SpoonFilter::toCamelCase($module);
 		$helperFile = FRONTEND_MODULES_PATH . '/' . $module .'/engine/slideshows.php';
 
 		if(!SpoonFile::exists($helperFile))
 		{
 			$content = '<?php
 
-class Frontend' . $module. 'SlideshowsModel
+class Frontend' . $camelcasedModule. 'SlideshowsModel
 {
 	public static function getImages()
 	{
-		$db = BackendModel::getDB();
+		$db = FrontendModel::getDB();
 
 		$records = array();
 

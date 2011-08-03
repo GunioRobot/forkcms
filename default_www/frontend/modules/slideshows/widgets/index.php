@@ -63,11 +63,14 @@ class FrontendSlideshowsWidgetIndex extends FrontendBaseWidget
 		if(empty($this->slideshow)) return false;
 
 		// both the module and the callable method should be set
-		if($this->slideshow['module'] !== null && $this->slideshow['data_callback_method'] !== null)
+		if($this->slideshow['module'] !== null && $this->slideshow['dataset_id'] !== null)
 		{
 			$this->loadEngineFiles();
 
-			$this->items = call_user_func($this->slideshow['data_callback_method']);
+			// get the dataset method, so we can call it
+			$method = FrontendSlideshowsModel::getDataSetMethod($this->slideshow['dataset_id']);
+
+			$this->items = call_user_func($method);
 		}
 
 		// this is a regular slideshow, and the user manages the images.
@@ -94,15 +97,18 @@ class FrontendSlideshowsWidgetIndex extends FrontendBaseWidget
 			throw new Exception('You specified a module, but it has no model files!');
 		}
 
-		// check if the method is callable/exists
-		if(!is_callable($this->slideshow['data_callback_method']))
-		{
-			throw new Exception($this->slideshow['data_callback_method'] . ' is not a callable method!');
-		}
+		// get the dataset method, so we can call it
+		$method = FrontendSlideshowsModel::getDataSetMethod($this->slideshow['dataset_id']);
 
 		foreach($engineFiles as $file)
 		{
 			require_once $enginePath . '/' . $file;
+		}
+
+		// check if the method is callable/exists
+		if(!is_callable($method))
+		{
+			throw new Exception($method . ' is not a valid callable method!');
 		}
 	}
 

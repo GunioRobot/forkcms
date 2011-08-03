@@ -8,13 +8,66 @@
 {form:settings}
 	<div class="box">
 		<div class="heading">
-			<h3>{$lblModules|ucfirst}</h3>
+			<h3>{$msgEnableSlideshowsForModules|ucfirst}</h3>
 		</div>
-		<div class="options labelWidthLong horizontal">
+		<div class="options labelWidthLong horizontal" id="slideshowSettings">
 			<ul id="moduleList" class="inputList">
 				{iteration:modules}
-					<li>
-						{$modules.chkModules} <label for="{$modules.id}">{$modules.label}</label>
+					<li class="module">
+						{$modules.chkModules}
+
+						<a href="#" class="icon iconCollapsed container" title="open">
+							<span>
+								<label for="modules{$modules.label}">{$modules.label}</label>
+							</span>
+						</a>
+
+						<div id="module-{$modules.value}" class="configureDataSet hidden">
+							<div class="heading">
+								<h3>{$msgConfigureDataSet}</h3>
+							</div>
+							<div class="box">
+								<div id="datagrid-{$modules.value}" class="options hidden">
+									<div class="dataGridHolder">
+										<table class="dataGrid" cellpadding="0" cellspacing="0">
+											<thead>
+												<tr>
+													<th width="200"><span>method</span></th>
+													<th><span>label</span></th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="options">
+									<label for="method-{$modules.value}">{$msgChooseMethod|ucfirst}</label>
+									<select name="method-{$modules.value}" id="method-{$modules.value}">
+									</select>
+
+									<label for="method-{$modules.value}-label">{$msgChooseMethodLabel|ucfirst}</label>
+									<input name="method-{$modules.value}-label" id="method-{$modules.value}-label" class="inputText" type="text"  value="" />
+
+									<div class="buttonHolder">
+										<a id="submit-{$modules.value}" class="button inputButton saveMethod" href="#save">
+											<span>{$lblAdd|ucfirst}</span>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="noMethods hidden">
+							<div class="heading">
+								<h3>{$msgNoMethodsHeading}</h3>
+							</div>
+							<div class="box">
+								<div class="options">
+									{$msgNoMethodsMessage}
+								</div>
+							</div>
+						</div>
 					</li>
 				{/iteration:modules}
 			</ul>

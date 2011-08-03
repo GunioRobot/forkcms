@@ -125,6 +125,28 @@ class BackendSlideshowsModel
 
 
 	/**
+	 * Check if a slideshow dataset method exists.
+	 *
+	 * @return	bool
+	 * @param	array $item		The dataset method record to check against
+	 */
+	public static function existsDataSetMethod($item)
+	{
+		return (bool) BackendModel::getDB()->getVar('SELECT i.id
+														FROM slideshows_datasets AS i
+														WHERE
+														i.module = ? AND
+														i.method = ? AND
+														i.label = ?',
+														array(
+															$item['module'],
+															$item['method'],
+															$item['label']
+														));
+	}
+
+
+	/**
 	 * Check if a slideshow image exists.
 	 *
 	 * @return	bool
@@ -152,6 +174,42 @@ class BackendSlideshowsModel
 													FROM slideshows AS i
 													WHERE i.id = ?',
 													array((int) $id));
+	}
+
+
+	/**
+	 * Get dataset methods by module.
+	 *
+	 * @return	array
+	 * @param	string $module		The module to fetch the dataset methods for.
+	 */
+	public static function getDataSetMethods($module)
+	{
+		$db = BackendModel::getDB();
+
+		return $db->getRecords('SELECT i.*
+								FROM slideshows_datasets AS i
+								WHERE
+								i.module = ?',
+								array($module), 'id');
+	}
+
+
+	/**
+	 * Get dataset methods by module as pairs
+	 *
+	 * @return array
+	 * @param string $module
+	 */
+	public static function getDataSetMethodsAsPairs($module)
+	{
+		$db = BackendModel::getDB();
+
+		return $db->getPairs('SELECT i.id, i.label
+								FROM slideshows_datasets AS i
+								WHERE
+								i.module = ?',
+								array($module));
 	}
 
 
@@ -268,6 +326,22 @@ class BackendSlideshowsModel
 
 
 	/**
+	 * Insert a new dataset method
+	 *
+	 * @return	int
+	 * @param	string $item	The data for the ... dataset record.
+	 */
+	public static function insertDataSetMethod($item)
+	{
+		$db = BackendModel::getDB(true);
+
+		$item['id'] = $db->insert('slideshows_datasets', $item);
+
+		return $item['id'];
+	}
+
+
+	/**
 	 * Insert a new slideshow image
 	 *
 	 * @return	int
@@ -359,6 +433,22 @@ class BackendSlideshowsModel
 		);
 
 		return $db->update('slideshows', $item, 'id = ?', $item['id']);
+	}
+
+
+	/**
+	 * Update an existing dataset method
+	 *
+	 * @return	int
+	 * @param	string $item	The data for the ... dataset record.
+	 */
+	public static function updateDataSetMethod($item)
+	{
+		$db = BackendModel::getDB(true);
+
+		$db->update('slideshows_datasets', $item, 'id = ?', $item['id']);
+
+		return $item['id'];
 	}
 
 
