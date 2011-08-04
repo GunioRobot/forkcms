@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This action will output a list of all get-methods for a given module.
+ * This action will output a list of all dataset-methods for a given module as pairs.
  *
  * @package		backend
  * @subpackage	slideshows

@@ -8,7 +8,6 @@ if(!jsBackend) { var jsBackend = new Object(); }
  */
 jsBackend.slideshows = 
 {
-	// init, something like a constructor
 	init: function() 
 	{
 		var module = $('#module');
@@ -30,6 +29,37 @@ jsBackend.slideshows =
 		{
 			jsBackend.slideshows.settings.init();
 		}
+
+		// whenever an option is hovered in the methods dropdown, we should fetch a preview tooltip with images
+		$('#methods option').hover(jsBackend.slideshows.selectMethodHandler, function(e){});
+	},
+	
+	
+	selectMethodHandler: function(e)
+	{
+		var self = $(this);
+
+		$.ajax(
+		{
+			url: '/backend/ajax.php?module='+ jsBackend.current.module +'&action=get_dataset_preview&language={$LANGUAGE}',
+			data: 'id=' + self.val(),
+			success: function(json, textStatus)
+			{
+				if(json.code != 200)
+				{
+					// show error if needed
+					if(jsBackend.debug) alert(textStatus);
+				}
+				else
+				{
+					for(i in json.data)
+					{
+						// @todo append images to some sort of tooltip preview
+						//$('#leftColumn').append('<img class="thumbnail" src="'+ json.data[i] +'" alt="" />');
+					}
+				}
+			}
+		});
 	},
 	
 	

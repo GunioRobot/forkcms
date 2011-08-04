@@ -178,6 +178,24 @@ class BackendSlideshowsModel
 
 
 	/**
+	 * Get dataset method record.
+	 *
+	 * @return	array
+	 * @param	int $id
+	 */
+	public static function getDataSet($id)
+	{
+		$db = BackendModel::getDB();
+
+		return $db->getRecord('SELECT i.*
+								FROM slideshows_datasets AS i
+								WHERE
+								i.id = ?',
+								array((int) $id));
+	}
+
+
+	/**
 	 * Get dataset methods by module.
 	 *
 	 * @return	array
