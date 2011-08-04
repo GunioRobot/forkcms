@@ -40,7 +40,12 @@ class SlideshowsInstall extends ModuleInstaller
 		$this->setActionRights(1, 'slideshows', 'delete_image');
 		$this->setActionRights(1, 'slideshows', 'settings');
 		$this->setActionRights(1, 'slideshows', 'sequence');
-		$this->setActionRights(1, 'slideshows', 'get_methods');
+		$this->setActionRights(1, 'slideshows', 'get_dataset_methods_as_pairs');
+		$this->setActionRights(1, 'slideshows', 'get_dataset_methods');
+		$this->setActionRights(1, 'slideshows', 'get_dataset_preview');
+		$this->setActionRights(1, 'slideshows', 'get_supported_methods');
+		$this->setActionRights(1, 'slideshows', 'insert_dataset_method');
+		$this->setActionRights(1, 'slideshows', 'update_dataset_method');
 
 		// set module settings
 		$this->setSetting('slideshows', 'modules', false);
