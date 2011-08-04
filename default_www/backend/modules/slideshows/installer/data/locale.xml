@@ -40,6 +40,26 @@
 				<translation language="nl"><![CDATA[breedte]]></translation>
 				<translation language="en"><![CDATA[width]]></translation>
 			</item>
+			<item type="message" name="ConfigureDataSet">
+				<translation language="nl"><![CDATA[Configureer de dataset functies voor deze module]]></translation>
+				<translation language="en"><![CDATA[Configure the dataset methods for this module]]></translation>
+			</item>
+			<item type="message" name="ConfirmDelete">
+				<translation language="nl"><![CDATA[Ben je zeker dat je de slideshow "%1$s" wil verwijderen?]]></translation>
+				<translation language="en"><![CDATA[Are you sure you want to delete the "%1$s" slideshow?]]></translation>
+			</item>
+			<item type="message" name="ChooseLabel">
+				<translation language="nl"><![CDATA[Kies het label voor de nieuwe dataset]]></translation>
+				<translation language="en"><![CDATA[Choose the label for the new dataset]]></translation>
+			</item>
+			<item type="message" name="ChooseMethod">
+				<translation language="nl"><![CDATA[Kies de functie voor een nieuwe dataset]]></translation>
+				<translation language="en"><![CDATA[Choose the method for a new dataset]]></translation>
+			</item>
+			<item type="message" name="EnableSlideshowsForModules">
+				<translation language="nl"><![CDATA[Maak slideshows beschikbaar voor de volgende modules]]></translation>
+				<translation language="en"><![CDATA[Enable slideshows for the following modules]]></translation>
+			</item>
 			<item type="message" name="HelpCaption">
 				<translation language="nl"><![CDATA[Het bijschrift is een stukje tekst dat bij de afbeelding hoort, zoals bv. een stukje beschrijvende tekst met een link.]]></translation>
 				<translation language="en"><![CDATA[The caption is a bit of text to go with the image, for example a basic description with an external link.]]></translation>

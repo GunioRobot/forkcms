@@ -75,7 +75,7 @@
 
 	<div id="confirmDelete" title="{$lblDelete|ucfirst}?" style="display: none;">
 		<p>
-			{$msgConfirmDelete|sprintf:{$item.title}}
+			{$msgConfirmDelete|sprintf:{$item.name}}
 		</p>
 	</div>
 {/form:edit}
