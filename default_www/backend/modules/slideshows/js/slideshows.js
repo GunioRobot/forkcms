@@ -8,6 +8,8 @@ if(!jsBackend) { var jsBackend = new Object(); }
  */
 jsBackend.slideshows = 
 {
+	previewSelector: '#previewImages',
+
 	init: function() 
 	{
 		var module = $('#module');
@@ -31,11 +33,20 @@ jsBackend.slideshows =
 		}
 
 		// whenever an option is hovered in the methods dropdown, we should fetch a preview tooltip with images
-		$('#methods option').hover(jsBackend.slideshows.selectMethodHandler, function(e){});
+		$('#methods option').hover(jsBackend.slideshows.selectMethodFocusHandler, jsBackend.slideshows.selectMethodBlurHandler);
 	},
 	
 	
-	selectMethodHandler: function(e)
+	selectMethodBlurHandler: function(e)
+	{
+		var preview = $(jsBackend.slideshows.previewSelector);
+		
+		preview.hide();
+		preview.html('');
+	},
+	
+	
+	selectMethodFocusHandler: function(e)
 	{
 		var self = $(this);
 
@@ -52,11 +63,22 @@ jsBackend.slideshows =
 				}
 				else
 				{
+					/* @todo show preview on option hover
+					var preview = $(jsBackend.slideshows.previewSelector);
+					var methods = $('#methods');
+					
+					var relativeX = parseInt(methods.position().left);
+					var relativeY = parseInt(methods.position().top);
+
+					preview.css({left: relativeX, top: relativeY});
+					
 					for(i in json.data)
 					{
-						// @todo append images to some sort of tooltip preview
-						//$('#leftColumn').append('<img class="thumbnail" src="'+ json.data[i] +'" alt="" />');
+						var file = json.data[i].replace('/600x280/', '/64x64/'); //@todo fix regex
+						preview.append('<img class="thumbnail" src="'+ file +'" alt="" />');
+						preview.show();
 					}
+					*/
 				}
 			}
 		});
