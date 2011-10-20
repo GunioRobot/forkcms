@@ -64,6 +64,14 @@
 				<translation language="nl"><![CDATA[Het bijschrift is een stukje tekst dat bij de afbeelding hoort, zoals bv. een stukje beschrijvende tekst met een link.]]></translation>
 				<translation language="en"><![CDATA[The caption is a bit of text to go with the image, for example a basic description with an external link.]]></translation>
 			</item>
+			<item type="message" name="NoMethodsHeading">
+				<translation language="nl"><![CDATA[Geen methodes gevonden]]></translation>
+				<translation language="en"><![CDATA[No methods found]]></translation>
+			</item>
+			<item type="message" name="NoMethodsMessage">
+				<translation language="nl"><![CDATA[Voeg een slideshows.php bestand toe in de engine-folder van deze module, met minstens één methode die een dataset met afbeeldingen teruggeeft.]]></translation>
+				<translation language="en"><![CDATA[Add a slideshows.php file in the engine folder of this module, with at least one method that returns a dataset of images.]]></translation>
+			</item>
 		</slideshows>
 	</backend>
 </locale>
