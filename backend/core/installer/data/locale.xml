@@ -2233,6 +2233,16 @@
         <translation language="de"><![CDATA[hinzufügen]]></translation>
         <translation language="fr"><![CDATA[ajouter]]></translation>
       </item>
+      <item type="label" name="AddBlock">
+        <translation language="nl"><![CDATA[blok toevoegen]]></translation>
+        <translation language="en"><![CDATA[add block]]></translation>
+        <translation language="it"><![CDATA[aggiungi blocco]]></translation>
+        <translation language="ru"><![CDATA[Добавить блок]]></translation>
+        <translation language="cn"><![CDATA[添加阻止]]></translation>
+        <translation language="de"><![CDATA[Block hinzufügen]]></translation>
+        <translation language="fr"><![CDATA[ajouter un bloc]]></translation>
+        <translation language="hu"><![CDATA[blokk hozzáadása]]></translation>
+      </item>
       <item type="label" name="AddCategory">
         <translation language="nl"><![CDATA[categorie toevoegen]]></translation>
         <translation language="en"><![CDATA[add category]]></translation>
@@ -3536,7 +3546,7 @@
         <translation language="ru"><![CDATA[Главная]]></translation>
         <translation language="cn"><![CDATA[首页]]></translation>
         <translation language="de"><![CDATA[Startseite]]></translation>
-        <translation language="fr"><![CDATA[accueil ]]></translation>
+        <translation language="fr"><![CDATA[accueil]]></translation>
       </item>
       <item type="label" name="HU">
         <translation language="hu"><![CDATA[magyar]]></translation>
@@ -4201,6 +4211,18 @@
         <translation language="cn"><![CDATA[荷兰语]]></translation>
         <translation language="de"><![CDATA[niederländisch]]></translation>
         <translation language="fr"><![CDATA[néerlandais]]></translation>
+      </item>
+      <item type="message" name="NoEmailaddresses">
+        <translation language="nl"><![CDATA[Nog geen emailadressen.]]></translation>
+        <translation language="en"><![CDATA[No email addresses.]]></translation>
+        <translation language="pl"><![CDATA[Brak adresów e-mail.]]></translation>
+        <translation language="hu"><![CDATA[Nem e-mail címeket.]]></translation>
+        <translation language="it"><![CDATA[Nessun indirizzi e-mail.]]></translation>
+        <translation language="fr"><![CDATA[Il n'y a pas de adresses e-mail.]]></translation>
+        <translation language="ru"><![CDATA[No email addresses.]]></translation>
+        <translation language="tr"><![CDATA[No email addresses.]]></translation>
+        <translation language="cn"><![CDATA[No email addresses.]]></translation>
+        <translation language="de"><![CDATA[No email addresses.]]></translation>
       </item>
       <item type="label" name="None">
         <translation language="nl"><![CDATA[geen]]></translation>
