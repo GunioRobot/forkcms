@@ -17,7 +17,7 @@ class BackendMailmotorModel
 	/**
 	 * Checks the settings and optionally returns an array with warnings
 	 *
-	 * @return	array
+	 * @return array
 	 */
 	public static function checkSettings()
 	{
@@ -38,5 +38,3 @@ class BackendMailmotorModel
 		return $warnings;
 	}
 }
-
-?>

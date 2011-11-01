@@ -22,7 +22,7 @@ class BackendMailmotorGroupsModel
 	/**
 	 * Returns true if every working language has a default group set, false if at least one is missing.
 	 *
-	 * @return	bool
+	 * @return bool
 	 */
 	public static function checkDefaults()
 	{

@@ -19,12 +19,12 @@ class BackendMailmotorCustomFieldsModel
 	 *
 	 * @todo rework this in multiple methods, there are too many situations/contexts involved.
 	 *
-	 * @return	bool
-	 * @param	array $fields							The fields to insert.
-	 * @param	int $groupId							The ID of the group for which the fields will be inserted.
-	 * @param	string[optional] $email					The email you want to insert the custom fields for.
-	 * @param	int[optional] $customFieldsGroup		If this is set it will only update the custom fields for this group.
-	 * @param	bool[optional] $import					This method is called through the import action.
+	 * @param array $fields The fields to insert.
+	 * @param int $groupId The ID of the group for which the fields will be inserted.
+	 * @param string[optional] $email The email you want to insert the custom fields for.
+	 * @param int[optional] $customFieldsGroup If this is set it will only update the custom fields for this group.
+	 * @param bool[optional] $import This method is called through the import action.
+	 * @return bool
 	 */
 	public static function insert(array $fields, $groupId, $email = null, $customFieldsGroup = null, $import = false)
 	{
@@ -74,14 +74,13 @@ class BackendMailmotorCustomFieldsModel
 		}
 	}
 
-
 	/**
 	 * Updates the custom fields for a given group. Accepts an optional third parameter $email that will update the values for that e-mail.
 	 *
-	 * @return	int
-	 * @param	array $fields				The fields.
-	 * @param	int $groupId				The group to update.
-	 * @param	string[optional] $email		The email you want to update the custom fields for.
+	 * @param array $fields The fields.
+	 * @param int $groupId The group to update.
+	 * @param string[optional] $email The email you want to update the custom fields for.
+	 * @return int
 	 */
 	public static function update($fields, $groupId, $email = null)
 	{
