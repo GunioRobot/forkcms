@@ -32,7 +32,10 @@ class BackendMailmotorAjaxSaveSendDate extends BackendBaseAJAXAction
 		if($sendOnDate == '' || $sendOnTime == '') $this->output(self::BAD_REQUEST, null, 'Provide a valid send date date provided');
 
 		// record is empty
-		if(!BackendMailmotorModel::existsMailing($mailingId)) $this->output(self::BAD_REQUEST, null, BL::err('MailingDoesNotExist', 'mailmotor'));
+		if(!BackendMailmotorMailingsModel::exists($mailingId))
+		{
+			$this->output(self::BAD_REQUEST, null, BL::err('MailingDoesNotExist', 'mailmotor'));
+		}
 
 		// reverse the date and make it a proper
 		$explodedDate = explode('/', $sendOnDate);
@@ -46,13 +49,13 @@ class BackendMailmotorAjaxSaveSendDate extends BackendBaseAJAXAction
 		$item['send_on'] = BackendModel::getUTCDate('Y-m-d H:i:s', $sendTimestamp);
 		$item['edited_on'] = BackendModel::getUTCDate('Y-m-d H:i:s');
 
-		// update mailing
-		BackendMailmotorModel::updateMailing($item);
-
-		// trigger event
+		BackendMailmotorMailingsModel::update($item);
 		BackendModel::triggerEvent($this->getModule(), 'after_edit_mailing_step4', array('item' => $item));
 
-		// output
-		$this->output(self::OK, array('mailing_id' => $mailingId, 'timestamp' => $sendTimestamp), sprintf(BL::msg('SendOn', $this->getModule()), $messageDate, $sendOnTime));
+		$this->output(
+			self::OK,
+			array('mailing_id' => $mailingId, 'timestamp' => $sendTimestamp),
+			sprintf(BL::msg('SendOn', $this->getModule()), $messageDate, $sendOnTime)
+		);
 	}
 }

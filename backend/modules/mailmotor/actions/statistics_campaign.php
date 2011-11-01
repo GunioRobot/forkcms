@@ -60,7 +60,10 @@ class BackendMailmotorStatisticsCampaign extends BackendBaseActionIndex
 		$this->id = $this->getParameter('id', 'int');
 
 		// does the item exist
-		if(!BackendMailmotorModel::existsCampaign($this->id)) $this->redirect(BackendModel::createURLForAction('campaigns') . '&error=campaign-does-not-exist');
+		if(!BackendMailmotorCampaignsModel::exists($this->id))
+		{
+			$this->redirect(BackendModel::createURLForAction('campaigns') . '&error=campaign-does-not-exist');
+		}
 
 		// store mailing
 		$this->campaign = BackendMailmotorModel::getCampaign($this->id);
@@ -78,7 +81,7 @@ class BackendMailmotorStatisticsCampaign extends BackendBaseActionIndex
 	private function loadDataGrid()
 	{
 		// call the parent, as in create a new datagrid with the created source
-		$this->dataGrid = new BackendDataGridDB(BackendMailmotorModel::QRY_DATAGRID_BROWSE_SENT_FOR_CAMPAIGN, array('sent', $this->id));
+		$this->dataGrid = new BackendDataGridDB(BackendMailmotorMailingsModel::QRY_DATAGRID_BROWSE_SENT_FOR_CAMPAIGN, array('sent', $this->id));
 		$this->dataGrid->setColumnsHidden(array('campaign_id', 'campaign_name', 'status'));
 
 		// set headers values

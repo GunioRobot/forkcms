@@ -34,14 +34,14 @@ class BackendMailmotorExportAddresses extends BackendBaseAction
 			if($id == 'all')
 			{
 				// fetch records
-				$records = BackendMailmotorModel::getAddresses();
+				$records = BackendMailmotorAddressesModel::getAll();
 
 				// export records
-				BackendMailmotorModel::exportAddresses($records);
+				BackendMailmotorAddressesModel::export($records);
 			}
 
 			// export addresses by group ID
-			else BackendMailmotorModel::exportAddressesByGroupID($id);
+			else BackendMailmotorAddressesModel::exportByGroupID($id);
 		}
 
 		// redirect

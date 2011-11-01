@@ -102,7 +102,14 @@ class BackendMailmotorImportGroups extends BackendBaseActionAdd
 				foreach($this->externalGroups as $group)
 				{
 					// insert them in our database
-					$groupID = BackendModel::getDB(true)->insert('mailmotor_groups', array('name' => $group['name'], 'custom_fields' => $group['custom_fields'], 'created_on' => BackendModel::getUTCDate()));
+					$groupID = BackendModel::getDB(true)->insert(
+						'mailmotor_groups',
+						array(
+							'name' => $group['name'],
+							'custom_fields' => $group['custom_fields'],
+							'created_on' => BackendModel::getUTCDate()
+						)
+					);
 
 					// insert the CM ID
 					BackendMailmotorCMHelper::insertCampaignMonitorID('list', $group['id'], $groupID);
@@ -123,10 +130,17 @@ class BackendMailmotorImportGroups extends BackendBaseActionAdd
 						$item['created_on'] = $subscriber['date'];
 
 						// add an additional custom field 'name', if it was set in the subscriber record
-						if(!empty($subscriber['name'])) $subscriber['custom_fields']['Name'] = $subscriber['name'];
+						if(!empty($subscriber['name']))
+						{
+							$subscriber['custom_fields']['Name'] = $subscriber['name'];
+						}
 
 						// save the subscriber in our database, and subscribe it to this group
-						BackendMailmotorModel::saveAddress($item, $groupID, (!empty($subscriber['custom_fields']) ? $subscriber['custom_fields'] : null));
+						BackendMailmotorAddressesModel::save(
+							$item,
+							$groupID,
+							!empty($subscriber['custom_fields']) ? $subscriber['custom_fields'] : null
+						);
 					}
 				}
 

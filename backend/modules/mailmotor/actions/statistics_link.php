@@ -62,14 +62,14 @@ class BackendMailmotorStatisticsLink extends BackendBaseActionIndex
 		$this->linkURL = $this->getParameter('url');
 
 		// does the item exist
-		if(!BackendMailmotorModel::existsMailing($id)) $this->redirect(BackendModel::createURLForAction('index') . '&error=mailing-does-not-exist');
+		if(!BackendMailmotorMailingsModel::exists($id)) $this->redirect(BackendModel::createURLForAction('index') . '&error=mailing-does-not-exist');
 		if($this->linkURL == '') $this->redirect(BackendModel::createURLForAction('statistics') . '&id=' . $id . '&error=link-does-not-exist');
 
 		// fetch the statistics
 		$this->statistics = BackendMailmotorCMHelper::getStatistics($id, true);
 
 		// fetch the mailing
-		$this->mailing = BackendMailmotorModel::getMailing($id);
+		$this->mailing = BackendMailmotorMailingsModel::get($id);
 
 		// no stats found
 		if($this->statistics === false) $this->redirect(BackendModel::createURLForAction('index') . '&error=no-statistics-loaded');
@@ -147,7 +147,10 @@ class BackendMailmotorStatisticsLink extends BackendBaseActionIndex
 			// validate fields
 			if($txtGroup->isFilled(BL::err('NameIsRequired')))
 			{
-				if(BackendMailmotorModel::existsGroupByName($txtGroup->getValue())) $txtGroup->addError(BL::err('GroupAlreadyExists'));
+				if(BackendMailmotorGroupsModel::existsByName($txtGroup->getValue()))
+				{
+					$txtGroup->addError(BL::err('GroupAlreadyExists'));
+				}
 			}
 
 			// no errors?

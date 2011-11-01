@@ -58,7 +58,7 @@ class BackendMailmotorMassCustomFieldAction extends BackendBaseAction
 		}
 
 		// update custom fields for this group
-		BackendMailmotorModel::updateCustomFields($groupFields, $this->group['id']);
+		BackendMailmotorCustomFieldsModel::update($groupFields, $this->group['id']);
 
 		// redirect
 		$this->redirect(BackendModel::createURLForAction('custom_fields') . '&group_id=' . $this->group['id'] . '&report=deleted-custom-fields&var=' . $this->group['name']);

@@ -25,10 +25,13 @@ class BackendMailmotorAjaxSendMailing extends BackendBaseAJAXAction
 		$id = SpoonFilter::getPostValue('id', null, '', 'int');
 
 		// validate
-		if($id == '' || !BackendMailmotorModel::existsMailing($id)) $this->output(self::BAD_REQUEST, null, 'No mailing found.');
+		if($id == '' || !BackendMailmotorMailingsModel::exists($id))
+		{
+			$this->output(self::BAD_REQUEST, null, 'No mailing found.');
+		}
 
 		// get mailing record
-		$mailing = BackendMailmotorModel::getMailing($id);
+		$mailing = BackendMailmotorMailingsModel::get($id);
 
 		/*
 			mailing was already sent
@@ -90,7 +93,7 @@ class BackendMailmotorAjaxSendMailing extends BackendBaseAJAXAction
 		$item['status'] = ($mailing['send_on'] > time()) ? 'queued' : 'sent';
 
 		// update the mailing record
-		BackendMailmotorModel::updateMailing($item);
+		BackendMailmotorMailingsModel::update($item);
 
 		// trigger event
 		BackendModel::triggerEvent($this->getModule(), 'after_mailing_status_' . $item['status'], array('item' => $item));

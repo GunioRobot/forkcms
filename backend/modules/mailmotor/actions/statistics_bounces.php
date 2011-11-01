@@ -52,10 +52,10 @@ class BackendMailmotorStatisticsBounces extends BackendBaseActionIndex
 		$id = $this->getParameter('mailing_id', 'int');
 
 		// does the item exist
-		if(!BackendMailmotorModel::existsMailing($id)) $this->redirect(BackendModel::createURLForAction('index') . '&error=mailing-does-not-exist');
+		if(!BackendMailmotorMailingsModel::exists($id)) $this->redirect(BackendModel::createURLForAction('index') . '&error=mailing-does-not-exist');
 
 		// fetch the mailing
-		$this->mailing = BackendMailmotorModel::getMailing($id);
+		$this->mailing = BackendMailmotorMailingsModel::get($id);
 
 		// fetch the bounces
 		$this->bounces = BackendMailmotorCMHelper::getBounces($this->mailing['id']);

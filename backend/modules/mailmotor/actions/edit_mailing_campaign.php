@@ -30,7 +30,7 @@ class BackendMailmotorEditMailingCampaign extends BackendBaseActionEdit
 		$this->id = $this->getParameter('id', 'int');
 
 		// does the item exist
-		if(BackendMailmotorModel::existsMailing($this->id))
+		if(BackendMailmotorMailingsModel::exists($this->id))
 		{
 			parent::execute();
 			$this->getData();
@@ -50,10 +50,10 @@ class BackendMailmotorEditMailingCampaign extends BackendBaseActionEdit
 	private function getData()
 	{
 		// get the record
-		$this->record = (array) BackendMailmotorModel::getMailing($this->id);
+		$this->record = (array) BackendMailmotorMailingsModel::get($this->id);
 
 		// get the campagins
-		$this->campaigns = (array) BackendMailmotorModel::getCampaignsAsPairs();
+		$this->campaigns = (array) BackendMailmotorCampaignsModel::getAllAsPairs();
 
 		// no item found, throw an exceptions, because somebody is fucking with our URL
 		if(empty($this->record)) $this->redirect(BackendModel::createURLForAction('index') . '&error=non-existing');
@@ -105,7 +105,7 @@ class BackendMailmotorEditMailingCampaign extends BackendBaseActionEdit
 				$item['campaign_id'] = $ddmCampaigns->getValue();
 
 				// update the item
-				BackendMailmotorModel::updateMailing($item);
+				BackendMailmotorMailingsModel::update($item);
 
 				// trigger event
 				BackendModel::triggerEvent($this->getModule(), 'after_edit_mailing', array('item' => $item));

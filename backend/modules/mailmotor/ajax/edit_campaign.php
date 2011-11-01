@@ -29,10 +29,17 @@ class BackendMailmotorAjaxEditCampaign extends BackendBaseAJAXAction
 		if($name == '') $this->output(self::BAD_REQUEST, null, 'no name provided');
 
 		// get existing id
-		$existingId = BackendMailmotorModel::getCampaignId($name);
+		$existingId = BackendMailmotorCampaignsModel::getID($name);
 
 		// existing campaign
-		if($existingId !== 0 && $id !== $existingId) $this->output(self::ERROR, array('id' => $existingId, 'error' => true), BL::err('CampaignExists', $this->getModule()));
+		if($existingId !== 0 && $id !== $existingId)
+		{
+			$this->output(
+				self::ERROR,
+				array('id' => $existingId, 'error' => true),
+				BL::err('CampaignExists', $this->getModule())
+			);
+		}
 
 		// build array
 		$item = array();
@@ -41,7 +48,7 @@ class BackendMailmotorAjaxEditCampaign extends BackendBaseAJAXAction
 		$item['created_on'] = BackendModel::getUTCDate('Y-m-d H:i:s');
 
 		// get page
-		$rows = BackendMailmotorModel::updateCampaign($item);
+		$rows = BackendMailmotorCampaignsModel::update($item);
 
 		// trigger event
 		BackendModel::triggerEvent($this->getModule(), 'edited_campaign', array('item' => $item));

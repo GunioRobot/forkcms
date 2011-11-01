@@ -59,10 +59,13 @@ class BackendMailmotorStatistics extends BackendBaseActionIndex
 		$this->id = $this->getParameter('id', 'int');
 
 		// does the item exist
-		if(!BackendMailmotorModel::existsMailing($this->id)) $this->redirect(BackendModel::createURLForAction('index') . '&amp;error=mailing-does-not-exist');
+		if(!BackendMailmotorMailingsModel::exists($this->id))
+		{
+			$this->redirect(BackendModel::createURLForAction('index') . '&amp;error=mailing-does-not-exist');
+		}
 
 		// get mailing
-		$this->mailing = BackendMailmotorModel::getMailing($this->id);
+		$this->mailing = BackendMailmotorMailingsModel::get($this->id);
 
 		// fetch the statistics
 		$this->statistics = BackendMailmotorCMHelper::getStatistics($this->id, true);

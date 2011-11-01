@@ -25,10 +25,13 @@ class BackendMailmotorExportStatisticsCampaign extends BackendBaseAction
 		$id = SpoonFilter::getGetValue('id', null, 0);
 
 		// no id's provided
-		if(!BackendMailmotorModel::existsCampaign($id)) $this->redirect(BackendModel::createURLForAction('campaigns') . '&error=campaign-does-not-exist');
+		if(!BackendMailmotorCampaignsModel::exists($id))
+		{
+			$this->redirect(BackendModel::createURLForAction('campaigns') . '&error=campaign-does-not-exist');
+		}
 
 		// at least one id
-		else BackendMailmotorModel::exportStatisticsByCampaignID($id);
+		else BackendMailmotorCampaignsModel::exportStatistics($id);
 
 		// redirect
 		$this->redirect(BackendModel::createURLForAction('groups') . '&report=export-failed');

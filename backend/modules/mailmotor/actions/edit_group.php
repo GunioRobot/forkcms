@@ -23,7 +23,7 @@ class BackendMailmotorEditGroup extends BackendBaseActionEdit
 		$this->id = $this->getParameter('id', 'int');
 
 		// does the item exist
-		if(BackendMailmotorModel::existsGroup($this->id))
+		if(BackendMailmotorGroupsModel::exists($this->id))
 		{
 			parent::execute();
 			$this->getData();
@@ -43,7 +43,7 @@ class BackendMailmotorEditGroup extends BackendBaseActionEdit
 	private function getData()
 	{
 		// get the record
-		$this->record = (array) BackendMailmotorModel::getGroup($this->id);
+		$this->record = (array) BackendMailmotorGroupsModel::get($this->id);
 
 		// no item found, throw an exceptions, because somebody is fucking with our URL
 		if(empty($this->record)) $this->redirect(BackendModel::createURLForAction('groups') . '&error=non-existing');
@@ -100,7 +100,10 @@ class BackendMailmotorEditGroup extends BackendBaseActionEdit
 			// validate fields
 			if($txtName->isFilled(BL::err('NameIsRequired')))
 			{
-				if($txtName->getValue() != $this->record['name'] && BackendMailmotorModel::existsGroupByName($txtName->getValue())) $txtName->addError(BL::err('GroupAlreadyExists'));
+				if($txtName->getValue() != $this->record['name'] && BackendMailmotorGroupsModel::existsByName($txtName->getValue()))
+				{
+					$txtName->addError(BL::err('GroupAlreadyExists'));
+				}
 			}
 
 			// no errors?
@@ -116,7 +119,7 @@ class BackendMailmotorEditGroup extends BackendBaseActionEdit
 				BackendMailmotorCMHelper::updateGroup($item);
 
 				// check if all default groups were set
-				BackendMailmotorModel::checkDefaultGroups();
+				BackendMailmotorGroupsModel::checkDefaults();
 
 				// trigger event
 				BackendModel::triggerEvent($this->getModule(), 'after_edit_group', array('item' => $item));

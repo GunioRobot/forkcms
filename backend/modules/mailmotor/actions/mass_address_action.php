@@ -37,7 +37,7 @@ class BackendMailmotorMassAddressAction extends BackendBaseAction
 		if($this->groupId == '') $this->groupId = null;
 
 		// get all groups
-		$groupIds = BackendMailmotorModel::getGroupIDs();
+		$groupIds = BackendMailmotorGroupsModel::getAllIDs();
 
 		// loop the emails
 		foreach($this->emails as $email)
@@ -65,7 +65,7 @@ class BackendMailmotorMassAddressAction extends BackendBaseAction
 				}
 
 				// delete all addresses
-				BackendMailmotorModel::deleteAddresses($email);
+				BackendMailmotorAddressesModel::delete($email);
 			}
 
 			// group ID was set, unsubscribe the address for this group
@@ -119,7 +119,6 @@ class BackendMailmotorMassAddressAction extends BackendBaseAction
 	 */
 	private function exportAddresses()
 	{
-		// export the addresses
-		BackendMailmotorModel::exportAddresses($this->emails);
+		BackendMailmotorAddressesModel::export($this->emails);
 	}
 }

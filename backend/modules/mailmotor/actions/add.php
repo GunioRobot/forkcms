@@ -35,11 +35,11 @@ class BackendMailmotorAdd extends BackendBaseActionAdd
 		$this->frm = new BackendForm('add');
 
 		// fetch the campaigns
-		$campaigns = BackendMailmotorModel::getCampaignsAsPairs();
+		$campaigns = BackendMailmotorCampaignsModel::getAllAsPairs();
 
 		// fetch the groups
-		$groupIds = BackendMailmotorModel::getGroupIDs();
-		$groups = BackendMailmotorModel::getGroupsWithRecipientsForCheckboxes();
+		$groupIds = BackendMailmotorGroupsModel::getAllIDs();
+		$groups = BackendMailmotorGroupsModel::getAllForCheckboxesWithRecipients();
 
 		// no groups were made yet
 		if(empty($groups) && empty($groupIds)) $this->redirect(BackendModel::createURLForAction('add_group') . '&error=add-mailing-no-groups');
@@ -48,7 +48,7 @@ class BackendMailmotorAdd extends BackendBaseActionAdd
 		elseif(empty($groups)) $this->redirect(BackendModel::createURLForAction('addresses') . '&error=no-subscribers');
 
 		// fetch the languages
-		$languages = BackendMailmotorModel::getLanguagesForCheckboxes();
+		$languages = BackendLanguage::getCheckboxValues();
 
 		// settings
 		$this->frm->addText('name');
@@ -101,7 +101,7 @@ class BackendMailmotorAdd extends BackendBaseActionAdd
 			else
 			{
 				// fetch the recipients for these groups
-				$recipients = BackendMailmotorModel::getAddressesByGroupID($values['groups']);
+				$recipients = BackendMailmotorAddressesModel::getByGroupID($values['groups']);
 
 				// if no recipients were found, throw an error
 				if(empty($recipients)) $chkGroups->addError(BL::err('GroupsNoRecipients'));
@@ -125,10 +125,10 @@ class BackendMailmotorAdd extends BackendBaseActionAdd
 				if(!empty($values['campaign'])) $item['campaign_id'] = $this->frm->getField('campaign')->getValue();
 
 				// insert the concept
-				$item['id'] = BackendMailmotorModel::insertMailing($item);
+				$item['id'] = BackendMailmotorMailingsModel::insert($item);
 
 				// update the groups for this mailing
-				BackendMailmotorModel::updateGroupsForMailing($item['id'], $values['groups']);
+				BackendMailmotorGroupsModel::updateForMailing($item['id'], $values['groups']);
 
 				// trigger event
 				BackendModel::triggerEvent($this->getModule(), 'after_add_mailing_step1', array('item' => $item));
