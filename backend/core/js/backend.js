@@ -30,6 +30,10 @@ jsBackend =
 		jsBackend.current.action = chunks[4];
 		jsBackend.current.language = chunks[2];
 
+		// set defaults
+		if(!jsBackend.current.module) jsBackend.current.module = 'dashboard';
+		if(!jsBackend.current.action) jsBackend.current.action = 'index';
+
 		// init stuff
 		jsBackend.initAjax();
 		jsBackend.balloons.init();
@@ -1156,14 +1160,10 @@ jsBackend.forms =
 		});
 
 		// not changed?
-		if(!changed) {
-			// prevent default
-			/*
-			 * I know this line triggers errors, if you remove it the unload won't work anymore.
-			 * Probably you'll fix this by passing the evt as an argument of the function, well this will break the functionality also..
-			 * Uhu, a "wtf" is in place..
-			 */
-			evt.preventDefault();
+		if(!changed)
+		{
+			// prevent default action from being executed
+			if(evt) evt.preventDefault();
 
 			// unbind the event
 			$(window).unbind('beforeunload');

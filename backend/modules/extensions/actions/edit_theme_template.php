@@ -11,9 +11,9 @@
  * This is the edit-action, it will display a form to edit an item
  *
  * @author Matthias Mullie <matthias@mullie.eu>
- * @author Davy Hellemans <davy@netlash.com>
+ * @author Davy Hellemans <davy.hellemans@netlash.com>
  * @author Tijs Verkoyen <tijs@sumocoders.be>
- * @author Dieter Vanden Eynde <dieter@netlash.com>
+ * @author Dieter Vanden Eynde <dieter.vandeneynde@netlash.com>
  */
 class BackendExtensionsEditThemeTemplate extends BackendBaseActionEdit
 {
@@ -63,7 +63,7 @@ class BackendExtensionsEditThemeTemplate extends BackendBaseActionEdit
 		$this->record['data'] = unserialize($this->record['data']);
 		$this->names = $this->record['data']['names'];
 		if(isset($this->record['data']['default_extras_' . BL::getWorkingLanguage()])) $this->extras = $this->record['data']['default_extras_' . BL::getWorkingLanguage()];
-		else $this->extras = $this->record['data']['default_extras'];
+		elseif(isset($this->record['data']['default_extras'])) $this->extras = $this->record['data']['default_extras'];
 
 		// assign
 		$this->tpl->assign('template', $this->record);
