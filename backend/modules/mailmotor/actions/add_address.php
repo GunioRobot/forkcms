@@ -43,7 +43,7 @@ class BackendMailmotorAddAddress extends BackendBaseActionAdd
 		$this->frm->addText('email');
 
 		// fetch groups
-		$groups = BackendMailmotorModel::getGroupsForCheckboxes();
+		$groups = BackendMailmotorGroupsModel::getAllForCheckboxes();
 
 		// if no groups are found, redirect to overview
 		if(empty($groups)) $this->redirect(BackendModel::createURLForAction('addresses') . '&error=no_groups');

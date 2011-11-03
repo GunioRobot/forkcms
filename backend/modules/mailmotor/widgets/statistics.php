@@ -32,9 +32,24 @@ class BackendMailmotorWidgetStatistics extends BackendBaseWidget
 		$this->header->addCSS('widgets.css', 'mailmotor');
 		$this->setColumn('right');
 		$this->setPosition(1);
-		$this->groupId = BackendMailmotorModel::getDefaultGroupID();
+		$this->loadEngineFiles();
+		$this->groupId = BackendMailmotorGroupsModel::getDefaultID();
 		$this->parse();
 		$this->display();
+	}
+
+	/**
+	 * Loads additional engine files
+	 */
+	private function loadEngineFiles()
+	{
+		$modulePath = BACKEND_MODULES_PATH . '/mailmotor';
+		require_once $modulePath . '/engine/helper.php';
+		require_once $modulePath . '/engine/addresses.php';
+		require_once $modulePath . '/engine/campaigns.php';
+		require_once $modulePath . '/engine/groups.php';
+		require_once $modulePath . '/engine/mailings.php';
+		require_once $modulePath . '/engine/templates.php';
 	}
 
 	/**
@@ -43,7 +58,7 @@ class BackendMailmotorWidgetStatistics extends BackendBaseWidget
 	private function loadStatistics()
 	{
 		// fetch the latest mailing
-		$mailing = BackendMailmotorModel::getSentMailings(1);
+		$mailing = BackendMailmotorMailingsModel::getAllSent(1);
 
 		// check if a mailing was found
 		if(empty($mailing)) return false;
@@ -90,7 +105,7 @@ class BackendMailmotorWidgetStatistics extends BackendBaseWidget
 	private function loadSubscriptions()
 	{
 		// get results
-		$results = BackendMailmotorModel::getAddressesByGroupID($this->groupId, false, self::PAGING_LIMIT);
+		$results = BackendMailmotorAddressesModel::getByGroupID($this->groupId, false, self::PAGING_LIMIT);
 
 		// there are some results
 		if(!empty($results))
@@ -118,7 +133,7 @@ class BackendMailmotorWidgetStatistics extends BackendBaseWidget
 	private function loadUnsubscriptions()
 	{
 		// get results
-		$results = BackendMailmotorModel::getUnsubscribedAddressesByGroupID($this->groupId, self::PAGING_LIMIT);
+		$results = BackendMailmotorAddressesModel::getUnsubscribersByGroupID($this->groupId);
 
 		// there are some results
 		if(!empty($results))

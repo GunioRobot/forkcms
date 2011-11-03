@@ -26,13 +26,16 @@ class BackendMailmotorCopy extends BackendBaseAction
 		$id = SpoonFilter::getGetValue('id', null, 0);
 
 		// no id's provided
-		if(empty($id) || !BackendMailmotorModel::existsMailing($id)) $this->redirect(BackendModel::createURLForAction('index') . '&error=mailing-does-not-exist');
+		if(empty($id) || !BackendMailmotorMailingsModel::exists($id))
+		{
+			$this->redirect(BackendModel::createURLForAction('index') . '&error=mailing-does-not-exist');
+		}
 
 		// at least one id
 		else
 		{
 			// get the mailing and reset some fields
-			$mailing = BackendMailmotorModel::getMailing($id);
+			$mailing = BackendMailmotorMailingsModel::get($id);
 			$mailing['status'] = 'concept';
 			$mailing['send_on'] = null;
 			$mailing['created_on'] = BackendModel::getUTCDate('Y-m-d H:i:s');
@@ -45,10 +48,10 @@ class BackendMailmotorCopy extends BackendBaseAction
 			unset($mailing['groups']);
 
 			// create a new mailing based on the old one
-			$newId = BackendMailmotorModel::insertMailing($mailing);
+			$newId = BackendMailmotorMailingsModel::insert($mailing);
 
 			// update groups for this mailing
-			BackendMailmotorModel::updateGroupsForMailing($newId, $groups);
+			BackendMailmotorGroupsModel::updateForMailing($newId, $groups);
 
 			// trigger event
 			BackendModel::triggerEvent($this->getModule(), 'after_copy_mailing', array('item' => $mailing));

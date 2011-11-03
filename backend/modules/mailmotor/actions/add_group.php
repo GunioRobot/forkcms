@@ -67,7 +67,7 @@ class BackendMailmotorAddGroup extends BackendBaseActionAdd
 			if($txtName->isFilled(BL::err('NameIsRequired')))
 			{
 				// check if the group exists by name
-				if(BackendMailmotorModel::existsGroupByName($txtName->getValue())) $txtName->addError(BL::err('GroupAlreadyExists'));
+				if(BackendMailmotorGroupsModel::existsByName($txtName->getValue())) $txtName->addError(BL::err('GroupAlreadyExists'));
 			}
 
 			// no errors?
@@ -83,7 +83,7 @@ class BackendMailmotorAddGroup extends BackendBaseActionAdd
 				$item['id'] = BackendMailmotorCMHelper::insertGroup($item);
 
 				// check if all default groups were set
-				BackendMailmotorModel::checkDefaultGroups();
+				BackendMailmotorGroupsModel::checkDefaults();
 
 				// trigger event
 				BackendModel::triggerEvent($this->getModule(), 'after_add_group', array('item' => $item));

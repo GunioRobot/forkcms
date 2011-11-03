@@ -43,7 +43,7 @@ class BackendMailmotorEdit extends BackendBaseActionEdit
 		$this->stepId = SpoonFilter::getGetValue('step', array(1, 2, 3, 4), 1, 'int');
 
 		// does the item exist
-		if(BackendMailmotorModel::existsMailing($this->id))
+		if(BackendMailmotorMailingsModel::exists($this->id))
 		{
 			// call parent, this will probably add some general CSS/JS or other required files
 			parent::execute();
@@ -66,10 +66,13 @@ class BackendMailmotorEdit extends BackendBaseActionEdit
 	private function getData()
 	{
 		// get the record
-		$this->record = (array) BackendMailmotorModel::getMailing($this->id);
+		$this->record = (array) BackendMailmotorMailingsModel::get($this->id);
 
 		// no item found, throw an exceptions, because somebody is fucking with our URL
-		if(empty($this->record) || $this->record['status'] == 'sent') $this->redirect(BackendModel::createURLForAction('index') . '&amp;error=non-existing');
+		if(empty($this->record) || $this->record['status'] == 'sent')
+		{
+			$this->redirect(BackendModel::createURLForAction('index') . '&amp;error=non-existing');
+		}
 	}
 
 	/**
@@ -78,13 +81,13 @@ class BackendMailmotorEdit extends BackendBaseActionEdit
 	private function loadConfirmationDialog()
 	{
 		// load statistics
-		$groups = BackendMailmotorModel::getGroupsByIds($this->record['groups']);
+		$groups = BackendMailmotorGroupsModel::getAllByIds($this->record['groups']);
 
 		// fetch the campaign
-		$campaign = BackendMailmotorModel::getCampaign($this->record['campaign_id']);
+		$campaign = BackendMailmotorCampaignsModel::get($this->record['campaign_id']);
 
 		// fetch the template
-		$template = BackendMailmotorModel::getTemplate($this->record['language'], $this->record['template']);
+		$template = BackendMailmotorTemplatesModel::get($this->record['language'], $this->record['template']);
 
 		// declare stats array
 		$stats['recipients'] = count($this->record['recipients']);
@@ -148,13 +151,13 @@ class BackendMailmotorEdit extends BackendBaseActionEdit
 		$this->frm = new BackendForm('step1');
 
 		// fetch the campaigns
-		$campaigns = BackendMailmotorModel::getCampaignsAsPairs();
+		$campaigns = BackendMailmotorCampaignsModel::getAllAsPairs();
 
 		// fetch the groups
-		$groups = BackendMailmotorModel::getGroupsWithRecipientsForCheckboxes();
+		$groups = BackendMailmotorGroupsModel::getAllForCheckboxesWithRecipients();
 
 		// fetch the languages
-		$languages = BackendMailmotorModel::getLanguagesForCheckboxes();
+		$languages = BackendLanguage::getCheckboxValues();
 
 		// settings
 		$this->frm->addText('name', $this->record['name']);
@@ -186,7 +189,7 @@ class BackendMailmotorEdit extends BackendBaseActionEdit
 		$this->frm = new BackendForm('step2');
 
 		// fetch the templates
-		$templates = BackendMailmotorModel::getTemplatesForCheckboxes($this->record['language']);
+		$templates = BackendMailmotorTemplatesModel::getAllForCheckboxes($this->record['language']);
 
 		// no templates found
 		if(empty($templates)) $this->redirect(BackendModel::createURLForAction('edit') . '&amp;id=' . $this->id . '&amp;step=1&amp;error=no-templates');
@@ -247,7 +250,7 @@ class BackendMailmotorEdit extends BackendBaseActionEdit
 		if(empty($this->record['content_html'])) $this->redirect(BackendModel::createURLForAction('edit') . '&amp;id=' . $this->id . '&amp;step=3&amp;error=complete-step-3');
 
 		// get preview URL
-		$previewURL = BackendMailmotorModel::getMailingPreviewURL($this->record['id'], 'html', true);
+		$previewURL = BackendMailmotorMailingsModel::getPreviewURL($this->record['id'], 'html', true);
 
 		// check if the mailmotor is linked
 		if(BackendModel::getURLForBlock($this->getModule(), 'detail') == BackendModel::getURL(404)) $previewURL = false;
@@ -387,10 +390,7 @@ class BackendMailmotorEdit extends BackendBaseActionEdit
 			$rbtLanguages = $this->frm->getField('languages');
 
 			// validate fields
-			if($txtName->isFilled(BL::err('NameIsRequired')))
-			{
-				if(BackendMailmotorModel::existsMailingByName($txtName->getValue()) && $txtName->getValue() != $this->record['name']) $txtName->addError(BL::err('MailingAlreadyExists'));
-			}
+			$txtName->isFilled(BL::err('NameIsRequired'));
 			$txtFromName->isFilled(BL::err('NameIsRequired'));
 			$txtFromEmail->isFilled(BL::err('EmailIsRequired'));
 			$txtReplyToEmail->isFilled(BL::err('EmailIsRequired'));
@@ -403,7 +403,7 @@ class BackendMailmotorEdit extends BackendBaseActionEdit
 			else
 			{
 				// fetch the recipients for these groups
-				$recipients = BackendMailmotorModel::getAddressesByGroupID($values['groups']);
+				$recipients = BackendMailmotorAddressesModel::getByGroupID($values['groups']);
 
 				// if no recipients were found, throw an error
 				if(empty($recipients)) $chkGroups->addError(BL::err('GroupsNoRecipients'));
@@ -426,10 +426,10 @@ class BackendMailmotorEdit extends BackendBaseActionEdit
 				if(isset($values['campaign']) && (!empty($values['campaign']) || $values['campaign'] == 0)) $item['campaign_id'] = $this->frm->getField('campaign')->getValue();
 
 				// update the concept
-				BackendMailmotorModel::updateMailing($item);
+				BackendMailmotorMailingsModel::update($item);
 
 				// update groups for this mailing
-				BackendMailmotorModel::updateGroupsForMailing($this->id, $values['groups']);
+				BackendMailmotorGroupsModel::updateForMailing($this->id, $values['groups']);
 
 				// trigger event
 				BackendModel::triggerEvent($this->getModule(), 'after_edit_mailing_step1', array('item' => $item));
@@ -469,7 +469,7 @@ class BackendMailmotorEdit extends BackendBaseActionEdit
 				$item['edited_on'] = BackendModel::getUTCDate('Y-m-d H:i:s');
 
 				// update the concept
-				BackendMailmotorModel::updateMailing($item);
+				BackendMailmotorMailingsModel::update($item);
 
 				// trigger event
 				BackendModel::triggerEvent($this->getModule(), 'after_edit_mailing_step2', array('item' => $item));

@@ -23,7 +23,7 @@ class BackendMailmotorEditCampaign extends BackendBaseActionEdit
 		$this->id = $this->getParameter('id', 'int');
 
 		// does the item exist
-		if(BackendMailmotorModel::existsCampaign($this->id))
+		if(BackendMailmotorCampaignsModel::exists($this->id))
 		{
 			parent::execute();
 			$this->getData();
@@ -43,7 +43,7 @@ class BackendMailmotorEditCampaign extends BackendBaseActionEdit
 	private function getData()
 	{
 		// get the record
-		$this->record = (array) BackendMailmotorModel::getCampaign($this->id);
+		$this->record = (array) BackendMailmotorCampaignsModel::get($this->id);
 
 		// no item found, throw an exceptions, because somebody is fucking with our URL
 		if(empty($this->record)) $this->redirect(BackendModel::createURLForAction('campaigns') . '&error=non-existing');
@@ -90,7 +90,10 @@ class BackendMailmotorEditCampaign extends BackendBaseActionEdit
 			// validate fields
 			if($txtName->isFilled(BL::err('NameIsRequired')))
 			{
-				if($txtName->getValue() != $this->record['name'] && BackendMailmotorModel::existsCampaignByName($txtName->getValue())) $txtName->addError(BL::err('CampaignExists'));
+				if($txtName->getValue() != $this->record['name'] && BackendMailmotorCampaignsModel::existsByName($txtName->getValue()))
+				{
+					$txtName->addError(BL::err('CampaignExists'));
+				}
 			}
 
 			// no errors?
@@ -102,7 +105,7 @@ class BackendMailmotorEditCampaign extends BackendBaseActionEdit
 				$item['created_on'] = BackendModel::getUTCDate('Y-m-d H:i:s');
 
 				// update the item
-				BackendMailmotorModel::updateCampaign($item);
+				BackendMailmotorCampaignsModel::update($item);
 
 				// trigger event
 				BackendModel::triggerEvent($this->getModule(), 'after_edit_campaign', array('item' => $item));

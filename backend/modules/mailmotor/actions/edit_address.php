@@ -50,7 +50,7 @@ class BackendMailmotorEditAddress extends BackendBaseActionEdit
 		$this->email = $this->getParameter('email');
 
 		// does the item exist
-		if(BackendMailmotorModel::existsAddress($this->email))
+		if(BackendMailmotorAddressesModel::exists($this->email))
 		{
 			parent::execute();
 			$this->getData();
@@ -71,13 +71,13 @@ class BackendMailmotorEditAddress extends BackendBaseActionEdit
 	private function getData()
 	{
 		// get the record
-		$this->record = (array) BackendMailmotorModel::getAddress($this->email);
+		$this->record = (array) BackendMailmotorAddressesModel::get($this->email);
 
 		// no item found, throw an exceptions, because somebody is fucking with our URL
 		if(empty($this->record)) $this->redirect(BackendModel::createURLForAction('addresses') . '&error=non-existing');
 
 		// get subscriptions (key/pair values)
-		$this->subscriptions = BackendMailmotorModel::getGroupsByEmailAsPairs($this->email);
+		$this->subscriptions = BackendMailmotorGroupsModel::getAllByEmailAsPairs($this->email);
 
 		// the allowed groups
 		$allowedGroups = array_keys($this->subscriptions);
@@ -86,7 +86,7 @@ class BackendMailmotorEditAddress extends BackendBaseActionEdit
 		$this->id = SpoonFilter::getGetValue('group_id', $allowedGroups, key($this->subscriptions), 'int');
 
 		// get group record
-		$this->group = BackendMailmotorModel::getGroup($this->id);
+		$this->group = BackendMailmotorGroupsModel::get($this->id);
 	}
 
 	/**
@@ -101,7 +101,7 @@ class BackendMailmotorEditAddress extends BackendBaseActionEdit
 		$i = 0;
 
 		// if no custom fields were set, we fetch the ones from the groups ourselves
-		$this->group['custom_fields'] = BackendMailmotorModel::getCustomFields($this->id);
+		$this->group['custom_fields'] = BackendMailmotorGroupsModel::getCustomFields($this->id);
 
 		// no custom fields for this group
 		if(empty($this->group['custom_fields'])) return false;
@@ -139,7 +139,7 @@ class BackendMailmotorEditAddress extends BackendBaseActionEdit
 		$this->frm->getField('email')->setAttribute('disabled', 'disabled');
 
 		// fetch groups for checkbox format
-		$checkboxGroups = BackendMailmotorModel::getGroupsForCheckboxes();
+		$checkboxGroups = BackendMailmotorGroupsModel::getAllForCheckboxes();
 
 		// if no groups are found, redirect to overview
 		if(empty($checkboxGroups)) $this->redirect(BackendModel::createURLForAction('addresses') . '&error=no-groups');

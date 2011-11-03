@@ -33,7 +33,7 @@ class BackendMailmotorCampaigns extends BackendBaseActionIndex
 	private function loadDataGrid()
 	{
 		// create datagrid
-		$this->dataGrid = new BackendDataGridDB(BackendMailmotorModel::QRY_DATAGRID_BROWSE_CAMPAIGNS);
+		$this->dataGrid = new BackendDataGridDB(BackendMailmotorCampaignsModel::QRY_DATAGRID_BROWSE);
 
 		// set headers values
 		$headers['name'] = ucfirst(BL::lbl('Title'));
@@ -95,7 +95,7 @@ class BackendMailmotorCampaigns extends BackendBaseActionIndex
 		$html = '<a href="' . BackendModel::createURLForAction('statistics_campaign') . '&amp;id=' . $id . '" class="button icon iconStats linkButton"><span>' . BL::lbl('Statistics') . '</span></a>';
 
 		// check if this campaign has sent mailings
-		$hasSentMailings = (BackendMailmotorModel::existsSentMailingsByCampaignID($id) > 0) ? true : false;
+		$hasSentMailings = (BackendMailmotorCampaignsModel::hasSentMailings($id) > 0) ? true : false;
 
 		// return the result
 		return ($hasSentMailings) ? $html : '';

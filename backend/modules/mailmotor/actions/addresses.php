@@ -235,7 +235,7 @@ class BackendMailmotorAddresses extends BackendBaseActionIndex
 		if(!empty($id))
 		{
 			// get group record
-			$this->group = BackendMailmotorModel::getGroup($id);
+			$this->group = BackendMailmotorGroupsModel::get($id);
 
 			// assign the group record
 			$this->tpl->assign('group', $this->group);

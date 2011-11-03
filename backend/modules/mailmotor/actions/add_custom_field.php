@@ -43,7 +43,7 @@ class BackendMailmotorAddCustomField extends BackendBaseActionAdd
 		$id = SpoonFilter::getGetValue('group_id', null, 0, 'int');
 
 		// fetch group record
-		$this->group = BackendMailmotorModel::getGroup($id);
+		$this->group = BackendMailmotorGroupsModel::get($id);
 
 		// group doesn't exist
 		if(empty($this->group)) $this->redirect(BackendModel::createURLForAction('groups') . '&error=non-existing');
@@ -100,7 +100,7 @@ class BackendMailmotorAddCustomField extends BackendBaseActionAdd
 					BackendMailmotorCMHelper::createCustomField($txtName->getValue(), $this->group['id']);
 
 					// update custom fields for this group
-					BackendMailmotorModel::updateCustomFields($groupFields, $this->group['id']);
+					BackendMailmotorCustomFieldsModel::update($groupFields, $this->group['id']);
 				}
 
 				// exception was triggered

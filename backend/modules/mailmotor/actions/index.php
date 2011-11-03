@@ -41,7 +41,7 @@ class BackendMailmotorIndex extends BackendBaseActionIndex
 		parent::execute();
 
 		// update the queued mailings with 'sent' status if their time has come already
-		BackendMailmotorModel::updateQueuedMailings();
+		BackendMailmotorMailingsModel::updateQueuedStatus();
 
 		// get the active campaign
 		$this->getCampaign();
@@ -65,7 +65,7 @@ class BackendMailmotorIndex extends BackendBaseActionIndex
 		$id = $this->getParameter('campaign', 'int');
 
 		// fetch the campaign record
-		$this->campaign = BackendMailmotorModel::getCampaign($id);
+		$this->campaign = BackendMailmotorCampaignsModel::get($id);
 	}
 
 	/**
@@ -74,14 +74,14 @@ class BackendMailmotorIndex extends BackendBaseActionIndex
 	private function loadDataGridQueuedMailings()
 	{
 		// set query & parameters
-		$query = BackendMailmotorModel::QRY_DATAGRID_BROWSE_SENT;
+		$query = BackendMailmotorMailingsModel::QRY_DATAGRID_BROWSE_SENT;
 		$parameters = array('queued');
 
 		// campaign is set
 		if(!empty($this->campaign))
 		{
 			// reset query, add to parameters
-			$query = BackendMailmotorModel::QRY_DATAGRID_BROWSE_SENT_FOR_CAMPAIGN;
+			$query = BackendMailmotorMailingsModel::QRY_DATAGRID_BROWSE_SENT_FOR_CAMPAIGN;
 			$parameters[] = $this->campaign['id'];
 		}
 
@@ -147,14 +147,14 @@ class BackendMailmotorIndex extends BackendBaseActionIndex
 	private function loadDataGridSentMailings()
 	{
 		// set query & parameters
-		$query = BackendMailmotorModel::QRY_DATAGRID_BROWSE_SENT;
+		$query = BackendMailmotorMailingsModel::QRY_DATAGRID_BROWSE_SENT;
 		$parameters = array('sent');
 
 		// campaign is set
 		if(!empty($this->campaign))
 		{
 			// reset query, add to parameters
-			$query = BackendMailmotorModel::QRY_DATAGRID_BROWSE_SENT_FOR_CAMPAIGN;
+			$query = BackendMailmotorMailingsModel::QRY_DATAGRID_BROWSE_SENT_FOR_CAMPAIGN;
 			$parameters[] = $this->campaign['id'];
 		}
 
@@ -199,14 +199,14 @@ class BackendMailmotorIndex extends BackendBaseActionIndex
 	private function loadDataGridUnsentMailings()
 	{
 		// set query & parameters
-		$query = BackendMailmotorModel::QRY_DATAGRID_BROWSE_UNSENT;
+		$query = BackendMailmotorMailingsModel::QRY_DATAGRID_BROWSE_UNSENT;
 		$parameters = array('concept');
 
 		// campaign is set
 		if(!empty($this->campaign))
 		{
 			// reset query, add to parameters
-			$query = BackendMailmotorModel::QRY_DATAGRID_BROWSE_UNSENT_FOR_CAMPAIGN;
+			$query = BackendMailmotorMailingsModel::QRY_DATAGRID_BROWSE_UNSENT_FOR_CAMPAIGN;
 			$parameters[] = $this->campaign['id'];
 		}
 
@@ -273,6 +273,14 @@ class BackendMailmotorIndex extends BackendBaseActionIndex
 	 */
 	public static function setCampaignLink($id, $name)
 	{
-		return !empty($name) ? '<a href="' . SITE_URL . BackendModel::createURLForAction('index') . '&amp;campaign=' . $id . '">' . $name . '</a>' : ucfirst(BL::lbl('NoCampaign'));
+		if(!empty($name))
+		{
+			$url = SITE_URL . BackendModel::createURLForAction('index') . '&amp;campaign=' . $id;
+			return '<a href="' . $url . '">' . $name . '</a>';
+		}
+		else
+		{
+			return ucfirst(BL::lbl('NoCampaign'));
+		}
 	}
 }

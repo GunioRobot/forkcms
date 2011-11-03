@@ -36,7 +36,7 @@ class BackendMailmotorMassCampaignAction extends BackendBaseAction
 			// delete comment(s)
 			if($action == 'delete')
 			{
-				BackendMailmotorModel::deleteCampaigns($ids);
+				BackendMailmotorCampaignsModel::delete($ids);
 
 				// trigger event
 				BackendModel::triggerEvent($this->getModule(), 'after_delete_campaigns', array('ids' => $ids));

@@ -44,7 +44,7 @@ class BackendMailmotorCustomFields extends BackendBaseActionIndex
 		$id = SpoonFilter::getGetValue('group_id', null, 0, 'int');
 
 		// fetch group record
-		$this->group = BackendMailmotorModel::getGroup($id);
+		$this->group = BackendMailmotorGroupsModel::get($id);
 
 		// group doesn't exist
 		if(empty($this->group)) $this->redirect(BackendModel::createURLForAction('groups') . '&error=non-existing');
@@ -117,7 +117,7 @@ class BackendMailmotorCustomFields extends BackendBaseActionIndex
 		$html = '<a href="' . BackendModel::createURLForAction('statistics_campaign') . '&id=' . $id . '" class="button icon iconStats linkButton"><span><span><span>' . BL::lbl('Statistics') . '</span></span></span></a>';
 
 		// check if this campaign has sent mailings
-		$hasSentMailings = (BackendMailmotorModel::existsSentMailingsByCampaignID($id) > 0) ? true : false;
+		$hasSentMailings = (BackendMailmotorCampaignsModel::hasSentMailings($id) > 0) ? true : false;
 
 		// return the result
 		return ($hasSentMailings) ? $html : '';

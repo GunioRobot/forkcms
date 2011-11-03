@@ -23,13 +23,13 @@ class BackendMailmotorDeleteBounces extends BackendBaseActionDelete
 		$this->id = $this->getParameter('mailing_id', 'int');
 
 		// does the item exist
-		if(BackendMailmotorModel::existsMailing($this->id))
+		if(BackendMailmotorMailingsModel::exists($this->id))
 		{
 			// call parent, this will probably add some general CSS/JS or other required files
 			parent::execute();
 
 			// fetch the mailing
-			$mailing = BackendMailmotorModel::getMailing($this->id);
+			$mailing = BackendMailmotorMailingsModel::get($this->id);
 
 			// get all data for the user we want to edit
 			$records = (array) BackendMailmotorCMHelper::getCM()->getCampaignBounces($mailing['cm_id']);
@@ -44,7 +44,7 @@ class BackendMailmotorDeleteBounces extends BackendBaseActionDelete
 					if($record['bounce_type'] == 'Hard')
 					{
 						// remove the address
-						BackendMailmotorModel::deleteAddresses($record['email']);
+						BackendMailmotorAddressesModel::delete($record['email']);
 					}
 				}
 			}

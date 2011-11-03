@@ -60,7 +60,7 @@ class BackendMailmotorAddCampaign extends BackendBaseActionAdd
 				$item['created_on'] = BackendModel::getUTCDate('Y-m-d H:i:s');
 
 				// insert the item
-				$item['id'] = BackendMailmotorModel::insertCampaign($item);
+				$item['id'] = BackendMailmotorCampaignsModel::insert($item);
 
 				// trigger event
 				BackendModel::triggerEvent($this->getModule(), 'after_add_campaign', array('item' => $item));

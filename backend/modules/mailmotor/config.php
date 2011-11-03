@@ -171,5 +171,11 @@ class BackendMailmotorConfig extends BackendBaseConfig
 	private function loadEngineFiles()
 	{
 		require_once 'engine/helper.php';
+		require_once 'engine/addresses.php';
+		require_once 'engine/campaigns.php';
+		require_once 'engine/groups.php';
+		require_once 'engine/custom_fields.php';
+		require_once 'engine/mailings.php';
+		require_once 'engine/templates.php';
 	}
 }

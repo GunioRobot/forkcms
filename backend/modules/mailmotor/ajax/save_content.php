@@ -82,7 +82,7 @@ class BackendMailmotorAjaxSaveContent extends BackendBaseAJAXAction
 		if($mailingId == '') $this->output(self::BAD_REQUEST, null, 'No mailing ID provided');
 
 		// get mailing record
-		$this->mailing = BackendMailmotorModel::getMailing($mailingId);
+		$this->mailing = BackendMailmotorMailingsModel::get($mailingId);
 
 		// record is empty
 		if(empty($this->mailing)) $this->output(self::BAD_REQUEST, null, BL::err('MailingDoesNotExist', $this->getModule()));
@@ -108,7 +108,7 @@ class BackendMailmotorAjaxSaveContent extends BackendBaseAJAXAction
 		$item['edited_on'] = date('Y-m-d H:i:s');
 
 		// update mailing in our database
-		BackendMailmotorModel::updateMailing($item);
+		BackendMailmotorMailingsModel::update($item);
 
 		/*
 			we should insert the draft into campaignmonitor here,
@@ -171,10 +171,17 @@ class BackendMailmotorAjaxSaveContent extends BackendBaseAJAXAction
 		require 'external/css_to_inline_styles.php';
 
 		// fetch the template contents for this mailing
-		$template = BackendMailmotorModel::getTemplate($this->mailing['language'], $template);
+		$template = BackendMailmotorTemplatesModel::get($this->mailing['language'], $template);
 
 		// template content is empty
-		if(!isset($template['content'])) $this->output(self::ERROR, array('mailing_id' => $this->mailing['id'], 'error' => true), BL::err('TemplateDoesNotExist', $this->getModule()));
+		if(!isset($template['content']))
+		{
+			$this->output(
+				self::ERROR,
+				array('mailing_id' => $this->mailing['id'], 'error' => true),
+				BL::err('TemplateDoesNotExist', $this->getModule())
+			);
+		}
 
 		// remove TinyMCE
 		$fullContentHTML = preg_replace('/<!-- tinymce -->.*?<!-- \/tinymce -->/is', $contentHTML, $fullContentHTML);

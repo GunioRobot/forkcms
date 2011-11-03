@@ -29,7 +29,7 @@ class BackendMailmotorEditMailingIframe extends BackendBaseActionEdit
 		$this->id = $this->getParameter('id', 'int');
 
 		// does the item exist
-		if(BackendMailmotorModel::existsMailing($this->id))
+		if(BackendMailmotorMailingsModel::exists($this->id))
 		{
 			parent::execute();
 			$this->getData();
@@ -47,10 +47,10 @@ class BackendMailmotorEditMailingIframe extends BackendBaseActionEdit
 	private function getData()
 	{
 		// get the record
-		$this->record = (array) BackendMailmotorModel::getMailing($this->id);
+		$this->record = (array) BackendMailmotorMailingsModel::get($this->id);
 
 		// get the template record for this mailing
-		$this->template = BackendMailmotorModel::getTemplate($this->record['language'], $this->record['template']);
+		$this->template = BackendMailmotorTemplatesModel::get($this->record['language'], $this->record['template']);
 
 		// no item found, throw an exceptions, because somebody is fucking with our URL
 		if(empty($this->record)) $this->redirect(BackendModel::createURLForAction('index') . '&error=non-existing');

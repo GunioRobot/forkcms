@@ -46,7 +46,7 @@ class BackendMailmotorGroups extends BackendBaseActionIndex
 	private function loadDataGrid()
 	{
 		// create datagrid
-		$this->dataGrid = new BackendDataGridDB(BackendMailmotorModel::QRY_DATAGRID_BROWSE_GROUPS);
+		$this->dataGrid = new BackendDataGridDB(BackendMailmotorGroupsModel::QRY_DATAGRID_BROWSE);
 		$this->dataGrid->setColumnsHidden(array('language', 'is_default'));
 
 		// sorting columns
@@ -60,7 +60,7 @@ class BackendMailmotorGroups extends BackendBaseActionIndex
 		$this->dataGrid->setAttributes(array('id' => 'dgGroups'));
 
 		// add the multicheckbox column
-		$this->dataGrid->setMassActionCheckboxes('checkbox', '[id]', BackendMailmotorModel::getDefaultGroupIds());
+		$this->dataGrid->setMassActionCheckboxes('checkbox', '[id]', BackendMailmotorGroupsModel::getDefaultIDs());
 		$this->dataGrid->setColumnsSequence('checkbox', 'name', 'created_on', 'language');
 
 		// add mass action dropdown

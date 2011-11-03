@@ -99,7 +99,7 @@ class BackendMailmotorImportAddresses extends BackendBaseActionEdit
 		$this->frm->addDropdown('languages', BL::getWorkingLanguages(), BL::getWorkingLanguage());
 
 		// fetch groups
-		$groups = BackendMailmotorModel::getGroupsForCheckboxes();
+		$groups = BackendMailmotorGroupsModel::getAllForCheckboxes();
 
 		// if no groups are found, redirect to overview
 		if(empty($groups)) $this->redirect(BackendModel::createURLForAction('addresses') . '&error=no-groups');
@@ -174,7 +174,7 @@ class BackendMailmotorImportAddresses extends BackendBaseActionEdit
 				unset($row['email']);
 
 				// save the address in our database, with the assigned custom fields
-				BackendMailmotorModel::saveAddress($subscriber, $groupID, $row);
+				BackendMailmotorAddressesModel::save($subscriber, $groupID, $row);
 
 				// continue looping
 				continue;
