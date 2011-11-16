@@ -1,13 +1,38 @@
-3.1.1 (xxxx-xx-xx)
+x.x.x (xxxx-xx-xx)
+--
+Bugfixes:
+
+* Extensions: prevented PHP warnings when no info.xml is available.
+* Core: fixed an issue with drag and drop in the backend.
+
+
+3.1.2 (2011-11-15)
+--
+Bugfixes:
+
+* Core: fixed an issue with items that used .live().
+* Pages: fixed an issue with dynamically added elements using .data().
+
+
+3.1.1 (2011-11-15)
 --
 Improvements:
 
-* Locale: refactored inportXML method to also be used by installer (rather than 2 seperate "different yet the same" functions)
+* Locale: refactored inportXML method to also be used by installer (rather than 2 seperate "different yet the same" functions).
 * Extensions: add cronjobs info to info.xml, informational al well as for checking whether all cronjobs are set.
+* Core: upgraded Highcharts to 2.1.8.
+* Core: major improvements (codestyling, spelling, performance, ...) for JS, credits to Thomas.
+* Core: upgraded jQuery to 1.7
+* Installer: when the form in step 6 (where the actual install happens) is submitted the button will be replaced with a spinner to indicate the installer is running.
+* Analytics: added a warning when trying to link a profile when no profile was selected.
+* Blog: when there are 2 or more categories with at least one item in it, the category will be added in the breadcrumb.
 
 Bugfixes:
 
 * Editing tags wasn't working because of an error in the SQL-statement in the FAQ-module.
+* Missing label, as reported by Wouter Hechtermans on http://forkcms.lighthouseapp.com/projects/61890/tickets/212.
+* Pages: closing the dialog did not discard the content correctly.
+* Core: autocomplete on tags wasn't working due the change of the AJAX-calls.
 
 
 3.1.0 (2011-11-08)
