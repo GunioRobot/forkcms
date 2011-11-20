@@ -1,10 +1,20 @@
-x.x.x (xxxx-xx-xx)
+3.1.3 (xxxx-xx-xx)
 --
 Bugfixes:
 
+* Core: fixed an issue with the checkboxTextfieldCombo function.
+* Core: fixed minified media queries in the backend CSS manually, the minify script itself has to be adjusted though.
+* Core: fixed inputCheckbox positioning inside datagrids.
+* Core: fixed the row selected state in the datagrid when the selectAll checkbox was clicked.
+* Core: fixed the layout dataFilter function since it scoped the wrong, lowercased class of the dataFilter.
 * Extensions: prevented PHP warnings when no info.xml is available.
 * Core: fixed an issue with drag and drop in the backend.
 * Locale: importing other languages then EN is possible again.
+* Core: fixed an issue with the user-dropdown. 
+* Formbuilder: fixed an issues with the default error messages.
+* Blog: deleting a blog image caused a SQL error.
+* Core: upgraded the YUI-compressor to 2.4.7, see https://github.com/yui/yuicompressor/blob/master/doc/CHANGELOG.
+* Core: javascript error fixed when no href is provided in the share widget.
 
 
 3.1.2 (2011-11-15)
