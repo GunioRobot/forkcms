@@ -1,5 +1,25 @@
-3.1.3 (xxxx-xx-xx)
+3.1.4 (xxxx-xx-xx)
 --
+Improvements:
+
+* Core: upgraded jQuery to 1.7.1  
+* Core: upgraded jQuery Tools to 1.2.6
+* Core: direct action pages get prefilled meta information again.
+
+Bugfixes:
+
+* Profiles: display name was not being urilized.
+* Tags: it is no longer impossible to fetch related items with the same id as your source item.
+* Core: fixed js issue in triton.
+
+
+3.1.3 (2011-11-22)
+--
+Improvements:
+
+* Added the possibility to easily adjust detailed page settings when you are a god user.
+* SVN folders will now be skipped when running the remove_cache script.
+
 Bugfixes:
 
 * Core: fixed an issue with the checkboxTextfieldCombo function.
@@ -15,6 +35,8 @@ Bugfixes:
 * Blog: deleting a blog image caused a SQL error.
 * Core: upgraded the YUI-compressor to 2.4.7, see https://github.com/yui/yuicompressor/blob/master/doc/CHANGELOG.
 * Core: javascript error fixed when no href is provided in the share widget.
+* Core: fixed confirmation-dialog, wasn't closing when the cancel-button was clicked.
+* Tools: frontend and backend globals were not deleted when running prepare_for_reinstall.
 
 
 3.1.2 (2011-11-15)
