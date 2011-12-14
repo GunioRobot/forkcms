@@ -304,7 +304,8 @@ jsBackend.controls =
 			if($this.find('input:radio').length > 0 && $this.find('input, select, textarea').length > 0)
 			{
 				// variables
-				$radiobutton = $(this).find('input:radio');
+				$radiobutton = $this.find('input:radio');
+				$selectedRadiobutton = $this.find('input:radio:checked');
 
 				$radiobutton.on('click', function(e)
 				{
@@ -325,7 +326,8 @@ jsBackend.controls =
 				});
 
 				// change?
-				$radiobutton[0].click();
+				if($selectedRadiobutton.length > 0) $selectedRadiobutton.click();
+				else $radiobutton[0].click();
 			}
 		});
 	},
@@ -1180,7 +1182,7 @@ jsBackend.forms =
 	},
 
 	// check if any element has been changed
-	unloadWarningCheck: function()
+	unloadWarningCheck: function(e)
 	{
 		// initialize var
 		var changed = false;
@@ -1209,18 +1211,8 @@ jsBackend.forms =
 			}
 		});
 
-		// not changed?
-		if(!changed)
-		{
-			// prevent default action from being executed
-			if(e) e.preventDefault();
-
-			// unbind the event
-			$(window).off('beforeunload');
-		}
-
 		// return if needed
-		return (changed) ? '{$msgValuesAreChanged}' : null;
+		if(changed) return '{$msgValuesAreChanged}';
 	}
 }
 
