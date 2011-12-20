@@ -128,7 +128,7 @@ class Moxiecode_BaseFile {
 	 */
 	function canRead() {
 	}
-	
+
 	/**
 	 * Returns true if the files is writable.
 	 *
@@ -181,7 +181,7 @@ class Moxiecode_BaseFile {
 	}
 
 	/**
-	 * Lists the file as an tree and calls the specified MCE_FileTreeHandler instance on each file. 
+	 * Lists the file as an tree and calls the specified MCE_FileTreeHandler instance on each file.
 	 *
 	 * @param MCE_FileTreeHandler &$file_tree_handler MCE_FileTreeHandler to invoke on each file.
 	 */

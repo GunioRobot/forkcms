@@ -95,9 +95,9 @@
 
 a.mceExternalClose { display: none; }
 
-div.mceExternalToolbar { 
-	position: relative !important; 
-	top: 0 !important; 
+div.mceExternalToolbar {
+	position: relative !important;
+	top: 0 !important;
 	background-color: #F0F0EE !important;
 }
 

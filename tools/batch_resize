@@ -14,10 +14,10 @@ fi
 # get options
 while getopts "w:h:" OPTIONS; do
 	case "$OPTIONS" in
-		w) 
+		w)
 			WIDTH="$OPTARG"
 			;;
-		h) 
+		h)
 			HEIGHT="$OPTARG"
 			;;
 		\?)
@@ -33,10 +33,10 @@ shift $(( OPTIND -1 ))
 # needed options provided
 if [[ -z "$WIDTH" && -z "$HEIGHT" ]] ; then
 	# output usage
-	echo "Usage: batch_resize [-hw] <directory>" 
+	echo "Usage: batch_resize [-hw] <directory>"
 	echo "-h	height, the new height for the images"
 	echo "-w	width, the new width for the images"
-	
+
 	# stop the script
 	exit 1
 fi
@@ -45,7 +45,7 @@ fi
 if [[ -n "$WIDTH" && $WIDTH != [0-9]* ]]; then
 	# warn the user
 	echo "Invalid width"
-	
+
 	# stop the script
 	exit 1
 fi
@@ -54,7 +54,7 @@ fi
 if [[ -n "$HEIGHT" && $HEIGHT != [0-9]* ]]; then
 	# warn the user
 	echo "Invalid height"
-	
+
 	# stop the script
 	exit 1
 fi
@@ -88,7 +88,7 @@ for FILE in "$PATH"/*
 do
 	# build the command
 	CMD="/usr/local/bin/convert -resize $SIZE $FILE $FILE"
-	
+
 	# execute
 	$CMD
 done

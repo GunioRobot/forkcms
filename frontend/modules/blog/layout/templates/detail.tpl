@@ -77,7 +77,7 @@
 					{iteration:comments}
 						{* Do not alter the id! It is used as an anchor *}
 						<div id="comment-{$comments.id}" class="comment" itemprop="comment" itemscope itemtype="http://schema.org/UserComments">
-							<meta itemprop="discusses" content="{$item.title}" />  
+							<meta itemprop="discusses" content="{$item.title}" />
 							<div class="imageHolder">
 								{option:comments.website}<a href="{$comments.website}">{/option:comments.website}
 									<img src="{$FRONTEND_CORE_URL}/layout/images/default_author_avatar.gif" width="48" height="48" alt="{$comments.author}" class="replaceWithGravatar" data-gravatar-id="{$comments.gravatar_id}" />

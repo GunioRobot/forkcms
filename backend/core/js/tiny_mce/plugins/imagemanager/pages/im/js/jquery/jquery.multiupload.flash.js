@@ -23,7 +23,7 @@
 	};
 
 	if (!$.multiUpload.initialized && getFlashVersion() >= 10) {
-		$.multiUpload.initialized = 1; 
+		$.multiUpload.initialized = 1;
 		$.multiUpload.runtime = 'flash';
 		$.multiUpload.instances = [];
 
@@ -69,7 +69,7 @@
 					'<param name="wmode" value="transparent" />' +
 					'<param name="allowscriptaccess" value="always" />' +
 					'<param name="flashvars" value="file_filter=' + escape(filter) + '" />' +
-					'<embed src="' + flashUrl + '" type="application/x-shockwave-flash" allowscriptaccess="always" width="100%" height="100%"></embed>' + 
+					'<embed src="' + flashUrl + '" type="application/x-shockwave-flash" allowscriptaccess="always" width="100%" height="100%"></embed>' +
 					'</object></div>'
 				);
 

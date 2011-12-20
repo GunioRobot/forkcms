@@ -119,7 +119,7 @@ class ImageToolsGD {
 			case "bmp":
 				return false;
 		}
-		
+
 		return false;
 	}
 
@@ -217,12 +217,12 @@ class ImageToolsGD {
 		imagecolortransparent($image, $transparent);
 
 		ImageCopyResampled($image, $source, 0, 0, $this->_left, $this->_top, $this->_width, $this->_height, $this->_width, $this->_height);
-		
+
 		ImageDestroy($source);
 		$result = ImageGif($image, $this->_target);
 		ImageDestroy($image);
-		
-		return $result; 
+
+		return $result;
 	}
 
 	/**
@@ -267,8 +267,8 @@ class ImageToolsGD {
 			$result = ImageJpeg($image, $this->_target);
 
 		ImageDestroy($image);
-		
-		
+
+
 		return $result;
 	}
 
@@ -312,7 +312,7 @@ class ImageToolsGD {
 		}
 
 		ImageDestroy($image);
-		
+
 		return $result;
 	}
 
@@ -469,7 +469,7 @@ class ImageToolsGD {
 						imagecopy($fill, $image, $y, $width-$x-1, $x, $y, 1, 1);
 			break;
 		}
-		
+
 		ImageDestroy($image);
 		$result = ImagePng($fill, $this->_target);
 		ImageDestroy($fill);
@@ -509,7 +509,7 @@ class ImageToolsGD {
 						imagecopy($fill, $image, $y, $width-$x-1, $x, $y, 1, 1);
 			break;
 		}
-		
+
 		ImageDestroy($image);
 		$result = ImageGif($fill, $this->_target);
 		ImageDestroy($fill);
@@ -877,7 +877,7 @@ class ImageToolsGD {
 		// Check type specific functions
 		switch ($type) {
 			case "jpg":
-				$gdUsedFunctions[] = "ImagecreateFromJpeg";		
+				$gdUsedFunctions[] = "ImagecreateFromJpeg";
 				$gdUsedFunctions[] = "ImageJpeg";
 			break;
 

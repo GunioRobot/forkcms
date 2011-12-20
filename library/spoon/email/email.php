@@ -82,8 +82,8 @@ class SpoonEmail
 	 * @var array
 	 */
 	private $content = array('html' => '', 'plain' => '');
-	
-	
+
+
 	/**
 	 * Content transfer encoding value for the html and plaintext content.
 	 *

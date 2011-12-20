@@ -96,7 +96,7 @@
 				lat: {$item.lat},
 				lng: {$item.lng},
 				title: '{$item.title}',
-				text: '{$item.text|stripnewlines}' 
+				text: '{$item.text|stripnewlines}'
 			});
 		{/option:item.lng}
 	{/option:item.lat}

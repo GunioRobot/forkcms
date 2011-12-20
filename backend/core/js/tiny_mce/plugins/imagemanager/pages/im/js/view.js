@@ -8,7 +8,7 @@
 			t.args = args = $.extend({
 				path : '{default}',
 				visual_path : '/'
-			}, t.currentWin.getArgs()); 
+			}, t.currentWin.getArgs());
 
 			// Compile templates
 			t.singeViewTpl = $.templateFromScript('#singleview_template');
@@ -113,7 +113,7 @@
 				res = RPC.toArray(data.result);
 				row = res[0];
 				t.nextMedia = row.next;
-				t.prevMedia = row.prev; 
+				t.prevMedia = row.prev;
 
 				if (!row.next)
 					$('#next').addClass('disabled');
@@ -126,7 +126,7 @@
 					$('#prev').removeClass('disabled');
 
 				footTpl = t.footerSimpleTpl;
- 
+
 				switch (row.type) {
 					case "jpg":
 					case "jpeg":
@@ -196,7 +196,7 @@
 
 				$('#singlecontent').html(tpl, row);
 				$('#singlefooter').html(footTpl, row);
-	
+
 				if (row.custom) {
 					if (!row.custom.editable)
 						$('#singleview .editsingle a.edt').addClass('disabled');
@@ -255,7 +255,7 @@
 
 		isDemo : function() {
 			if (this.args.is_demo) {
-				$.WindowManager.info($.translate('{#error.demo}')); 
+				$.WindowManager.info($.translate('{#error.demo}'));
 				return true;
 			}
 		}

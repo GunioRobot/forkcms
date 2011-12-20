@@ -317,7 +317,7 @@
 
 		isDemo : function() {
 			if (this.args.is_demo) {
-				$.WindowManager.info($.translate('{#error.demo}')); 
+				$.WindowManager.info($.translate('{#error.demo}'));
 				return true;
 			}
 		}

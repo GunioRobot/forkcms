@@ -56,7 +56,7 @@
 			no : MCManagerI18n['common']['confirm_no'],
 			ok : MCManagerI18n['common']['alert_ok']
 		});
-	}); 
+	});
 
 	document.title = $.translate(document.title.replace(/^(http|https):\/\/[a-z0-9._\-\s]+-/gi, ''));
 

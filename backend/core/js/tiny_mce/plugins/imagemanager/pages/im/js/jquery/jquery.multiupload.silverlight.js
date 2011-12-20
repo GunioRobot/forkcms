@@ -145,7 +145,7 @@ function onSilverlightError(sender, args) {
 					up.trigger('multiUpload:filesChanged');
 					up.uploadNext();
 				});
-	
+
 				$(up).bind('multiUpload:stopUpload', function(e) {
 					$.multiUpload.plugin.CancelUpload();
 				});

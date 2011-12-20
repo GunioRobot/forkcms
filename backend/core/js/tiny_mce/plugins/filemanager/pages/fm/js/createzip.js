@@ -50,7 +50,7 @@
 
 		isDemo : function() {
 			if (this.currentWin.getArgs().is_demo) {
-				$.WindowManager.info($.translate('{#error.demo}')); 
+				$.WindowManager.info($.translate('{#error.demo}'));
 				return true;
 			}
 		}

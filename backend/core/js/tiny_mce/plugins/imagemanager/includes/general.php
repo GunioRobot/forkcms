@@ -95,7 +95,7 @@ function getFileExt($path) {
  *
  * @param String $path path to Map/get content type by
  * @patam String $mime_File Absolute filepath to mime.types style file.
- * @return String mime type of path or an empty string on failue.  
+ * @return String mime type of path or an empty string on failue.
  */
 function mapMimeTypeFromUrl($path, $mime_file) {
 	if (($fp = fopen($mime_file, "r"))) {
@@ -157,7 +157,7 @@ function varDump($data) {
  */
 function indexOf($str, $search, $offset=0) {
 	$pos = strpos($str, $search, $offset);
-	
+
 	if ($pos === false)
 		return -1;
 

@@ -31,10 +31,10 @@
 <ul>
 <li>Unordered list 01</li>
 <li>Unordered list 02</li>
-<li>Unordered list 03 
+<li>Unordered list 03
 <ul>
 <li>Unordered list inside list level 2</li>
-<li>Unordered list inside list level 2 
+<li>Unordered list inside list level 2
 <ul>
 <li>Unordered list inside list level 3</li>
 <li>Unordered list inside list level 3</li>
@@ -53,19 +53,19 @@
 <li>Ordered list inside list level 3</li>
 </ol> </li>
 </ol> </li>
-</ol> <dl> <dt>Description list title 01</dt> <dd>Description list description 01</dd> <dt>Description list title 02</dt> <dd>Description list description 02</dd> <dd>Description list description 03</dd> </dl> 
+</ol> <dl> <dt>Description list title 01</dt> <dd>Description list description 01</dd> <dt>Description list title 02</dt> <dd>Description list description 02</dd> <dd>Description list description 03</dd> </dl>
 <table>
-<caption>Table Caption</caption> <thead> 
+<caption>Table Caption</caption> <thead>
 <tr>
 <th>Table head th</th>
 <td>Table head td</td>
 </tr>
-</thead> <tfoot> 
+</thead> <tfoot>
 <tr>
 <th>Table foot th</th>
 <td>Table foot td</td>
 </tr>
-</tfoot> 
+</tfoot>
 <tbody>
 <tr>
 <th>Table body th</th>

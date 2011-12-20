@@ -44,7 +44,7 @@
 
 		isDemo : function() {
 			if (this.demoMode) {
-				$.WindowManager.info($.translate('{#error.demo}')); 
+				$.WindowManager.info($.translate('{#error.demo}'));
 				return true;
 			}
 		}

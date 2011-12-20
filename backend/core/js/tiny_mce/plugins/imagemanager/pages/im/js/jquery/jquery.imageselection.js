@@ -17,17 +17,17 @@
 		$(ta).after(
 			'<div id="' + id + '_container" style="position:relative">' +
 				'<div id="' + id + '_view">' +
-					'<div id="' + id + '_sel" class="selection"></div>' + 
-				'</div>' + 
+					'<div id="' + id + '_sel" class="selection"></div>' +
+				'</div>' +
 
-				'<span id="' + id + '_tl" class="selection-corner selection-corner-tl"></span>' + 
-				'<span id="' + id + '_tc" class="selection-corner selection-corner-tc"></span>' + 
-				'<span id="' + id + '_tr" class="selection-corner selection-corner-tr"></span>' + 
-				'<span id="' + id + '_cl" class="selection-corner selection-corner-cl"></span>' + 
-				'<span id="' + id + '_cr" class="selection-corner selection-corner-cr"></span>' + 
-				'<span id="' + id + '_bl" class="selection-corner selection-corner-bl"></span>' + 
-				'<span id="' + id + '_bc" class="selection-corner selection-corner-bc"></span>' + 
-				'<span id="' + id + '_br" class="selection-corner selection-corner-br"></span>' + 
+				'<span id="' + id + '_tl" class="selection-corner selection-corner-tl"></span>' +
+				'<span id="' + id + '_tc" class="selection-corner selection-corner-tc"></span>' +
+				'<span id="' + id + '_tr" class="selection-corner selection-corner-tr"></span>' +
+				'<span id="' + id + '_cl" class="selection-corner selection-corner-cl"></span>' +
+				'<span id="' + id + '_cr" class="selection-corner selection-corner-cr"></span>' +
+				'<span id="' + id + '_bl" class="selection-corner selection-corner-bl"></span>' +
+				'<span id="' + id + '_bc" class="selection-corner selection-corner-bc"></span>' +
+				'<span id="' + id + '_br" class="selection-corner selection-corner-br"></span>' +
 			'</div>'
 		);
 
@@ -207,7 +207,7 @@
 
 				if (t.cornersVisible)
 					t.container.find('span').show();
-		
+
 				t.visible = 1;
 			}
 

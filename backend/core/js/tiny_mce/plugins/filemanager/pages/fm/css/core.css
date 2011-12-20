@@ -2,8 +2,8 @@
 /* core stuff */
 /* ########################################################## */
 
-body { 
-	background:#fff; 
+body {
+	background:#fff;
 	color:#000;
 	margin:0 0;
 	padding:0;
@@ -19,16 +19,16 @@ td {
 	font-size: 11px;
 }
 
-img	{ 
+img	{
 	behavior:expression(PNG.fix(this)); border:0;
 }
 
 hr {
-	clear:both; 
-	border:0; 
-	color:#e5e5e5; 
-	background-color:#e5e5e5; 
-	height:1px; 
+	clear:both;
+	border:0;
+	color:#e5e5e5;
+	background-color:#e5e5e5;
+	height:1px;
 }
 
 div {
@@ -43,15 +43,15 @@ ul {
 }
 
 ul li {
-	margin:0; padding:0; 
+	margin:0; padding:0;
 }
 
 /* Layout */
 
-#center	{ 
-	width:auto; 
-	max-width:1200px; 
-	margin:0 auto; 
+#center	{
+	width:auto;
+	max-width:1200px;
+	margin:0 auto;
 	text-align:left;
 }
 
@@ -64,11 +64,11 @@ a:visited:hover { color:#000; }
 a:hover 		{ color:#000; }
 a:active 		{ color:#000; }
 
-#thearea { 
+#thearea {
 	position:relative;
 }
 
-#secondarea { 
+#secondarea {
 	position:absolute;
 	left:200px;
 }
@@ -76,7 +76,7 @@ a:active 		{ color:#000; }
 /* Page navigation */
 /* ########################################################## */
 
-.pagenav a, .pagenav a:visited	{ 
+.pagenav a, .pagenav a:visited	{
 	font-weight:bold;
 	color:#484848;
 	text-decoration:none;
@@ -86,7 +86,7 @@ a:active 		{ color:#000; }
 	color:#2e4e8c;
 }
 
-.pagenav select	{ 
+.pagenav select	{
 	margin:0 2px;
 }
 
@@ -234,25 +234,25 @@ a.sortdesc { background: url(../img/sortdesc.gif) no-repeat top right; padding: 
 /* Edit menu */
 /* ########################################################## */
 
-.Menu { 
+.Menu {
 	position:absolute;
 	left:0;
 	top:0;
 	z-index:10;
-	display:none; 
-	background:#eae9e5; 
-	border:1px solid #cac6bb; 
-	text-align:left; 
+	display:none;
+	background:#eae9e5;
+	border:1px solid #cac6bb;
+	text-align:left;
 }
 
-.Menu li a { 
+.Menu li a {
 	display:block;
 	padding:2px 8px;
-	text-decoration:none; 
+	text-decoration:none;
 }
 
 .Menu li a:hover {
-	color:#2e4e8c; 
+	color:#2e4e8c;
 }
 
 .Menu li.disabled a {
@@ -261,20 +261,20 @@ a.sortdesc { background: url(../img/sortdesc.gif) no-repeat top right; padding: 
 }
 
 .Menu li.disabled a:hover {
-	color: gray; 
+	color: gray;
 }
 
 .Menu li.hidden {
 	display:none;
 }
 
-*html .Menu li a { 
-	display:inline; 
+*html .Menu li a {
+	display:inline;
 	width:auto;
 }
 
-.folder .name, .parent .name { 
-	font-weight:bold; 
+.folder .name, .parent .name {
+	font-weight:bold;
 }
 
 /* Template engine */
@@ -292,20 +292,20 @@ a.sortdesc { background: url(../img/sortdesc.gif) no-repeat top right; padding: 
 
 /* Validation classes */
 
-label.msg { 
+label.msg {
 	display:none;
 }
 
-label.invalid { 
+label.invalid {
 	color:#aa0000;
 	display:inline;
 }
 
-input.invalid { 
+input.invalid {
 	background-color:#d63232;
 }
 
-div label.invalid { 
+div label.invalid {
 	display:block;
 }
 

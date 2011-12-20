@@ -365,7 +365,7 @@
 
 			if (fl) {
 				$(fl).each(function(i, v) {
-					args['path' + i] = v.path; 
+					args['path' + i] = v.path;
 				});
 
 				$.WindowManager.confirm($.translate('{#message.confirm_delete}'), function(s) {
@@ -388,7 +388,7 @@
 				args.topath = t.path;
 
 				$(t.clipboard.files).each(function(i, v) {
-					args['frompath' + i] = v.path; 
+					args['frompath' + i] = v.path;
 				});
 
 				$.WindowManager.showProgress({message : $.translate("{#message.paste_in_progress}")});
@@ -488,7 +488,7 @@
 
 		endRename : function() {
 			var td;
-			
+
 			if (this.curRenameFile) {
 				td = $('#' + this.curRenameFile.id + ' td.file');
 				td.find('input').remove();
@@ -565,7 +565,7 @@
 								t.insertDisabled = false;
 						} else {
 							li.hide();
-						
+
 							if (v == 'insert')
 								t.insertDisabled = true;
 						}
@@ -645,7 +645,7 @@
 
 		viewFile : function(f) {
 			if (f.type != 'folder' && f.type != 'parent' && f.type != 'zip')
-				window.open('../../stream/index.php?cmd=fm.streamFile&path=' + encodeURIComponent(f.path), 'View'); 
+				window.open('../../stream/index.php?cmd=fm.streamFile&path=' + encodeURIComponent(f.path), 'View');
 		},
 
 		imageManager : function() {

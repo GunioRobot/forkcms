@@ -56,16 +56,16 @@
 
 			$(window).bind('resize', function(e) {
 				t.resizeView();
-			}); 
+			});
 		},
 
 		resizeView : function() {
 			$('#textcontent').css({'width' : $.winWidth() - 50, 'height' : $.winHeight() - 150});
-		}, 
+		},
 
 		isDemo : function() {
 			if (this.currentWin.getArgs().is_demo) {
-				$.WindowManager.info($.translate('{#error.demo}')); 
+				$.WindowManager.info($.translate('{#error.demo}'));
 				return true;
 			}
 		}

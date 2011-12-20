@@ -3,7 +3,7 @@
 /* ########################################################## */
 
 body {
-	background:#fff; 
+	background:#fff;
 	color:#000;
 	margin:0 0;
 	padding:0;
@@ -21,11 +21,11 @@ img	{
 }
 
 hr {
-	clear:both; 
-	border:0; 
-	color:#e5e5e5; 
-	background-color:#e5e5e5; 
-	height:1px; 
+	clear:both;
+	border:0;
+	color:#e5e5e5;
+	background-color:#e5e5e5;
+	height:1px;
 }
 
 div {
@@ -35,23 +35,23 @@ div {
 /* Lists */
 
 ul {
-	margin:0; 
-	padding:0; 
+	margin:0;
+	padding:0;
 	list-style:none;
 }
 
 ul li {
-	margin:0; 
-	padding:0; 
+	margin:0;
+	padding:0;
 }
 
 
 /* Layout */
 
 #center	{
-	width:auto; 
-	max-width:1200px; 
-	margin:0 auto; 
+	width:auto;
+	max-width:1200px;
+	margin:0 auto;
 	text-align:left;
 }
 
@@ -131,7 +131,7 @@ a:active 		{color:#000; }
 
 .viewmode .desc	{
 	float:left;
-	margin:3px 4px 0 0; 
+	margin:3px 4px 0 0;
 }
 
 .viewmode a img {
@@ -200,14 +200,14 @@ a:active 		{color:#000; }
 }
 
 #folders .categories li a {
-	background:url(../img/icons/category-closed.png) no-repeat; 
-	padding:2px 2px 0 24px; 
-	display:block; 
-	min-height:16px; 
+	background:url(../img/icons/category-closed.png) no-repeat;
+	padding:2px 2px 0 24px;
+	display:block;
+	min-height:16px;
 }
 
 #folders .categories li.current a {
-	background:url(../img/icons/category-open.png) no-repeat; 
+	background:url(../img/icons/category-open.png) no-repeat;
 	font-weight:bold;
 }
 
@@ -218,9 +218,9 @@ a:active 		{color:#000; }
 #folders .special li a {
 	padding: 2px 2px 0 24px;
 	display: block;
-	min-height: 16px; 
+	min-height: 16px;
 	height: 16px;
-	line-height: 16px; 
+	line-height: 16px;
 }
 
 #folders .folders {
@@ -236,9 +236,9 @@ a:active 		{color:#000; }
 }
 
 #folders .folders li a {
-	background:url(../img/folder.png) no-repeat; 
-	padding:2px 2px 0 24px; 
-	display:block; 
+	background:url(../img/folder.png) no-repeat;
+	padding:2px 2px 0 24px;
+	display:block;
 	min-height:16px;
 }
 

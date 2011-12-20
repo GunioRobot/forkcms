@@ -20,7 +20,7 @@
 			});
 
 			$('form').submit(function() {
-				$.WindowManager.showProgress({message : $.translate('{#upload.progress}')}); 
+				$.WindowManager.showProgress({message : $.translate('{#upload.progress}')});
 			});
 
 			if (document.location.hostname != document.domain)
@@ -373,7 +373,7 @@
 
 		isDemo : function() {
 			if (this.currentWin.getArgs().is_demo) {
-				$.WindowManager.info($.translate('{#error.demo}')); 
+				$.WindowManager.info($.translate('{#error.demo}'));
 				return true;
 			}
 		},

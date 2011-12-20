@@ -1,44 +1,44 @@
 /* Toolbar */
 /* ########################################################## */
 
-#topnav	{ 
+#topnav	{
 	background:url('../img/toolbar.png') no-repeat bottom left;
 }
 
-#topwrap { 
-	background:url('../img/toolbar.png') no-repeat bottom right; 
+#topwrap {
+	background:url('../img/toolbar.png') no-repeat bottom right;
 	margin:0px 0px 0px 30px;
 }
 
-#settings { 
-	display:none; 
-	position:absolute; 
-	top:20px; 
-	right:-4px; 
-	width:14em; 
-	line-height:14px; 
-	text-align:right; 
-	background:#fff; 
-	padding:4px; 
-	border:1px solid #959595; 
+#settings {
+	display:none;
+	position:absolute;
+	top:20px;
+	right:-4px;
+	width:14em;
+	line-height:14px;
+	text-align:right;
+	background:#fff;
+	padding:4px;
+	border:1px solid #959595;
 	opacity:0.9; -ms-filter:'alpha(opacity=90)'; filter:alpha(opacity=90);
 	z-index:1;
 }
 
-#settings a	{ 
-	display:inline; 
+#settings a	{
+	display:inline;
 	padding:0px;
 }
 
 /* Inside stuff */
 
-.toolbar { 
-	margin:0px; 
+.toolbar {
+	margin:0px;
 	padding:2px 20px 10px 0px;
-	font:90% tahoma, arial, sans-serif; 
+	font:90% tahoma, arial, sans-serif;
 }
 
-.toolbar .navigation { 
+.toolbar .navigation {
 	margin:0px 2px;
 	padding:0px;
 	float:left;
@@ -46,18 +46,18 @@
 	padding-bottom:12px;
 }
 
-.navigation .desc { 
+.navigation .desc {
 	margin:0px 0px 4px 0px;
-	background:url('../img/navdesc_bg.gif') no-repeat right; 
+	background:url('../img/navdesc_bg.gif') no-repeat right;
 }
 
-.navigation .path { 
+.navigation .path {
 	margin-bottom:5px;
 	width:320px;
 	overflow:hidden;
 }
 
-.toolbar .icons	{ 
+.toolbar .icons	{
 	margin:14px 0px 0px 0px;
 	float:right;
 }
@@ -67,7 +67,7 @@
 	padding:0px;
 	float:left;
 	line-height:0px;
-	position:relative; 
+	position:relative;
 }
 
 .toolbar .disabled img {
@@ -85,23 +85,23 @@
 
 /* Icons */
 
-.icon a	{ 
+.icon a	{
 	text-decoration:none; padding:2px; display:block; outline:0;
 }
 
-.icon a:hover { 
+.icon a:hover {
 	background:#d3d0ce;
 }
 
-.icon .caption { 
+.icon .caption {
 	position:relative;
 	top:-4px;
 	display:none;
 	padding:0px 4px 0px 4px;
 }
 
-.toolbar .separator	{ 
-	margin:0px 4px; 
+.toolbar .separator	{
+	margin:0px 4px;
 	float:left;
 }
 

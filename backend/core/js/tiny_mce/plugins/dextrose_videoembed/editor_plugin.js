@@ -14,10 +14,10 @@
 		init : function(ed, url) {
 			var t = this;
 			t.editor = ed;
-			
+
 			// Register the command so that it can be invoked by using tinyMCE.activeEditor.execCommand('mceExample');
 			ed.addCommand('pasteVideo', function(ui, embedcode) {
-				if(ui){				
+				if(ui){
 					ed.windowManager.open({
 						file : url + '/dialog.htm',
 						width : 320 + ed.getLang('dextrose_videoembed.delta_width', 0),
@@ -28,7 +28,7 @@
 					t.insertVideoCode(embedcode);
 				}
 			});
-			
+
 			ed.addButton('dextrose_video', {
 				title : 'dextrose_videoembed.video',
 				image : url + '/img/movie.png',
@@ -66,9 +66,9 @@
 				version : "0.0.1"
 			};
 		},
-		
+
 		insertVideoCode : function(embedcode) {
-			this.editor.execCommand("mceInsertRawHTML", false, embedcode); 
+			this.editor.execCommand("mceInsertRawHTML", false, embedcode);
 		}
 	});
 

@@ -42,7 +42,7 @@ class Moxiecode_ResultSet {
 
 	function getRows() {
 		$rowsArr = array();
-		
+
 		for ($i=0; $i<count($this->_rows);$i++)
 			$rowsArr[] = $this->getRow($i);
 

@@ -668,7 +668,7 @@ jsBackend.pages.template =
 		{
 			// this is a variable indicating that the add-action may initially set default blocks
 			if(typeof initDefaults != 'undefined') initDefaults = false;
-			
+
 			// loop positions in new template
 			for(var position in current.data.default_extras)
 			{

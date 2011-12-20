@@ -30,7 +30,7 @@
 
 #widgetAnalyticsTrafficSources .box .box h3 a, #widgetAnalyticsTrafficSources .box .box h4 a, #widgetAnalyticsTrafficSources .dataGridHolder .tableHeading h3 a {
 	color: #000 !important;
-	border: 0; 
+	border: 0;
 }
 
 /* Fallback when there's no data */

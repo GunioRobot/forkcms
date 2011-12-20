@@ -18,7 +18,7 @@
 		} else {
 			ta.after('<canvas id="editImageCanvas" style="display:none"></canvas>');
 			t.canvas = document.getElementById('editImageCanvas');
-			t.context = t.canvas.getContext('2d'); 
+			t.context = t.canvas.getContext('2d');
 		}
 	};
 

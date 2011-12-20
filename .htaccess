@@ -28,7 +28,7 @@ FileETag MTime Size
 <IfModule mod_expires.c>
 	ExpiresActive On
 	<FilesMatch "\.(ico|gif|jpe?g|png|svg|svgz|js|css|swf|ttf|otf|woff|eot)$">
-		ExpiresDefault "access plus 1 month" 
+		ExpiresDefault "access plus 1 month"
 	</FilesMatch>
 </IfModule>
 
@@ -37,7 +37,7 @@ FileETag MTime Size
 	AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml text/javascript text/css application/x-javascript application/xhtml+xml application/javascript
 
 	# these browsers do not support deflate
-	BrowserMatch ^Mozilla/4 gzip-only-text/html 
+	BrowserMatch ^Mozilla/4 gzip-only-text/html
 	BrowserMatch ^Mozilla/4.0[678] no-gzip
 	BrowserMatch bMSIE !no-gzip !gzip-only-text/html
 

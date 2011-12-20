@@ -15,7 +15,7 @@
 				var config = data.result, templates = [], tpl;
 
 				if (!RPC.handleError({message : 'Get config error', visual_path : t.visualPath, response : data})) {
-					cleanNames = config['filesystem.clean_names'] == "true"; 
+					cleanNames = config['filesystem.clean_names'] == "true";
 
 					$(config['filesystem.directory_templates'].split(/,/)).each(function(i, v) {
 						if (v) {
@@ -83,7 +83,7 @@
 
 		isDemo : function() {
 			if (this.currentWin.getArgs().is_demo) {
-				$.WindowManager.info($.translate('{#error.demo}')); 
+				$.WindowManager.info($.translate('{#error.demo}'));
 				return true;
 			}
 		}

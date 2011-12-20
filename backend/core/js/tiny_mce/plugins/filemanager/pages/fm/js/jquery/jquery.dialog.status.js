@@ -29,7 +29,7 @@
 				// Build string
 				$(co).each(function(i, v) {
 					h += '<div class="statusrow">' +
-							'<div class="statuscol1">' + v.title + '</div>' + 
+							'<div class="statuscol1">' + v.title + '</div>' +
 							'<div class="statuscol2">' + v.content + '</div>' +
 						'</div>';
 				});

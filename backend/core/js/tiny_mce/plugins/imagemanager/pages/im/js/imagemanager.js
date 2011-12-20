@@ -75,7 +75,7 @@
 						if (file.type != 'folder') {
 							if (file.custom.editable)
 								m.add({title : $.translate('{#common.edit}'), disabled : t.isDisabled('edit'), onclick : function() {t.editFile(file);}});
-							
+
 							m.add({title : $.translate('{#common.view}'), disabled : t.isDisabled('view'), onclick : function() {t.viewFile(file);}});
 							m.add({title : $.translate('{#common.download}'), disabled : t.isDisabled('download'), onclick : function() {t.downloadFile(file);}});
 						}
@@ -342,7 +342,7 @@
 
 				if (r.custom.twidth) {
 					r.width = r.custom.twidth + 'px';
-					r.height = r.custom.theight + 'px'; 
+					r.height = r.custom.theight + 'px';
 				} else {
 					r.width = r.height = 'auto';
 					r.thumburl = 'img/img_generic.png';
@@ -396,7 +396,7 @@
 
 			if (fl) {
 				$(fl).each(function(i, v) {
-					args['path' + i] = v.path; 
+					args['path' + i] = v.path;
 				});
 
 				$.WindowManager.confirm($.translate('{#view.confirm_delete}'), function(s) {
@@ -467,7 +467,7 @@
 		downloadFile : function(f) {
 			if (f.type != 'folder' && f.type != 'parent')
 				document.location = '../../stream/index.php?cmd=im.download&path=' + encodeURIComponent(f.path);
-		}, 
+		},
 
 		viewFile : function(f) {
 			$('#center').hide();
@@ -545,7 +545,7 @@
 					$('#category_list').append(t.caregoryListTpl, this);
 				});
 			});
-		}, 
+		},
 
 		listDirs : function() {
 			var t = this;

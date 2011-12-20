@@ -6,96 +6,96 @@
 	padding-top: 10px;
 }
 
-#thumbs	{ 
+#thumbs	{
 	margin:0 10px 10px 0px;
 }
 
-#textlists { 
+#textlists {
 	margin:0 10px 10px 0px;
 }
 
-.thumbnail { 
+.thumbnail {
 	position:relative;
-	float:left; 
+	float:left;
 	margin:3px;
-	background:url(../img/im-topright.gif) no-repeat top right; 
+	background:url(../img/im-topright.gif) no-repeat top right;
 	text-align:center;
 }
 
-.thumbnail .wrap { 
+.thumbnail .wrap {
 	background:url(../img/im-topleft.gif) no-repeat;
 }
 
-.thumbnailimage { 
+.thumbnailimage {
 	border: 0;
 }
 
-.pic { 
+.pic {
 	display: block;
 	position:relative;
 	margin: 0 auto;
 }
 
-.pic[class] { 
-	display:table; 
-	position:static; 
-	padding-top:6px; 
+.pic[class] {
+	display:table;
+	position:static;
+	padding-top:6px;
 }
 
-.mid { 
-	position:absolute; 
-	top:50%; 
+.mid {
+	position:absolute;
+	top:50%;
 	left:50%;
 } 					/* ie6 */
 
-.mid .mid2 { 
+.mid .mid2 {
 	position:relative;
-	top:-50%; 
-	left:-50%; 
+	top:-50%;
+	left:-50%;
 } 					/* ie6 */
 
-html>body .mid { 
+html>body .mid {
 	position:absolute;
 	top:50%;
 	left:50%;
 } 					/* ie7 */
-html>body .mid .mid2 { 
+html>body .mid .mid2 {
 	position:relative;
 	top:-60%;
 	left:-50%;
 } 					/* ie7 */
 
-html:not([dummy]) .mid[class] { 
-	display:table-cell; 
-	vertical-align:middle; 
-	position:static; 
-} 					/* ff + safari */
-
-html:not([dummy]) .mid .mid2 { 
+html:not([dummy]) .mid[class] {
+	display:table-cell;
+	vertical-align:middle;
 	position:static;
 } 					/* ff + safari */
 
-@media all and (min-width:0px) { html>body .mid { 
+html:not([dummy]) .mid .mid2 {
+	position:static;
+} 					/* ff + safari */
+
+@media all and (min-width:0px) { html>body .mid {
 	display:table-cell;
 	vertical-align:middle;
-	position:static; } 
+	position:static; }
 } 					/* opera */
-@media all and (min-width:0px) { html>body .mid .mid2 { 
-	position:static; } 
+@media all and (min-width:0px) { html>body .mid .mid2 {
+	position:static; }
 } 					/* opera */
 
-.details { 
+.details {
 	background:url(../img/im.gif) no-repeat bottom right;
 	text-align:left;
 }
 
-.details .wrap2	{ 
-	background:url(../img/im-botleft.gif) no-repeat bottom left; 
-	width:25px; 
+.details .wrap2	{
+	background:url(../img/im-botleft.gif) no-repeat bottom left;
+	width:25px;
 	line-height:11px;
 }
 
-.name { 
+.name {
 	margin:0px 5px;
 	padding:3px 0px 2px 0px;
 	font:90% tahoma, arial, sans-serif;
@@ -106,16 +106,16 @@ html:not([dummy]) .mid .mid2 {
 	white-space:nowrap;
 }
 
-* html .name { 
+* html .name {
 	height:21px;
 }
 
-.name a	{ 
+.name a	{
 	text-decoration:none;
 	color:#000;
 }
 
-.name a:hover { 
+.name a:hover {
 	color:#827a69;
 }
 
@@ -123,7 +123,7 @@ html:not([dummy]) .mid .mid2 {
 	display: none;
 }
 
-.act { 
+.act {
 	position:absolute;
 	bottom:3px;
 	right:3px;
@@ -134,18 +134,18 @@ html:not([dummy]) .mid .mid2 {
 /* List view */
 /* ########################################################## */
 
-.listview	{ 
+.listview	{
 	position:relative;
 	margin:3px;
 	background:url('../img/im-topright.gif') no-repeat top right;
 	float:left;
-	text-align:left; 
+	text-align:left;
 	width:100px;
 }
 
 .listview .name {width:75px}
 
-.listview .wrap { 
+.listview .wrap {
 	width:15px;
 	height:2px;
 	background: url('../img/im-topleft.gif') no-repeat;

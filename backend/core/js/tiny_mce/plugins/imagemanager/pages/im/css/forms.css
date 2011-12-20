@@ -1,12 +1,12 @@
 /* Forms */
 /* ########################################################## */
 
-form { 
+form {
 	margin:0px;
 	padding:0px;
 }
 
-select { 
+select {
 	font:100% tahoma;
 }
 
@@ -16,11 +16,11 @@ input.file, input.text {
 
 /* Submit buttons */
 
-input.submit, .button { 
+input.submit, .button {
 	width:94px; height:26px;
 	padding:0 0 2px; border:0;
 	background:url('../img/submit-grey.png') no-repeat;
-	font:normal 100%/100% tahoma, arial, sans-serif; 
+	font:normal 100%/100% tahoma, arial, sans-serif;
 	text-align: center;
 	text-decoration: none;
 }
@@ -30,12 +30,12 @@ input.submit, .button {
 	color: gray;
 }
 
-input.default { 
+input.default {
 	background:url('../img/submit-default.png') no-repeat;
 	font-weight:bold;
 }
 
-input.cancel { 
+input.cancel {
 	background:url('../img/submit-grey.png') no-repeat;
 	font-weight:normal;
 }

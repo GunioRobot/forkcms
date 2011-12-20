@@ -1,10 +1,10 @@
 /*
 
     Login screen CSS
-    
+
     @package      backend
     @subpackage   authentication
-    
+
     @author       Johan Ronsse <johan@netlash.com>
     @since        2.0
 
@@ -128,7 +128,7 @@
 			font-size: 11px;
 			color: #666;
 		}
-		
+
 		#loginFields input {
 			width: 180px;
 		}
@@ -147,7 +147,7 @@
 			#forgotPasswordHolder.balloonNoMessage {
 				padding: 12px 24px 12px;
 			}
-			
+
 			#forgotPasswordBox .iconClose {
 				position: absolute;
 				top: 2px;

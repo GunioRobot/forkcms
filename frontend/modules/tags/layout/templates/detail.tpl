@@ -28,7 +28,7 @@
 				{/iteration:tagsModules}
 			{/option:tagsModules}
 			<p><a href="{$var|geturlforblock:'tags'}" title="{$lblToTagsOverview|ucfirst}">{$lblToTagsOverview|ucfirst}</a></p>
-			
+
 		</div>
 	</div>
 </section>

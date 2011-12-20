@@ -47,7 +47,7 @@
 					lat: {$items.lat},
 					lng: {$items.lng},
 					title: '{$items.title}',
-					text: '{$items.text|stripnewlines}' 
+					text: '{$items.text|stripnewlines}'
 				});
 			{/option:items.lng}
 		{/option:items.lat}

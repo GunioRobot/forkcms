@@ -222,7 +222,7 @@
 			var t = this;
 
 			$('#' + t.id).hide();
-			
+
 			if (t.shim)
 				t.shim.hide();
 

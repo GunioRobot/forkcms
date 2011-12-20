@@ -123,7 +123,7 @@ class FrontendMailmotorCMHelper
 
 		// set groupID
 		$groupId = !empty($groupId) ? $groupId : FrontendMailmotorModel::getDefaultGroupID();
-		
+
 		// get campaign monitor list id
 		$listId = self::getCampaignMonitorID('list', $groupId);
 

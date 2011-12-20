@@ -9,7 +9,7 @@
 		init : function() {
 			$().ajaxError(function(e, req, se) {
 				if (req.status)
-					$.WindowManager.status({title : "The server response wasn't JSON format", content : req.responseText}); 
+					$.WindowManager.status({title : "The server response wasn't JSON format", content : req.responseText});
 			});
 		},
 
@@ -95,7 +95,7 @@
 			var t = this, args = {};
 
 			$(s.paths).each(function(i, v) {
-				args['path' + i] = v; 
+				args['path' + i] = v;
 			});
 
 			if (s.progress_message)
